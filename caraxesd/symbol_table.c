@@ -73,7 +73,7 @@ void insert_variable(SymbolStack* stack, const char* name, DataType type, int po
         return;
     }
 
-    SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry))
+    SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
     strncpy(entry->name, name, MAX_NAME - 1);
     entry->entry_type = ENTRY_VAR;
     entry->data_type = type;
@@ -90,7 +90,7 @@ void insert_parameter(SymbolStack* stack, const char* name, DataType type, int p
         return;
     }
 
-    SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry))
+    SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
     strncpy(entry->name, name, MAX_NAME - 1);
     entry->entry_type = ENTRY_PARAM;
     entry->data_type = type;
