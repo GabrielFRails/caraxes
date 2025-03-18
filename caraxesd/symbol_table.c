@@ -67,13 +67,36 @@ void destroy_stack(SymbolStack* stack) {
     }
 }
 
-// Funções a completar: insert_variable, insert_parameter
 void insert_variable(SymbolStack* stack, const char* name, DataType type, int position) {
-    // Similar a insert_function, mas ajustado para variáveis
-    // Exercício: implemente essa função
+    if  (stack->top < 0) {
+        printf("Error: No active scope!\n");
+        return;
+    }
+
+    SymbolEntry* entry = (SymbolEntry*)malloc(syzeof)
+    strncpy(entry->name, name, MAX_NAME - 1);
+    entry->entry_type = ENTRY_VAR;
+    entry->data_type = type;
+    entry->num_params = 0; //
+    entry->position = position;
+    entry->next = stack->tables[stack->top]->entries;
+    entry->func_ptr = NULL;
+    stack->tables[stack->top]->entries = entry;
 }
 
 void insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
-    // Similar a insert_function, mas com func_ptr
-    // Exercício: implemente essa função
+    if  (stack->top < 0) {
+        printf("Error: No active scope!\n");
+        return;
+    }
+
+    SymbolEntry* entry = (SymbolEntry*)malloc(syzeof)
+    strncpy(entry->name, name, MAX_NAME - 1);
+    entry->entry_type = ENTRY_PARAM;
+    entry->data_type = type;
+    entry->num_params = 0;
+    entry->position = position;
+    entry->next = stack->tables[stack->top]->entries;
+    entry->func_ptr = func;
+    stack->tables[stack->top]->entries = entry;
 }
