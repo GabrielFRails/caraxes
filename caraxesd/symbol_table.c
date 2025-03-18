@@ -4,23 +4,23 @@
 #include "symbol_table.h"
 
 void init_stack(SymbolStack* stack) {
-	stack->top = -1;
+    stack->top = -1;
 }
 
 void new_scope(SymbolStack* stack) {
-	if (stack->top + 1 >= MAX_SCOPES) {
-		printf("Max number of scopes!");
-		return;
-	}
+    if (stack->top + 1 >= MAX_SCOPES) {
+        printf("Max number of scopes!");
+        return;
+    }
 
-	SymbolTable* table = (SymbolTable*) malloc (sizeof(SymbolTable));
-	table->entries = NULL;
-	stack->tables[++stack->top] = table;
+    SymbolTable* table = (SymbolTable*) malloc (sizeof(SymbolTable));
+    table->entries = NULL;
+    stack->tables[++stack->top] = table;
 }
 
 SymbolEntry* search_name(SymbolStack* stack, const char * name) {
-	for (int i = stack->top; i>=0; i--) {
-		SymbolEntry* current = stack->tables[i]->entries;
+    for (int i = stack->top; i>=0; i--) {
+        SymbolEntry* current = stack->tables[i]->entries;
         while (current != NULL) {
             if (strcmp(current->name, name) == 0) {
                 return current; // Encontrou
@@ -32,8 +32,8 @@ SymbolEntry* search_name(SymbolStack* stack, const char * name) {
 }
 
 void remove_scope(SymbolStack* stack) {
-	if (stack->top < 0) return; // empty stack
-	SymbolTable* table = stack->tables[stack->top];
+    if (stack->top < 0) return; // empty stack
+    SymbolTable* table = stack->tables[stack->top];
     SymbolEntry* current = table->entries;
     while (current != NULL) {
         SymbolEntry* next = current->next;
