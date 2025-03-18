@@ -1,8 +1,8 @@
 #ifndef SYMBLE_TABLE_H
 #define SYMBLE_TABLE_H
 
-#define MAX_NAME = 50
-#define MAX_SCOPES = 100 //max scope stack number
+#define MAX_NAME 50
+#define MAX_SCOPES 100 //max scope stack number
 
 // Goianinha Types
 typedef enum {
