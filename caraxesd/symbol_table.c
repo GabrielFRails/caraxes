@@ -75,10 +75,10 @@ void destroy_stack(SymbolStack* stack) {
     }
 }
 
-void insert_variable(SymbolStack* stack, const char* name, DataType type, int position) {
+SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type, int position) {
     if  (stack->top < 0) {
         printf("Error: No active scope!\n");
-        return;
+        return NULL;
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
@@ -99,10 +99,10 @@ void insert_variable(SymbolStack* stack, const char* name, DataType type, int po
     return entry;
 }
 
-void insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
+SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
     if  (stack->top < 0) {
         printf("Error: No active scope!\n");
-        return;
+        return NULL;
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
