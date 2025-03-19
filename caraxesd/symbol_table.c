@@ -44,12 +44,18 @@ void remove_scope(SymbolStack* stack) {
     stack->top--;
 }
 
-void insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type) {
+SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type) {
     if (stack->top < 0) {
         printf("Erro: Nenhum escopo ativo!\n");
-        return;
+        return NULL;
     }
+
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
+	if (entry == NULL) {
+		printf("Error: Memory allocation failed!\n");
+		return NULL;
+	}
+
     strncpy(entry->name, name, MAX_NAME - 1);
     entry->entry_type = ENTRY_FUNC;
     entry->data_type = return_type;
@@ -58,6 +64,8 @@ void insert_function(SymbolStack* stack, const char* name, int num_params, DataT
     entry->next = stack->tables[stack->top]->entries;
     entry->func_ptr = NULL; // Não usado
     stack->tables[stack->top]->entries = entry;
+
+	return entry
 }
 
 // Libera toda a pilha
