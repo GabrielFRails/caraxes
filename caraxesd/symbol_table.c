@@ -82,6 +82,11 @@ void insert_variable(SymbolStack* stack, const char* name, DataType type, int po
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
+	if (entry == NULL) {
+		printf("Error: Memory allocation failed!\n");
+		return NULL;
+	}
+
     strncpy(entry->name, name, MAX_NAME - 1);
     entry->entry_type = ENTRY_VAR;
     entry->data_type = type;
@@ -90,6 +95,8 @@ void insert_variable(SymbolStack* stack, const char* name, DataType type, int po
     entry->next = stack->tables[stack->top]->entries;
     entry->func_ptr = NULL;
     stack->tables[stack->top]->entries = entry;
+
+    return entry;
 }
 
 void insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
@@ -99,6 +106,11 @@ void insert_parameter(SymbolStack* stack, const char* name, DataType type, int p
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
+	if (entry == NULL) {
+		printf("Error: Memory allocation failed!\n");
+		return NULL;
+	}
+
     strncpy(entry->name, name, MAX_NAME - 1);
     entry->entry_type = ENTRY_PARAM;
     entry->data_type = type;
@@ -107,4 +119,6 @@ void insert_parameter(SymbolStack* stack, const char* name, DataType type, int p
     entry->next = stack->tables[stack->top]->entries;
     entry->func_ptr = func;
     stack->tables[stack->top]->entries = entry;
+
+    return entry;
 }

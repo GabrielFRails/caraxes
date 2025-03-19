@@ -44,8 +44,8 @@ void new_scope(SymbolStack* stack);
 SymbolEntry* search_name(SymbolStack* stack, const char* name);
 void remove_scope(SymbolStack* stack);
 SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type);
-void insert_variable(SymbolStack* stack, const char* name, DataType type, int position);
-void insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func);
+SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type, int position);
+SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func);
 void destroy_stack(SymbolStack* stack);
 
 #endif
