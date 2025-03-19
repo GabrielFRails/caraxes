@@ -65,7 +65,7 @@ SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_param
     entry->func_ptr = NULL; // Não usado
     stack->tables[stack->top]->entries = entry;
 
-	return entry
+	return entry;
 }
 
 // Libera toda a pilha
