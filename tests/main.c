@@ -1,6 +1,6 @@
 // teste para tabelas
 #include <stdio.h>
-#include "../caraxesd/symbol_table.h"
+#include "../src/symbol_table.h"
 
 int main() {
     SymbolStack stack;

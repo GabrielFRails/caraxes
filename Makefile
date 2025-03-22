@@ -11,13 +11,13 @@ else                     # Linux (Ubuntu)
 endif
 
 # Compiler flags: warnings and debug info
-CFLAGS = -Wall -g -I./caraxesd  # Include caraxesd/ for header files
+CFLAGS = -Wall -g -I./src  # Include src/ for header files
 
 # Directories
-SRC_DIR = caraxesd
+SRC_DIR = src
 TEST_DIR = tests
 
-# Source files from caraxesd/
+# Source files from src/
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 
@@ -32,7 +32,7 @@ all: $(TEST_TARGETS)
 symbol_%: $(TEST_DIR)/%.o $(OBJECTS)
 	$(CC) -o $@ $^
 
-# Compile source files in caraxesd/
+# Compile source files in src/
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/symbol_table.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
