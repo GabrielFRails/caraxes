@@ -4,6 +4,12 @@
 
 A Goianinha Compiler developed during Compilers Course at UFG (CS Course)
 
+## Pre requirements:
+macOS or Linux (Ubuntu): Tested on both systems.
+GCC/Clang: C compiler (GCC for Ubuntu, Clang for macOS).
+Flex: For generating the lexical analyzer.
+Make: To run the Makefile.
+
 ## First milestone
 This first stage of the Goianinha compiler project implements a symbol table using a stack of scopes to manage identifiers (functions, variables, and parameters) and a lexical analyzer generated with Flex to recognize tokens from the Goianinha language grammar. It includes basic error handling for memory allocation and lexical errors, with separate test programs for each component.
 
