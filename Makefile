@@ -1,48 +1,69 @@
-# Makefile for testing the symbol table implementation with support for multiple tests
+# Makefile for symbol table and lexical analyzer with separate targets
 
-# Detect the operating system
 UNAME := $(shell uname)
-
-# Set compiler based on OS
-ifeq ($(UNAME), Darwin)  # macOS
+ifeq ($(UNAME), Darwin)
 	CC = clang
-else                     # Linux (Ubuntu)
+	FLEX = flex
+else
 	CC = gcc
+	FLEX = flex
 endif
 
-# Compiler flags: warnings and debug info
-CFLAGS = -Wall -g -I./src  # Include src/ for header files
+CFLAGS = -Wall -g -I./src
 
-# Directories
 SRC_DIR = src
 TEST_DIR = tests
+LEXER_DIR = lexer
 
-# Source files from src/
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
-OBJECTS = $(SOURCES:.c=.o)
+# Symbol table sources
+SYMBOL_SOURCES = $(wildcard $(SRC_DIR)/*.c)
+SYMBOL_OBJECTS = $(SYMBOL_SOURCES:.c=.o)
 
-# Test files from tests/
+# Symbol table tests
 TEST_SOURCES = $(wildcard $(TEST_DIR)/*.c)
 TEST_TARGETS = $(patsubst $(TEST_DIR)/%.c, symbol_%, $(TEST_SOURCES))
 
-# Default target: build all test executables
-all: $(TEST_TARGETS)
+# Lexer sources
+LEXER_SRC = $(LEXER_DIR)/goianinha.c
+LEXER_OBJ = $(LEXER_SRC:.c=.o)
+LEXER_MAIN = $(LEXER_DIR)/main.c
+LEXER_MAIN_OBJ = $(LEXER_MAIN:.c=.o)
+LEXER_TARGET = $(LEXER_DIR)/goianinha  # Ajustado para ficar em lexer/
 
-# Rule to link each test executable
-symbol_%: $(TEST_DIR)/%.o $(OBJECTS)
+# Default target: build everything
+all: table lexico
+
+# Target for symbol table tests
+table: $(TEST_TARGETS)
+
+# Target for lexical analyzer
+lexico: $(LEXER_TARGET)
+
+# Symbol table test targets
+symbol_%: $(TEST_DIR)/%.o $(SYMBOL_OBJECTS)
 	$(CC) -o $@ $^
 
-# Compile source files in src/
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/symbol_table.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Compile test files in tests/
 $(TEST_DIR)/%.o: $(TEST_DIR)/%.c $(SRC_DIR)/symbol_table.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Lexer targets
+$(LEXER_SRC): $(LEXER_DIR)/goianinha.l
+	$(FLEX) -o $(LEXER_SRC) $(LEXER_DIR)/goianinha.l
+
+$(LEXER_OBJ): $(LEXER_SRC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LEXER_MAIN_OBJ): $(LEXER_MAIN)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LEXER_TARGET): $(LEXER_OBJ) $(LEXER_MAIN_OBJ)
+	$(CC) -o $@ $^
+
 # Clean up generated files
 clean:
-	rm -f $(SRC_DIR)/*.o $(TEST_DIR)/*.o $(TEST_TARGETS)
+	rm -f $(SRC_DIR)/*.o $(TEST_DIR)/*.o $(LEXER_DIR)/*.o $(LEXER_SRC) $(TEST_TARGETS) $(LEXER_TARGET)
 
-# Phony targets (not real files)
-.PHONY: all clean
+.PHONY: all table lexico clean
