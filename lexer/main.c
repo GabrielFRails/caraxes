@@ -1,7 +1,6 @@
-// generate by LLM
 #include <stdio.h>
 
-FILE *yyin;
+extern FILE *yyin;  // Declarar como extern, não definir
 extern int yylineno;
 extern char* yytext;
 extern int yylex();
