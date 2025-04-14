@@ -7,7 +7,7 @@ A Goianinha Compiler developed during Compilers Course at UFG (CS Course)
 ## Pre requirements:
 macOS or Linux (Ubuntu): Tested on both systems.
 GCC/Clang: C compiler (GCC for Ubuntu, Clang for macOS).
-Flex: For generating the lexical analyzer.
+Flex: For generating the lexical analyzer. (sudo apt install flex or brew install flex)
 Make: To run the Makefile.
 
 ## First milestone
