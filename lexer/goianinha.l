@@ -95,16 +95,19 @@ STRING    \"([^\"\n\\]|\\.)*\"
 
 "/*"          { /* Skip comments */
                 int c;
-                while (1) {
+                for (;;) {
                     c = input();
                     if (c == EOF) {
-                        printf("ERRO: COMENTÁRIO NAO TERMINA %d\n", yylineno);
+                        fprintf(stderr, "ERRO: COMENTÁRIO NAO TERMINA %d\n", yylineno);
                         return -1;
                     }
                     if (c == '*') {
-                        c = input();
-                        if (c == '/') break;
-                        if (c != EOF) unput(c);
+                        if ((c = input()) == '/') {
+                            break;
+                        }
+                        if (c != EOF) {
+                            unput(c);
+                        }
                     }
                 }
               }
