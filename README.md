@@ -18,6 +18,12 @@ This first stage of the Goianinha compiler project implements a symbol table usi
 $ cd caraxes
 $ make
 $ ./lexer/goianinha ./tests/test.g
+$ ./lexer/goianinha ./tests/test_error.g
+$ ./lexer/goianinha ./tests/erroLin6Caractereinvalido%.g
+$ ./lexer/goianinha ./tests/expressao1ErroLin4CadeiaNaoTermina.g
+$ ./lexer/goianinha ./tests/expressao1Correto.g
+$ ./lexer/goianinha ./tests/fatorialErroLin1ComentarioNtermina.g
+$ ./lexer/goianinha ./tests/fatorialErroLin15String2linhas.g
 ```
 
 ### targets
