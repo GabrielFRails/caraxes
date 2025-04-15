@@ -94,19 +94,27 @@ STRING    \"([^\"\n\\]|\\.)*\"
 ","           { return COMMA; }
 
 "/*"          { /* Skip comments */
+                // fprintf(stderr, "DEBUG: Entering comment\n");
                 int c;
-                for (;;) {
+                while (1) {
                     c = input();
-                    if (c == EOF) {
+                    if (c == EOF || c == 0) {
+                        fprintf(stderr, "DEBUG: Reached EOF or NUL in comment\n");
                         fprintf(stderr, "ERRO: COMENTÁRIO NAO TERMINA %d\n", yylineno);
                         return -1;
                     }
+                    // fprintf(stderr, "DEBUG: Read char '%c' (ASCII %d)\n", c >= 32 && c <= 126 ? c : '?', c);
                     if (c == '*') {
-                        if ((c = input()) == '/') {
-                            break;
+                        c = input();
+                        if (c == EOF || c == 0) {
+                            fprintf(stderr, "DEBUG: Reached EOF or NUL after *\n");
+                            fprintf(stderr, "ERRO: COMENTÁRIO NAO TERMINA %d\n", yylineno);
+                            return -1;
                         }
-                        if (c != EOF) {
-                            unput(c);
+                        fprintf(stderr, "DEBUG: Read after * char '%c' (ASCII %d)\n", c >= 32 && c <= 126 ? c : '?', c);
+                        if (c == '/') {
+                            fprintf(stderr, "DEBUG: Exiting comment\n");
+                            break;
                         }
                     }
                 }
@@ -114,10 +122,12 @@ STRING    \"([^\"\n\\]|\\.)*\"
 
 [ \t\n]+      { /* Ignore whitespace */ }
 
-{STRING}\n    { printf("ERRO: CADEIA DE CARACTERES OCUPA MAIS DE UMA LINHA %d\n", yylineno);
+{STRING}\n    { fprintf(stderr, "ERRO: CADEIA DE CARACTERES OCUPA MAIS DE UMA LINHA %d\n", yylineno);
                 return -1; }
 
-.             { printf("ERRO: CARACTERE INVÁLIDO %d\n", yylineno);
+.             { fprintf(stderr, "ERRO: CARACTERE INVÁLIDO %d\n", yylineno);
                 return -1; }
+
+<<EOF>>       { return -1; }
 
 %%
