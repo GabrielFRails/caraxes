@@ -1,3 +1,6 @@
 programa {
-	/* teste nao terminei
+    int x;
+    /* Comentário nao terminou
+    escreva "Olá";
+    soma(1, 2);
 }
