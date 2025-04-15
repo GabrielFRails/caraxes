@@ -18,8 +18,12 @@ int main(int argc, char *argv[]) {
     }
 
     int token;
-    while ((token = yylex()) != -1) {  // EOF is -1
-        if (token > 0) {  // Valid token
+    while (1) {
+        token = yylex();
+        //fprintf(stderr, "DEBUG: yylex returned %d\n", token);
+        if (token == 0) break;  // EOF
+        if (token == -1) break;  // Error
+        if (token > 0) {
             printf("Encontrado o lexema %s pertencente ao token de codigo %d linha %d\n",
                    yytext, token, yylineno);
         }
