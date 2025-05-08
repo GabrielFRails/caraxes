@@ -1,6 +1,12 @@
+int x, y;
 programa {
-    int x;
-    /* Comentário */
-    escreva "Olá";
-    soma(1, 2);
+    leia x;
+    escreva "Digite y: ";
+    leia y;
+    se (x == y) entao {
+        escreva "Iguais";
+    } senao {
+        escreva "Diferentes";
+    }
+    novalinha;
 }
