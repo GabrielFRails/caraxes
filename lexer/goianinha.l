@@ -38,6 +38,8 @@
 #define RBRACE        31
 #define SEMI          32
 #define COMMA         33
+#define OR            34
+#define AND           35
 
 /* External variables used by Flex */
 extern int yylineno;
@@ -69,6 +71,8 @@ STRING    \"([^\"\n\\]|\\.)*\"
 "senao"       { return SENAO; }
 "enquanto"    { return ENQUANTO; }
 "execute"     { return EXECUTE; }
+"ou"          { return OR; }
+"e"           { return AND; }
 
 {ID}          { return ID; }
 {INTCONST}    { return INTCONST; }
