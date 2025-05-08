@@ -9,7 +9,7 @@ else
 	FLEX = flex
 endif
 
-CFLAGS = -Wall -g -I./src
+CFLAGS = -Wall -g -I./src -I./lexer
 
 SRC_DIR = src
 TEST_DIR = tests
@@ -28,7 +28,7 @@ LEXER_SRC = $(LEXER_DIR)/goianinha.c
 LEXER_OBJ = $(LEXER_SRC:.c=.o)
 LEXER_MAIN = $(LEXER_DIR)/main.c
 LEXER_MAIN_OBJ = $(LEXER_MAIN:.c=.o)
-LEXER_TARGET = $(LEXER_DIR)/goianinha  # Ajustado para ficar em lexer/
+LEXER_TARGET = $(LEXER_DIR)/goianinha
 
 # Default target: build everything
 all: table lexico
@@ -50,7 +50,7 @@ $(TEST_DIR)/%.o: $(TEST_DIR)/%.c $(SRC_DIR)/symbol_table.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Lexer targets
-$(LEXER_SRC): $(LEXER_DIR)/goianinha.l
+$(LEXER_SRC): $(LEXER_DIR)/goianinha.l $(LEXER_DIR)/tokens.h
 	$(FLEX) -o $(LEXER_SRC) $(LEXER_DIR)/goianinha.l
 
 $(LEXER_OBJ): $(LEXER_SRC)
