@@ -3,6 +3,12 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+
+union {
+    char *str;
+    int num;
+} yylval;
 
 /* Token codes (to be returned by yylex) */
 #define PROGRAMA       1
