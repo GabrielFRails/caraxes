@@ -109,7 +109,7 @@ SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type
 
 SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
     if (stack == NULL || stack->top < 0 || name == NULL || func == NULL) {
-        fprintf(stderr, "ERRO: Escopo inválido, nome nulo ou função dynamic_castnula para parâmetro\n");
+        fprintf(stderr, "ERRO: Escopo inválido, nome nulo ou função nula para parâmetro\n");
         return NULL;
     }
 
@@ -143,11 +143,11 @@ void print_stack(SymbolStack* stack) {
         SymbolEntry* current = stack->tables[i]->entries;
         while (current != NULL) {
             printf("  Nome: %s, Tipo: %s, Entrada: %s, Posição: %d, Num Params: %d\n",
-                current->name,
-                current->data_type == TYPE_INT ? "int" : current->data_type == TYPE_CHAR ? "char" : "unknown",
-                current->entry_type == ENTRY_VAR ? "var" : current->entry_type == ENTRY_FUNC ? "func" : "param",
-                current->position,
-                current->num_params);
+                   current->name,
+                   current->data_type == TYPE_INT ? "int" : current->data_type == TYPE_CHAR ? "char" : "unknown",
+                   current->entry_type == ENTRY_VAR ? "var" : current->entry_type == ENTRY_FUNC ? "func" : "param",
+                   current->position,
+                   current->num_params);
             current = current->next;
         }
     }
