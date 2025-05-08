@@ -144,6 +144,6 @@ STRING    \"([^\"\n\\]|\\.)*\"
 .             { fprintf(stderr, "ERRO: CARACTERE INVÁLIDO %d\n", yylineno);
                 return -1; }
 
-<<EOF>>       { return -1; }
+<<EOF>>       { return 0; }
 
 %%
