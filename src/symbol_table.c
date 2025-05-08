@@ -4,26 +4,32 @@
 #include "symbol_table.h"
 
 void init_stack(SymbolStack* stack) {
+    if (stack == NULL) return;
     stack->top = -1;
 }
 
 void new_scope(SymbolStack* stack) {
-    if (stack->top + 1 >= MAX_SCOPES) {
-        printf("Max number of scopes!");
+    if (stack == NULL || stack->top + 1 >= MAX_SCOPES) {
+        fprintf(stderr, "ERRO: Não foi possível criar novo escopo\n");
         return;
     }
 
-    SymbolTable* table = (SymbolTable*) malloc (sizeof(SymbolTable));
+    SymbolTable* table = (SymbolTable*)malloc(sizeof(SymbolTable));
+    if (table == NULL) {
+        fprintf(stderr, "ERRO: Falha na alocação de memória para tabela\n");
+        return;
+    }
     table->entries = NULL;
     stack->tables[++stack->top] = table;
 }
 
-SymbolEntry* search_name(SymbolStack* stack, const char * name) {
-    for (int i = stack->top; i>=0; i--) {
+SymbolEntry* search_name(SymbolStack* stack, const char *name) {
+    if (stack == NULL || stack->top < 0 || name == NULL) return NULL;
+    for (int i = stack->top; i >= 0; i--) {
         SymbolEntry* current = stack->tables[i]->entries;
         while (current != NULL) {
             if (strcmp(current->name, name) == 0) {
-                return current; // Encontrou
+                return current;
             }
             current = current->next;
         }
@@ -32,7 +38,7 @@ SymbolEntry* search_name(SymbolStack* stack, const char * name) {
 }
 
 void remove_scope(SymbolStack* stack) {
-    if (stack->top < 0) return; // empty stack
+    if (stack == NULL || stack->top < 0) return;
     SymbolTable* table = stack->tables[stack->top];
     SymbolEntry* current = table->entries;
     while (current != NULL) {
@@ -45,52 +51,54 @@ void remove_scope(SymbolStack* stack) {
 }
 
 SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type) {
-    if (stack->top < 0) {
-        printf("Erro: Nenhum escopo ativo!\n");
+    if (stack == NULL || stack->top < 0 || name == NULL) {
+        fprintf(stderr, "ERRO: Escopo inválido ou nome nulo para função\n");
         return NULL;
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
-	if (entry == NULL) {
-		printf("Error: Memory allocation failed!\n");
-		return NULL;
-	}
+    if (entry == NULL) {
+        fprintf(stderr, "ERRO: Falha na alocação de memória para entrada de função\n");
+        return NULL;
+    }
 
     strncpy(entry->name, name, MAX_NAME - 1);
+    entry->name[MAX_NAME - 1] = '\0';
     entry->entry_type = ENTRY_FUNC;
     entry->data_type = return_type;
     entry->num_params = num_params;
-    entry->position = 0; // Não usado para funções
+    entry->position = 0;
     entry->next = stack->tables[stack->top]->entries;
-    entry->func_ptr = NULL; // Não usado
+    entry->func_ptr = NULL;
     stack->tables[stack->top]->entries = entry;
 
-	return entry;
+    return entry;
 }
 
-// Libera toda a pilha
 void destroy_stack(SymbolStack* stack) {
+    if (stack == NULL) return;
     while (stack->top >= 0) {
         remove_scope(stack);
     }
 }
 
 SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type, int position) {
-    if  (stack->top < 0) {
-        printf("Error: No active scope!\n");
+    if (stack == NULL || stack->top < 0 || name == NULL) {
+        fprintf(stderr, "ERRO: Escopo inválido ou nome nulo para variável\n");
         return NULL;
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
-	if (entry == NULL) {
-		printf("Error: Memory allocation failed!\n");
-		return NULL;
-	}
+    if (entry == NULL) {
+        fprintf(stderr, "ERRO: Falha na alocação de memória para entrada de variável\n");
+        return NULL;
+    }
 
     strncpy(entry->name, name, MAX_NAME - 1);
+    entry->name[MAX_NAME - 1] = '\0';
     entry->entry_type = ENTRY_VAR;
     entry->data_type = type;
-    entry->num_params = 0; //
+    entry->num_params = 0;
     entry->position = position;
     entry->next = stack->tables[stack->top]->entries;
     entry->func_ptr = NULL;
@@ -100,18 +108,19 @@ SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type
 }
 
 SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func) {
-    if  (stack->top < 0) {
-        printf("Error: No active scope!\n");
+    if (stack == NULL || stack->top < 0 || name == NULL || func == NULL) {
+        fprintf(stderr, "ERRO: Escopo inválido, nome nulo ou função dynamic_castnula para parâmetro\n");
         return NULL;
     }
 
     SymbolEntry* entry = (SymbolEntry*)malloc(sizeof(SymbolEntry));
-	if (entry == NULL) {
-		printf("Error: Memory allocation failed!\n");
-		return NULL;
-	}
+    if (entry == NULL) {
+        fprintf(stderr, "ERRO: Falha na alocação de memória para entrada de parâmetro\n");
+        return NULL;
+    }
 
     strncpy(entry->name, name, MAX_NAME - 1);
+    entry->name[MAX_NAME - 1] = '\0';
     entry->entry_type = ENTRY_PARAM;
     entry->data_type = type;
     entry->num_params = 0;
@@ -121,4 +130,25 @@ SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType typ
     stack->tables[stack->top]->entries = entry;
 
     return entry;
+}
+
+void print_stack(SymbolStack* stack) {
+    if (stack == NULL || stack->top < 0) {
+        printf("Tabela de Símbolos: Vazia\n");
+        return;
+    }
+    printf("Tabela de Símbolos:\n");
+    for (int i = stack->top; i >= 0; i--) {
+        printf("Escopo %d:\n", i);
+        SymbolEntry* current = stack->tables[i]->entries;
+        while (current != NULL) {
+            printf("  Nome: %s, Tipo: %s, Entrada: %s, Posição: %d, Num Params: %d\n",
+                current->name,
+                current->data_type == TYPE_INT ? "int" : current->data_type == TYPE_CHAR ? "char" : "unknown",
+                current->entry_type == ENTRY_VAR ? "var" : current->entry_type == ENTRY_FUNC ? "func" : "param",
+                current->position,
+                current->num_params);
+            current = current->next;
+        }
+    }
 }

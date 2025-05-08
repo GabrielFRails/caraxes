@@ -3,7 +3,9 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "tokens.h"
+#include "symbol_table.h"
 
 extern int yylineno;
 extern char* yytext;
@@ -11,6 +13,10 @@ extern FILE* yyin;
 extern int yylex(void);
 
 void yyerror(const char* msg);
+SymbolStack symbol_stack = { .top = -1 }; // Inicializa a pilha
+DataType current_type;
+SymbolEntry* current_func = NULL;
+
 %}
 
 /* Define union for semantic values */
@@ -46,87 +52,166 @@ void yyerror(const char* msg);
 %%
 
 /* Grammar rules */
-Programa: DeclFuncVar DeclProg { printf("Programa reconhecido\n"); };
+Programa: DeclFuncVar DeclProg { };
 
-DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar { printf("DeclFuncVar: var\n"); }
-           | Tipo TOKEN_ID DeclFunc DeclFuncVar { printf("DeclFuncVar: func\n"); }
-           | /* vazio */ { printf("DeclFuncVar: vazio\n"); };
+DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
+    if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+    } else {
+        insert_variable(&symbol_stack, $2, current_type, 0);
+    }
+}
+           | Tipo TOKEN_ID DeclFunc DeclFuncVar {
+    if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
+    } else if (symbol_stack.top < 0) {
+        fprintf(stderr, "ERRO: Nenhum escopo ativo na linha %d\n", yylineno);
+    } else {
+        current_func = insert_function(&symbol_stack, $2, 0, current_type);
+        if (current_func == NULL) {
+            fprintf(stderr, "ERRO: Falha ao inserir função %s na linha %d\n", $2, yylineno);
+        }
+    }
+}
+           | /* vazio */ { };
 
-DeclProg: TOKEN_PROGRAMA Bloco { printf("DeclProg reconhecido\n"); };
+DeclProg: TOKEN_PROGRAMA Bloco { };
 
-Tipo: TOKEN_INT { printf("Tipo: int\n"); }
-    | TOKEN_CAR { printf("Tipo: car\n"); };
+Tipo: TOKEN_INT { current_type = TYPE_INT; }
+    | TOKEN_CAR { current_type = TYPE_CHAR; };
 
-DeclVar: TOKEN_COMMA TOKEN_ID DeclVar { printf("DeclVar: id\n"); }
-       | /* vazio */ { printf("DeclVar: vazio\n"); };
+DeclVar: TOKEN_COMMA TOKEN_ID DeclVar {
+    if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+    } else {
+        insert_variable(&symbol_stack, $2, current_type, 0);
+    }
+}
+       | /* vazio */ { };
 
-DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco { printf("DeclFunc reconhecida\n"); };
+DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
+    current_func = NULL;
+};
 
-ListaParametros: /* vazio */ { printf("ListaParametros: vazio\n"); }
-               | ListaParametrosCont { printf("ListaParametros: cont\n"); };
+ListaParametros: /* vazio */ { }
+               | ListaParametrosCont { };
 
-ListaParametrosCont: Tipo TOKEN_ID { printf("Parametro: id\n"); }
-                   | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont { printf("Parametro: id, cont\n"); };
+ListaParametrosCont: Tipo TOKEN_ID {
+    if (current_func == NULL) {
+        fprintf(stderr, "ERRO: Parâmetro %s fora de uma função na linha %d\n", $2, yylineno);
+    } else if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Parâmetro %s redeclarado na linha %d\n", $2, yylineno);
+    } else {
+        SymbolEntry* param = insert_parameter(&symbol_stack, $2, current_type, current_func->num_params + 1, current_func);
+        if (param != NULL) {
+            current_func->num_params++;
+        } else {
+            fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
+        }
+    }
+}
+                   | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
+    if (current_func == NULL) {
+        fprintf(stderr, "ERRO: Parâmetro %s fora de uma função na linha %d\n", $2, yylineno);
+    } else if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Parâmetro %s redeclarado na linha %d\n", $2, yylineno);
+    } else {
+        SymbolEntry* param = insert_parameter(&symbol_stack, $2, current_type, current_func->num_params + 1, current_func);
+        if (param != NULL) {
+            current_func->num_params++;
+        } else {
+            fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
+        }
+    }
+};
 
-Bloco: TOKEN_LBRACE ListaDeclVar ListaComando TOKEN_RBRACE { printf("Bloco reconhecido\n"); };
+Bloco: TOKEN_LBRACE { new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE { remove_scope(&symbol_stack); };
 
-ListaDeclVar: /* vazio */ { printf("ListaDeclVar: vazio\n"); }
-            | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar { printf("ListaDeclVar: var\n"); };
+ListaDeclVar: /* vazio */ { }
+            | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
+    if (search_name(&symbol_stack, $2) != NULL) {
+        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+    } else {
+        insert_variable(&symbol_stack, $2, current_type, 0);
+    }
+};
 
-ListaComando: /* vazio */ { printf("ListaComando: vazio\n"); }
-            | Comando ListaComando { printf("ListaComando: comando\n"); };
+ListaComando: /* vazio */ { }
+            | Comando ListaComando { };
 
-Comando: TOKEN_SEMI { printf("Comando: ;\n"); }
-       | Expr TOKEN_SEMI { printf("Comando: expr\n"); }
-       | TOKEN_RETORNE Expr TOKEN_SEMI { printf("Comando: retorne\n"); }
-       | TOKEN_LEIA TOKEN_ID TOKEN_SEMI { printf("Comando: leia\n"); }
-       | TOKEN_ESCREVA Expr TOKEN_SEMI { printf("Comando: escreva expr\n"); }
-       | TOKEN_ESCREVA TOKEN_STRING TOKEN_SEMI { printf("Comando: escreva string\n"); }
-       | TOKEN_NOVALINHA TOKEN_SEMI { printf("Comando: novalinha\n"); }
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando { printf("Comando: se\n"); }
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando { printf("Comando: se senao\n"); }
-       | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando { printf("Comando: enquanto\n"); }
-       | Bloco { printf("Comando: bloco\n"); };
+Comando: TOKEN_SEMI { }
+       | Expr TOKEN_SEMI { }
+       | TOKEN_RETORNE Expr TOKEN_SEMI { }
+       | TOKEN_LEIA TOKEN_ID TOKEN_SEMI {
+    if (search_name(&symbol_stack, $2) == NULL) {
+        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $2, yylineno);
+    }
+}
+       | TOKEN_ESCREVA Expr TOKEN_SEMI { }
+       | TOKEN_ESCREVA TOKEN_STRING TOKEN_SEMI { }
+       | TOKEN_NOVALINHA TOKEN_SEMI { }
+       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando { }
+       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando { }
+       | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando { }
+       | Bloco { };
 
-Expr: OrExpr { printf("Expr: or\n"); }
-    | TOKEN_ID TOKEN_ASSIGN Expr { printf("Expr: assign\n"); };
+Expr: OrExpr { }
+    | TOKEN_ID TOKEN_ASSIGN Expr {
+    if (search_name(&symbol_stack, $1) == NULL) {
+        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
+    }
+};
 
-OrExpr: OrExpr TOKEN_OR AndExpr { printf("OrExpr: or\n"); }
-      | AndExpr { printf("OrExpr: and\n"); };
+OrExpr: OrExpr TOKEN_OR AndExpr { }
+      | AndExpr { };
 
-AndExpr: AndExpr TOKEN_AND EqExpr { printf("AndExpr: and\n"); }
-       | EqExpr { printf("AndExpr: eq\n"); };
+AndExpr: AndExpr TOKEN_AND EqExpr { }
+       | EqExpr { };
 
-EqExpr: EqExpr TOKEN_EQ DesigExpr { printf("EqExpr: eq\n"); }
-      | EqExpr TOKEN_NEQ DesigExpr { printf("EqExpr: neq\n"); }
-      | DesigExpr { printf("EqExpr: desig\n"); };
+EqExpr: EqExpr TOKEN_EQ DesigExpr { }
+      | EqExpr TOKEN_NEQ DesigExpr { }
+      | DesigExpr { };
 
-DesigExpr: DesigExpr TOKEN_LT AddExpr { printf("DesigExpr: lt\n"); }
-         | DesigExpr TOKEN_GT AddExpr { printf("DesigExpr: gt\n"); }
-         | DesigExpr TOKEN_LE AddExpr { printf("DesigExpr: le\n"); }
-         | DesigExpr TOKEN_GE AddExpr { printf("DesigExpr: ge\n"); }
-         | AddExpr { printf("DesigExpr: add\n"); };
+DesigExpr: DesigExpr TOKEN_LT AddExpr { }
+         | DesigExpr TOKEN_GT AddExpr { }
+         | DesigExpr TOKEN_LE AddExpr { }
+         | DesigExpr TOKEN_GE AddExpr { }
+         | AddExpr { };
 
-AddExpr: AddExpr TOKEN_PLUS MulExpr { printf("AddExpr: plus\n"); }
-       | AddExpr TOKEN_MINUS MulExpr { printf("AddExpr: minus\n"); }
-       | MulExpr { printf("AddExpr: mul\n"); };
+AddExpr: AddExpr TOKEN_PLUS MulExpr { }
+       | AddExpr TOKEN_MINUS MulExpr { }
+       | MulExpr { };
 
-MulExpr: MulExpr TOKEN_TIMES UnExpr { printf("MulExpr: times\n"); }
-       | MulExpr TOKEN_DIV UnExpr { printf("MulExpr: div\n"); }
-       | UnExpr { printf("MulExpr: un\n"); };
+MulExpr: MulExpr TOKEN_TIMES UnExpr { }
+       | MulExpr TOKEN_DIV UnExpr { }
+       | UnExpr { };
 
-UnExpr: TOKEN_MINUS PrimExpr { printf("UnExpr: minus\n"); }
-      | PrimExpr { printf("UnExpr: prim\n"); };
+UnExpr: TOKEN_MINUS PrimExpr { }
+      | PrimExpr { };
 
-PrimExpr: TOKEN_ID TOKEN_LPAREN ListExpr TOKEN_RPAREN { printf("PrimExpr: func call\n"); }
-        | TOKEN_ID TOKEN_LPAREN TOKEN_RPAREN { printf("PrimExpr: func call vazio\n"); }
-        | TOKEN_ID { printf("PrimExpr: id\n"); }
-        | TOKEN_CARCONST { printf("PrimExpr: carconst\n"); }
-        | TOKEN_INTCONST { printf("PrimExpr: intconst\n"); }
-        | TOKEN_LPAREN Expr TOKEN_RPAREN { printf("PrimExpr: expr\n"); };
+PrimExpr: TOKEN_ID TOKEN_LPAREN ListExpr TOKEN_RPAREN {
+    SymbolEntry* entry = search_name(&symbol_stack, $1);
+    if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
+        fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
+    }
+}
+        | TOKEN_ID TOKEN_LPAREN TOKEN_RPAREN {
+    SymbolEntry* entry = search_name(&symbol_stack, $1);
+    if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
+        fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
+    }
+}
+        | TOKEN_ID {
+    if (search_name(&symbol_stack, $1) == NULL) {
+        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
+    }
+}
+        | TOKEN_CARCONST { }
+        | TOKEN_INTCONST { }
+        | TOKEN_LPAREN Expr TOKEN_RPAREN { };
 
-ListExpr: Expr { printf("ListExpr: expr\n"); }
-        | Expr TOKEN_COMMA ListExpr { printf("ListExpr: expr, cont\n"); };
+ListExpr: Expr { }
+        | Expr TOKEN_COMMA ListExpr { };
 
 %%
 
@@ -148,7 +233,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    init_stack(&symbol_stack);
+    new_scope(&symbol_stack);
     yyparse();
     fclose(yyin);
+
+    print_stack(&symbol_stack);
+    printf("Análise léxico-sintática concluída\n");
+    destroy_stack(&symbol_stack);
+
     return 0;
 }

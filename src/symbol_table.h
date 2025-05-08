@@ -2,16 +2,16 @@
 #define SYMBLE_TABLE_H
 
 #define MAX_NAME 50
-#define MAX_SCOPES 100 //max scope stack number
+#define MAX_SCOPES 100 // max scope stack number
 
 // Goianinha Types
 typedef enum {
-	TYPE_INT,
-	TYPE_CHAR,
-	TYPE_UNKNOWN
+    TYPE_INT,
+    TYPE_CHAR,
+    TYPE_UNKNOWN
 } DataType;
 
-// symble table entry type:
+// symbol table entry type
 typedef enum {
     ENTRY_VAR,
     ENTRY_FUNC,
@@ -19,7 +19,7 @@ typedef enum {
 } EntryType;
 
 typedef struct SymbolEntry {
-	char name[MAX_NAME];        // Nome do identificador (lexema)
+    char name[MAX_NAME];        // Nome do identificador (lexema)
     EntryType entry_type;       // Tipo: variável, função ou parâmetro
     DataType data_type;         // Tipo de dado (int, char)
     int position;               // Posição na lista de declaração (vars ou params)
@@ -34,11 +34,11 @@ typedef struct SymbolTable {
 } SymbolTable;
 
 typedef struct SymbolStack {
-	SymbolTable* tables [MAX_SCOPES]; //table pointers
-	int top;
+    SymbolTable* tables[MAX_SCOPES]; // table pointers
+    int top;
 } SymbolStack;
 
-// functions prototypes
+// function prototypes
 void init_stack(SymbolStack* stack);
 void new_scope(SymbolStack* stack);
 SymbolEntry* search_name(SymbolStack* stack, const char* name);
@@ -47,5 +47,6 @@ SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_param
 SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type, int position);
 SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func);
 void destroy_stack(SymbolStack* stack);
+void print_stack(SymbolStack* stack);
 
 #endif

@@ -51,7 +51,7 @@ parser: $(TARGET)
 symbol_%: $(TEST_DIR)/%.o $(SYMBOL_OBJECTS)
 	$(CC) -o $@ $^
 
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/symbol_table.h
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/%.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(TEST_DIR)/%.o: $(TEST_DIR)/%.c $(SRC_DIR)/symbol_table.h
@@ -72,7 +72,7 @@ $(PARSER_OBJ): $(PARSER_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Main program
-$(TARGET): $(LEXER_OBJ) $(PARSER_OBJ)
+$(TARGET): $(LEXER_OBJ) $(PARSER_OBJ) $(SYMBOL_OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Clean up generated files
