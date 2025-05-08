@@ -8,12 +8,7 @@
 /* External variables used by Flex */
 extern int yylineno;
 extern char* yytext;
-
-/* Define yylval union */
-union {
-    char *str;
-    int num;
-} yylval;
+extern YYSTYPE yylval;
 
 %}
 

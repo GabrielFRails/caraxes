@@ -32,6 +32,7 @@ void yyerror(const char* msg);
 %token TOKEN_OR TOKEN_AND
 
 /* Operator precedence */
+%left TOKEN_ASSIGN
 %left TOKEN_OR
 %left TOKEN_AND
 %left TOKEN_EQ TOKEN_NEQ

@@ -1,4 +1,4 @@
-int x, y
+int x, y;
 programa {
     leia x;
     escreva "Digite y: ";
