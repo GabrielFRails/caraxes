@@ -74,10 +74,16 @@ STRING    \"([^\"\n\\]|\\.)*\"
 "ou"          { return OR; }
 "e"           { return AND; }
 
-{ID}          { return ID; }
-{INTCONST}    { return INTCONST; }
-{CARCONST}    { return CARCONST; }
-{STRING}      { return STRING; }
+/* commented because we defintions that match with yylval*/
+/* {ID}          { return ID; } */
+/* {INTCONST}    { return INTCONST; } */
+/* {CARCONST}    { return CARCONST; } */
+/* {STRING}      { return STRING; } */
+
+{ID}          { yylval.str = strdup(yytext); return ID; }
+{INTCONST}    { yylval.num = atoi(yytext); return INTCONST; }
+{CARCONST}    { yylval.str = strdup(yytext); return CARCONST; }
+{STRING}      { yylval.str = strdup(yytext); return STRING; }
 
 "+"           { return PLUS; }
 "-"           { return MINUS; }
