@@ -1,15 +1,18 @@
-# Makefile for symbol table and lexical analyzer with separate targets
+# Makefile for symbol table, lexical, and syntactic analyzer
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 	CC = clang
 	FLEX = flex
+	BISON = bison
 else
 	CC = gcc
 	FLEX = flex
+	BISON = bison
 endif
 
 CFLAGS = -Wall -g -I./src -I./lexer
+LDFLAGS = -lfl
 
 SRC_DIR = src
 TEST_DIR = tests
@@ -26,18 +29,23 @@ TEST_TARGETS = $(patsubst $(TEST_DIR)/%.c, symbol_%, $(TEST_SOURCES))
 # Lexer sources
 LEXER_SRC = $(LEXER_DIR)/goianinha.c
 LEXER_OBJ = $(LEXER_SRC:.c=.o)
-LEXER_MAIN = $(LEXER_DIR)/main.c
-LEXER_MAIN_OBJ = $(LEXER_MAIN:.c=.o)
-LEXER_TARGET = $(LEXER_DIR)/goianinha
+
+# Parser sources
+PARSER_SRC = $(LEXER_DIR)/goianinha.tab.c
+PARSER_OBJ = $(PARSER_SRC:.c=.o)
+PARSER_HEADER = $(LEXER_DIR)/goianinha.tab.h
+
+# Main program
+TARGET = $(LEXER_DIR)/goianinha
 
 # Default target: build everything
-all: table lexico
+all: table parser
 
 # Target for symbol table tests
 table: $(TEST_TARGETS)
 
-# Target for lexical analyzer
-lexico: $(LEXER_TARGET)
+# Target for parser (lexer + parser)
+parser: $(TARGET)
 
 # Symbol table test targets
 symbol_%: $(TEST_DIR)/%.o $(SYMBOL_OBJECTS)
@@ -53,17 +61,22 @@ $(TEST_DIR)/%.o: $(TEST_DIR)/%.c $(SRC_DIR)/symbol_table.h
 $(LEXER_SRC): $(LEXER_DIR)/goianinha.l $(LEXER_DIR)/tokens.h
 	$(FLEX) -o $(LEXER_SRC) $(LEXER_DIR)/goianinha.l
 
-$(LEXER_OBJ): $(LEXER_SRC)
+$(LEXER_OBJ): $(LEXER_SRC) $(PARSER_HEADER)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LEXER_MAIN_OBJ): $(LEXER_MAIN)
+# Parser targets
+$(PARSER_SRC) $(PARSER_HEADER): $(LEXER_DIR)/goianinha.y
+	$(BISON) -d $(LEXER_DIR)/goianinha.y -o $(PARSER_SRC)
+
+$(PARSER_OBJ): $(PARSER_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LEXER_TARGET): $(LEXER_OBJ) $(LEXER_MAIN_OBJ)
-	$(CC) -o $@ $^
+# Main program
+$(TARGET): $(LEXER_OBJ) $(PARSER_OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Clean up generated files
 clean:
-	rm -f $(SRC_DIR)/*.o $(TEST_DIR)/*.o $(LEXER_DIR)/*.o $(LEXER_SRC) $(TEST_TARGETS) $(LEXER_TARGET)
+	rm -f $(SRC_DIR)/*.o $(TEST_DIR)/*.o $(LEXER_DIR)/*.o $(LEXER_SRC) $(PARSER_SRC) $(PARSER_HEADER) $(TEST_TARGETS) $(TARGET)
 
-.PHONY: all table lexico clean
+.PHONY: all table parser clean
