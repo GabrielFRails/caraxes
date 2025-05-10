@@ -66,8 +66,9 @@ DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
     } else {
         insert_variable(&symbol_stack, $2, current_type, 0);
     }
+    free($2);
 }
-           | Tipo TOKEN_ID DeclFunc DeclFuncVar {
+           | Tipo TOKEN_ID {
     if (search_name(&symbol_stack, $2) != NULL) {
         fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
     } else if (symbol_stack.top < 0) {
@@ -78,7 +79,8 @@ DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
             fprintf(stderr, "ERRO: Falha ao inserir função %s na linha %d\n", $2, yylineno);
         }
     }
-}
+    free($2);
+} DeclFunc DeclFuncVar { }
            | /* vazio */ { };
 
 DeclProg: TOKEN_PROGRAMA Bloco { };
@@ -115,6 +117,7 @@ ListaParametrosCont: Tipo TOKEN_ID {
             fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
         }
     }
+    free($2);
 }
                    | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
     if (current_func == NULL) {
@@ -129,6 +132,7 @@ ListaParametrosCont: Tipo TOKEN_ID {
             fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
         }
     }
+    free($2);
 };
 
 Bloco: TOKEN_LBRACE { new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE { remove_scope(&symbol_stack); };
