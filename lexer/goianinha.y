@@ -23,6 +23,8 @@ SymbolEntry* current_func = NULL;
 %union {
     char* str;
     int num;
+    DataType type; // Tipo da expressão
+    int arg_count; // Contador de argumentos em chamadas de função
 }
 
 /* Tokens with semantic values */
