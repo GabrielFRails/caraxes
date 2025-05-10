@@ -27,6 +27,10 @@ SymbolEntry* current_func = NULL;
     int arg_count; // Contador de argumentos em chamadas de função
 }
 
+/* Non-terminal types */
+%type <type> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr
+%type <arg_count> ListExpr
+
 /* Tokens with semantic values */
 %token <str> TOKEN_ID TOKEN_CARCONST TOKEN_STRING
 %token <num> TOKEN_INTCONST
@@ -143,77 +147,215 @@ ListaComando: /* vazio */ { }
 
 Comando: TOKEN_SEMI { }
        | Expr TOKEN_SEMI { }
-       | TOKEN_RETORNE Expr TOKEN_SEMI { }
+       | TOKEN_RETORNE Expr TOKEN_SEMI {
+    if (current_func != NULL && $2 != current_func->data_type) {
+        fprintf(stderr, "ERRO: Tipo de retorno %s não corresponde ao tipo da função na linha %d\n",
+                $2 == TYPE_INT ? "int" : $2 == TYPE_CHAR ? "char" : "unknown", yylineno);
+    }
+}
        | TOKEN_LEIA TOKEN_ID TOKEN_SEMI {
     if (search_name(&symbol_stack, $2) == NULL) {
         fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $2, yylineno);
     }
+    free($2);
 }
        | TOKEN_ESCREVA Expr TOKEN_SEMI { }
        | TOKEN_ESCREVA TOKEN_STRING TOKEN_SEMI { }
        | TOKEN_NOVALINHA TOKEN_SEMI { }
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando { }
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando { }
-       | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando { }
+       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando {
+    if ($3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Condição do 'se' deve ser do tipo int na linha %d\n", yylineno);
+    }
+}
+       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando {
+    if ($3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Condição do 'se' deve ser do tipo int na linha %d\n", yylineno);
+    }
+}
+       | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando {
+    if ($3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Condição do 'enquanto' deve ser do tipo int na linha %d\n", yylineno);
+    }
+}
        | Bloco { };
 
-Expr: OrExpr { }
-    | TOKEN_ID TOKEN_ASSIGN Expr {
-    if (search_name(&symbol_stack, $1) == NULL) {
+Expr: OrExpr { $$ = $1; }
+    | AssignExpr { $$ = $1; };
+
+AssignExpr: TOKEN_ID TOKEN_ASSIGN Expr {
+    SymbolEntry* entry = search_name(&symbol_stack, $1);
+    if (entry == NULL) {
         fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else if (entry->data_type != $3) {
+        fprintf(stderr, "ERRO: Tipos incompatíveis na atribuição na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = entry->data_type;
     }
+    free($1);
 };
 
-OrExpr: OrExpr TOKEN_OR AndExpr { }
-      | AndExpr { };
+OrExpr: OrExpr TOKEN_OR AndExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação 'ou' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+      | AndExpr { $$ = $1; };
 
-AndExpr: AndExpr TOKEN_AND EqExpr { }
-       | EqExpr { };
+AndExpr: AndExpr TOKEN_AND EqExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação 'e' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+       | EqExpr { $$ = $1; };
 
-EqExpr: EqExpr TOKEN_EQ DesigExpr { }
-      | EqExpr TOKEN_NEQ DesigExpr { }
-      | DesigExpr { };
+EqExpr: EqExpr TOKEN_EQ DesigExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '==' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+      | EqExpr TOKEN_NEQ DesigExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '!=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+      | DesigExpr { $$ = $1; };
 
-DesigExpr: DesigExpr TOKEN_LT AddExpr { }
-         | DesigExpr TOKEN_GT AddExpr { }
-         | DesigExpr TOKEN_LE AddExpr { }
-         | DesigExpr TOKEN_GE AddExpr { }
-         | AddExpr { };
+DesigExpr: DesigExpr TOKEN_LT AddExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '<' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+         | DesigExpr TOKEN_GT AddExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '>' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+         | DesigExpr TOKEN_LE AddExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '<=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+         | DesigExpr TOKEN_GE AddExpr {
+    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
+        fprintf(stderr, "ERRO: Operação '>=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+         | AddExpr { $$ = $1; };
 
-AddExpr: AddExpr TOKEN_PLUS MulExpr { }
-       | AddExpr TOKEN_MINUS MulExpr { }
-       | MulExpr { };
+AddExpr: AddExpr TOKEN_PLUS MulExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação '+' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+       | AddExpr TOKEN_MINUS MulExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação '-' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+       | MulExpr { $$ = $1; };
 
-MulExpr: MulExpr TOKEN_TIMES UnExpr { }
-       | MulExpr TOKEN_DIV UnExpr { }
-       | UnExpr { };
+MulExpr: MulExpr TOKEN_TIMES UnExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação '*' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+       | MulExpr TOKEN_DIV UnExpr {
+    if ($1 != TYPE_INT || $3 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação '/' exige operandos int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+       | UnExpr { $$ = $1; };
 
-UnExpr: TOKEN_MINUS PrimExpr { }
-      | PrimExpr { };
+UnExpr: TOKEN_MINUS PrimExpr {
+    if ($2 != TYPE_INT) {
+        fprintf(stderr, "ERRO: Operação unária '-' exige operando int na linha %d\n", yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = TYPE_INT;
+    }
+}
+      | PrimExpr { $$ = $1; };
 
 PrimExpr: TOKEN_ID TOKEN_LPAREN ListExpr TOKEN_RPAREN {
     SymbolEntry* entry = search_name(&symbol_stack, $1);
     if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
         fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else if ($3 != entry->num_params) {
+        fprintf(stderr, "ERRO: Número de argumentos incorreto para função %s na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = entry->data_type;
     }
+    free($1);
 }
         | TOKEN_ID TOKEN_LPAREN TOKEN_RPAREN {
     SymbolEntry* entry = search_name(&symbol_stack, $1);
     if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
         fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else if (entry->num_params != 0) {
+        fprintf(stderr, "ERRO: Número de argumentos incorreto para função %s na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = entry->data_type;
     }
+    free($1);
 }
         | TOKEN_ID {
-    if (search_name(&symbol_stack, $1) == NULL) {
+    SymbolEntry* entry = search_name(&symbol_stack, $1);
+    if (entry == NULL) {
         fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
+        $$ = TYPE_UNKNOWN;
+    } else {
+        $$ = entry->data_type;
     }
+    free($1);
 }
-        | TOKEN_CARCONST { }
-        | TOKEN_INTCONST { }
-        | TOKEN_LPAREN Expr TOKEN_RPAREN { };
+        | TOKEN_CARCONST { $$ = TYPE_CHAR; }
+        | TOKEN_INTCONST { $$ = TYPE_INT; }
+        | TOKEN_LPAREN Expr TOKEN_RPAREN { $$ = $2; };
 
-ListExpr: Expr { }
-        | Expr TOKEN_COMMA ListExpr { };
+ListExpr: Expr { $$ = 1; }
+        | Expr TOKEN_COMMA ListExpr { $$ = 1 + $3; };
 
 %%
 
