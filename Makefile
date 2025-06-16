@@ -12,7 +12,12 @@ else
 endif
 
 CFLAGS = -Wall -g -I./src -I./lexer
-LDFLAGS = -lfl
+
+ifeq ($(UNAME), Darwin)
+	LDFLAGS :=
+else
+	LDFLAGS := -lfl
+endif
 
 SRC_DIR = src
 TEST_DIR = tests
