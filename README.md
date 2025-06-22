@@ -8,6 +8,7 @@ A Goianinha Compiler developed during Compilers Course at UFG (CS Course)
 macOS or Linux (Ubuntu): Tested on both systems.
 GCC/Clang: C compiler (GCC for Ubuntu, Clang for macOS).
 Flex: For generating the lexical analyzer. (sudo apt install flex or brew install flex)
+Bison: (sudo apt install bison or brew install bison)
 Make: To run the Makefile.
 
 ## First milestone
