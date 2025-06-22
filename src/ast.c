@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "ast.h"
 
-ASTNode* create_node(NodeType type, int line) {
+ASTNode* ast_create_node(NodeType type, int line) {
     ASTNode* node = (ASTNode*) malloc(sizeof(ASTNode));
     if (node == NULL) {
         fprintf(stderr, "ERRO: Falha na alocação de memória para nó da ASA\n");

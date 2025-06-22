@@ -99,6 +99,6 @@ typedef struct ASTNode {
 } ASTNode;
 
 // Protótipo da função construtora (helper function)
-ASTNode* create_node(NodeType type, int line);
+ASTNode* ast_create_node(NodeType type, int line);
 
 #endif
