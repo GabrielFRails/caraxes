@@ -1,11 +1,14 @@
-/* goianinha.y - Syntactic analyzer for Goianinha language */
+/* goianinha.y - Analisador Sintático para a linguagem Goianinha com construção da ASA */
 
 %{
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "tokens.h"
+
 #include "symbol_table.h"
+#include "ast.h" 
+#include "tokens.h"
+
 
 extern int yylineno;
 extern char* yytext;
@@ -16,26 +19,25 @@ void yyerror(const char* msg);
 SymbolStack symbol_stack = { .top = -1 }; // Inicializa a pilha
 DataType current_type;
 SymbolEntry* current_func = NULL;
+ASTNode* ast_root = NULL; // Inicializa a árvore nula
 
 %}
 
-/* Define union for semantic values */
 %union {
-    char* str;
-    int num;
-    DataType type; // Tipo da expressão
-    int arg_count; // Contador de argumentos em chamadas de função
+    char* str_val;
+    int num_val;
+    struct ASTNode* node;
 }
 
-/* Non-terminal types */
-%type <type> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr
-%type <arg_count> ListExpr
+/* não-terminais agora são 'node' */
+%type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar ListaComando Comando
+%type <node> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr ListExpr
 
-/* Tokens with semantic values */
-%token <str> TOKEN_ID TOKEN_CARCONST TOKEN_STRING
-%token <num> TOKEN_INTCONST
+/* Tokens com valores semânticos */
+%token <str_val> TOKEN_ID TOKEN_CARCONST TOKEN_STRING
+%token <num_val> TOKEN_INTCONST
 
-/* Tokens without semantic values */
+/* Tokens sem valores semânticos */
 %token TOKEN_PROGRAMA TOKEN_CAR TOKEN_INT TOKEN_RETORNE TOKEN_LEIA TOKEN_ESCREVA TOKEN_NOVALINHA
 %token TOKEN_SE TOKEN_ENTAO TOKEN_SENAO TOKEN_ENQUANTO TOKEN_EXECUTE
 %token TOKEN_PLUS TOKEN_MINUS TOKEN_TIMES TOKEN_DIV TOKEN_ASSIGN
@@ -43,7 +45,7 @@ SymbolEntry* current_func = NULL;
 %token TOKEN_LPAREN TOKEN_RPAREN TOKEN_LBRACE TOKEN_RBRACE TOKEN_SEMI TOKEN_COMMA
 %token TOKEN_OR TOKEN_AND
 
-/* Operator precedence */
+/* Precedência de operadores */
 %left TOKEN_ASSIGN
 %left TOKEN_OR
 %left TOKEN_AND
@@ -52,323 +54,184 @@ SymbolEntry* current_func = NULL;
 %left TOKEN_PLUS TOKEN_MINUS
 %left TOKEN_TIMES TOKEN_DIV
 
-/* Start symbol */
+/* Símbolo inicial */
 %start Programa
 
 %%
 
-/* Grammar rules */
-Programa: DeclFuncVar DeclProg { };
+Programa: DeclFuncVar DeclProg 
+    { 
+        /* Regra inicial: conecta as declarações com o corpo do programa e define a raiz da árvore */
+        /* $$ = ast_create_seq($1, $2, yylineno); (Exemplo, se tiver um nó de sequência) */
+        ast_root = $2; // Simplificado por enquanto
+    };
 
+/*
+ * As regras de declaração (DeclFuncVar, DeclVar, etc.) continuam gerenciando a tabela de símbolos.
+ * Por simplicidade, elas não retornarão nós da ASA, mas isso pode ser expandido para criar nós de declaração.
+ */
 DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
-    if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
-    } else {
-        insert_variable(&symbol_stack, $2, current_type, 0);
-    }
-    free($2);
-}
-           | Tipo TOKEN_ID {
-    if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
-    } else if (symbol_stack.top < 0) {
-        fprintf(stderr, "ERRO: Nenhum escopo ativo na linha %d\n", yylineno);
-    } else {
-        current_func = insert_function(&symbol_stack, $2, 0, current_type);
-        if (current_func == NULL) {
-            fprintf(stderr, "ERRO: Falha ao inserir função %s na linha %d\n", $2, yylineno);
+        if (search_name(&symbol_stack, $2) != NULL) {
+            fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+        } else {
+            insert_variable(&symbol_stack, $2, current_type, 0);
         }
+        free($2);
     }
-    free($2);
-} DeclFunc DeclFuncVar { }
-           | /* vazio */ { };
+    | Tipo TOKEN_ID {
+        if (search_name(&symbol_stack, $2) != NULL) {
+            fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
+        } else {
+            current_func = insert_function(&symbol_stack, $2, 0, current_type);
+        }
+        free($2);
+    } DeclFunc DeclFuncVar { }
+    | /* vazio */ { $$ = NULL; };
 
-DeclProg: TOKEN_PROGRAMA Bloco { };
+DeclProg: TOKEN_PROGRAMA Bloco { $$ = $2; };
 
 Tipo: TOKEN_INT { current_type = TYPE_INT; }
     | TOKEN_CAR { current_type = TYPE_CHAR; };
 
 DeclVar: TOKEN_COMMA TOKEN_ID DeclVar {
-    if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
-    } else {
-        insert_variable(&symbol_stack, $2, current_type, 0);
+        if (search_name(&symbol_stack, $2) != NULL) {
+            fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+        } else {
+            insert_variable(&symbol_stack, $2, current_type, 0);
+        }
+        free($2);
     }
-}
-       | /* vazio */ { };
+    | /* vazio */ { };
 
 DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
-    current_func = NULL;
-};
+        current_func = NULL;
+    };
 
 ListaParametros: /* vazio */ { }
-               | ListaParametrosCont { };
+    | ListaParametrosCont { };
 
 ListaParametrosCont: Tipo TOKEN_ID {
-    if (current_func == NULL) {
-        fprintf(stderr, "ERRO: Parâmetro %s fora de uma função na linha %d\n", $2, yylineno);
-    } else if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Parâmetro %s redeclarado na linha %d\n", $2, yylineno);
-    } else {
-        SymbolEntry* param = insert_parameter(&symbol_stack, $2, current_type, current_func->num_params + 1, current_func);
-        if (param != NULL) {
-            current_func->num_params++;
-        } else {
-            fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
+        if (current_func != NULL) {
+            insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
+        free($2);
     }
-    free($2);
-}
-                   | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
-    if (current_func == NULL) {
-        fprintf(stderr, "ERRO: Parâmetro %s fora de uma função na linha %d\n", $2, yylineno);
-    } else if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Parâmetro %s redeclarado na linha %d\n", $2, yylineno);
-    } else {
-        SymbolEntry* param = insert_parameter(&symbol_stack, $2, current_type, current_func->num_params + 1, current_func);
-        if (param != NULL) {
-            current_func->num_params++;
-        } else {
-            fprintf(stderr, "ERRO: Falha ao inserir parâmetro %s na linha %d\n", $2, yylineno);
+    | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
+        if (current_func != NULL) {
+            insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
-    }
-    free($2);
-};
+        free($2);
+    };
 
-Bloco: TOKEN_LBRACE { new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE { remove_scope(&symbol_stack); };
+Bloco: TOKEN_LBRACE { new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE 
+    { 
+        $$ = $4; /* O valor do Bloco é a lista de comandos */
+        remove_scope(&symbol_stack); 
+    };
 
 ListaDeclVar: /* vazio */ { }
-            | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
-    if (search_name(&symbol_stack, $2) != NULL) {
-        fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
-    } else {
-        insert_variable(&symbol_stack, $2, current_type, 0);
-    }
-};
+    | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
+        if (search_name(&symbol_stack, $2) != NULL) {
+            fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
+        } else {
+            insert_variable(&symbol_stack, $2, current_type, 0);
+        }
+        free($2);
+    };
 
-ListaComando: /* vazio */ { }
-            | Comando ListaComando { };
+ListaComando: /* vazio */ { $$ = NULL; }
+    | Comando ListaComando 
+        { 
+            $1->next = $2; /* Encadeia os comandos */
+            $$ = $1;
+        };
 
-Comando: TOKEN_SEMI { }
-       | Expr TOKEN_SEMI { }
-       | TOKEN_RETORNE Expr TOKEN_SEMI {
-    if (current_func != NULL && $2 != current_func->data_type) {
-        fprintf(stderr, "ERRO: Tipo de retorno %s não corresponde ao tipo da função na linha %d\n",
-                $2 == TYPE_INT ? "int" : $2 == TYPE_CHAR ? "char" : "unknown", yylineno);
-    }
-}
-       | TOKEN_LEIA TOKEN_ID TOKEN_SEMI {
-    if (search_name(&symbol_stack, $2) == NULL) {
-        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $2, yylineno);
-    }
-    free($2);
-}
-       | TOKEN_ESCREVA Expr TOKEN_SEMI { }
-       | TOKEN_ESCREVA TOKEN_STRING TOKEN_SEMI { }
-       | TOKEN_NOVALINHA TOKEN_SEMI { }
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando {
-    if ($3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Condição do 'se' deve ser do tipo int na linha %d\n", yylineno);
-    }
-}
-       | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando {
-    if ($3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Condição do 'se' deve ser do tipo int na linha %d\n", yylineno);
-    }
-}
-       | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando {
-    if ($3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Condição do 'enquanto' deve ser do tipo int na linha %d\n", yylineno);
-    }
-}
-       | Bloco { };
+Comando: TOKEN_SEMI { $$ = NULL; /* Comando vazio */ }
+    | Expr TOKEN_SEMI { $$ = $1; }
+    | TOKEN_RETORNE Expr TOKEN_SEMI { $$ = ast_create_return($2, yylineno); }
+    | TOKEN_LEIA TOKEN_ID TOKEN_SEMI 
+        { 
+            $$ = ast_create_read(ast_create_id($2, yylineno), yylineno); 
+            free($2); 
+        }
+    | TOKEN_ESCREVA Expr TOKEN_SEMI { $$ = ast_create_write($2, yylineno); }
+    | TOKEN_ESCREVA TOKEN_STRING TOKEN_SEMI { $$ = ast_create_string($2, yylineno); }
+    | TOKEN_NOVALINHA TOKEN_SEMI { $$ = ast_create_novalinha(yylineno); }
+    | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando { $$ = ast_create_if($3, $6, NULL, yylineno); }
+    | TOKEN_SE TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_ENTAO Comando TOKEN_SENAO Comando { $$ = ast_create_if($3, $6, $8, yylineno); }
+    | TOKEN_ENQUANTO TOKEN_LPAREN Expr TOKEN_RPAREN TOKEN_EXECUTE Comando { $$ = ast_create_while($3, $6, yylineno); }
+    | Bloco { $$ = $1; };
 
 Expr: OrExpr { $$ = $1; }
     | AssignExpr { $$ = $1; };
 
-AssignExpr: TOKEN_ID TOKEN_ASSIGN Expr {
-    SymbolEntry* entry = search_name(&symbol_stack, $1);
-    if (entry == NULL) {
-        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else if (entry->data_type != $3) {
-        fprintf(stderr, "ERRO: Tipos incompatíveis na atribuição na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = entry->data_type;
-    }
-    free($1);
-};
+AssignExpr: TOKEN_ID TOKEN_ASSIGN Expr 
+    { 
+        $$ = ast_create_assign(ast_create_id($1, yylineno), $3, yylineno); 
+        free($1); 
+    };
 
-OrExpr: OrExpr TOKEN_OR AndExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação 'ou' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-      | AndExpr { $$ = $1; };
+OrExpr: OrExpr TOKEN_OR AndExpr { $$ = ast_create_op_bin(OP_OR, $1, $3, yylineno); }
+    | AndExpr { $$ = $1; };
 
-AndExpr: AndExpr TOKEN_AND EqExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação 'e' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-       | EqExpr { $$ = $1; };
+AndExpr: AndExpr TOKEN_AND EqExpr { $$ = ast_create_op_bin(OP_AND, $1, $3, yylineno); }
+    | EqExpr { $$ = $1; };
 
-EqExpr: EqExpr TOKEN_EQ DesigExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '==' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-      | EqExpr TOKEN_NEQ DesigExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '!=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-      | DesigExpr { $$ = $1; };
+EqExpr: EqExpr TOKEN_EQ DesigExpr { $$ = ast_create_op_bin(OP_EQ, $1, $3, yylineno); }
+    | EqExpr TOKEN_NEQ DesigExpr { $$ = ast_create_op_bin(OP_NEQ, $1, $3, yylineno); }
+    | DesigExpr { $$ = $1; };
 
-DesigExpr: DesigExpr TOKEN_LT AddExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '<' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-         | DesigExpr TOKEN_GT AddExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '>' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-         | DesigExpr TOKEN_LE AddExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '<=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-         | DesigExpr TOKEN_GE AddExpr {
-    if ($1 != $3 || ($1 != TYPE_INT && $1 != TYPE_CHAR)) {
-        fprintf(stderr, "ERRO: Operação '>=' exige operandos do mesmo tipo (int ou char) na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-         | AddExpr { $$ = $1; };
+DesigExpr: DesigExpr TOKEN_LT AddExpr { $$ = ast_create_op_bin(OP_LT, $1, $3, yylineno); }
+    | DesigExpr TOKEN_GT AddExpr { $$ = ast_create_op_bin(OP_GT, $1, $3, yylineno); }
+    | DesigExpr TOKEN_LE AddExpr { $$ = ast_create_op_bin(OP_LE, $1, $3, yylineno); }
+    | DesigExpr TOKEN_GE AddExpr { $$ = ast_create_op_bin(OP_GE, $1, $3, yylineno); }
+    | AddExpr { $$ = $1; };
 
-AddExpr: AddExpr TOKEN_PLUS MulExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação '+' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-       | AddExpr TOKEN_MINUS MulExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação '-' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-       | MulExpr { $$ = $1; };
+AddExpr: AddExpr TOKEN_PLUS MulExpr { $$ = ast_create_op_bin(OP_ADD, $1, $3, yylineno); }
+    | AddExpr TOKEN_MINUS MulExpr { $$ = ast_create_op_bin(OP_SUB, $1, $3, yylineno); }
+    | MulExpr { $$ = $1; };
 
-MulExpr: MulExpr TOKEN_TIMES UnExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação '*' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-       | MulExpr TOKEN_DIV UnExpr {
-    if ($1 != TYPE_INT || $3 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação '/' exige operandos int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-       | UnExpr { $$ = $1; };
+MulExpr: MulExpr TOKEN_TIMES UnExpr { $$ = ast_create_op_bin(OP_MUL, $1, $3, yylineno); }
+    | MulExpr TOKEN_DIV UnExpr { $$ = ast_create_op_bin(OP_DIV, $1, $3, yylineno); }
+    | UnExpr { $$ = $1; };
 
-UnExpr: TOKEN_MINUS PrimExpr {
-    if ($2 != TYPE_INT) {
-        fprintf(stderr, "ERRO: Operação unária '-' exige operando int na linha %d\n", yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = TYPE_INT;
-    }
-}
-      | PrimExpr { $$ = $1; };
+UnExpr: TOKEN_MINUS PrimExpr { $$ = ast_create_op_un(OP_NEG, $2, yylineno); }
+    | PrimExpr { $$ = $1; };
 
-PrimExpr: TOKEN_ID TOKEN_LPAREN ListExpr TOKEN_RPAREN {
-    SymbolEntry* entry = search_name(&symbol_stack, $1);
-    if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
-        fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else if ($3 != entry->num_params) {
-        fprintf(stderr, "ERRO: Número de argumentos incorreto para função %s na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = entry->data_type;
-    }
-    free($1);
-}
-        | TOKEN_ID TOKEN_LPAREN TOKEN_RPAREN {
-    SymbolEntry* entry = search_name(&symbol_stack, $1);
-    if (entry == NULL || entry->entry_type != ENTRY_FUNC) {
-        fprintf(stderr, "ERRO: Função %s não declarada na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else if (entry->num_params != 0) {
-        fprintf(stderr, "ERRO: Número de argumentos incorreto para função %s na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = entry->data_type;
-    }
-    free($1);
-}
-        | TOKEN_ID {
-    SymbolEntry* entry = search_name(&symbol_stack, $1);
-    if (entry == NULL) {
-        fprintf(stderr, "ERRO: Variável %s não declarada na linha %d\n", $1, yylineno);
-        $$ = TYPE_UNKNOWN;
-    } else {
-        $$ = entry->data_type;
-    }
-    free($1);
-}
-        | TOKEN_CARCONST { $$ = TYPE_CHAR; }
-        | TOKEN_INTCONST { $$ = TYPE_INT; }
-        | TOKEN_LPAREN Expr TOKEN_RPAREN { $$ = $2; };
+PrimExpr: TOKEN_ID TOKEN_LPAREN ListExpr TOKEN_RPAREN 
+        { 
+            $$ = ast_create_funccall(ast_create_id($1, yylineno), $3, yylineno); 
+            free($1); 
+        }
+    | TOKEN_ID TOKEN_LPAREN TOKEN_RPAREN 
+        { 
+            $$ = ast_create_funccall(ast_create_id($1, yylineno), NULL, yylineno); 
+            free($1); 
+        }
+    | TOKEN_ID 
+        { 
+            $$ = ast_create_id($1, yylineno); 
+            free($1); 
+        }
+    | TOKEN_CARCONST { $$ = ast_create_char($1[1], yylineno); free($1); } // Pega o caractere de dentro das aspas
+    | TOKEN_INTCONST { $$ = ast_create_int($1, yylineno); }
+    | TOKEN_LPAREN Expr TOKEN_RPAREN { $$ = $2; };
 
-ListExpr: Expr { $$ = 1; }
-        | Expr TOKEN_COMMA ListExpr { $$ = 1 + $3; };
+ListExpr: Expr { $$ = $1; }
+    | Expr TOKEN_COMMA ListExpr 
+        { 
+            $1->next = $3; /* Encadeia os argumentos */
+            $$ = $1; 
+        };
 
 %%
 
-/* Error handling */
+/* Função de tratamento de erro */
 void yyerror(const char* msg) {
-    fprintf(stderr, "ERRO: %s na linha %d\n", msg, yylineno);
+    fprintf(stderr, "ERRO SINTÁTICO: %s na linha %d\n", msg, yylineno);
 }
 
-/* Main program */
+/* Função principal */
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         fprintf(stderr, "Uso: %s <arquivo>\n", argv[0]);
@@ -383,12 +246,16 @@ int main(int argc, char* argv[]) {
 
     init_stack(&symbol_stack);
     new_scope(&symbol_stack);
-    yyparse();
+    
+    if (yyparse() == 0) {
+        printf("Análise léxico-sintática concluída com sucesso.\n");
+        ast_print(ast_root); // Imprime a árvore gerada
+    } else {
+        printf("Falha na análise lexico-sintática.\n");
+    }
+    
     fclose(yyin);
-
-    print_stack(&symbol_stack);
-    printf("Análise léxico-sintática concluída\n");
+    //print_stack(&symbol_stack);
     destroy_stack(&symbol_stack);
-
     return 0;
 }

@@ -40,25 +40,25 @@ STRING    \"([^\"\n\\]|\\.)*\"
 "e"           { return TOKEN_AND; }
 
 {ID}          { 
-    yylval.str = strdup(yytext); 
-    if (yylval.str == NULL) {
+    yylval.str_val = strdup(yytext); 
+    if (yylval.str_val == NULL) {
         fprintf(stderr, "ERRO: Falha de alocação de memória na linha %d\n", yylineno);
         return -1;
     }
     return TOKEN_ID; 
 }
-{INTCONST}    { yylval.num = atoi(yytext); return TOKEN_INTCONST; }
+{INTCONST}    { yylval.num_val = atoi(yytext); return TOKEN_INTCONST; }
 {CARCONST}    { 
-    yylval.str = strdup(yytext); 
-    if (yylval.str == NULL) {
+    yylval.str_val = strdup(yytext); 
+    if (yylval.str_val == NULL) {
         fprintf(stderr, "ERRO: Falha de alocação de memória na linha %d\n", yylineno);
         return -1;
     }
     return TOKEN_CARCONST; 
 }
 {STRING}      { 
-    yylval.str = strdup(yytext); 
-    if (yylval.str == NULL) {
+    yylval.str_val = strdup(yytext); 
+    if (yylval.str_val == NULL) {
         fprintf(stderr, "ERRO: Falha de alocação de memória na linha %d\n", yylineno);
         return -1;
     }

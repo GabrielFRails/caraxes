@@ -21,7 +21,10 @@ typedef enum {
     NODE_INTCONST,      // Constante inteira
     NODE_CHARCONST,     // Constante caractere
     NODE_ID,            // Identificador
-    NODE_ARGLIST        // Lista de argumentos de uma função
+    NODE_ARGLIST,       // Lista de argumentos de uma função
+
+    NODE_STRINGCONST,   // Constante string
+    NODE_NOVALINHA,     // Comando 'novalinha'
     
     // vamos ver se mais nós serão necessários depois
 } NodeType;
@@ -98,7 +101,30 @@ typedef struct ASTNode {
     } attr;
 } ASTNode;
 
+// Nós de Expressão
+ASTNode* ast_create_op_bin(OperatorType op, ASTNode* left, ASTNode* right, int line);
+ASTNode* ast_create_op_un(OperatorType op, ASTNode* operand, int line);
+ASTNode* ast_create_int(int value, int line);
+ASTNode* ast_create_id(char* name, int line);
+
+// Nós de Comando
+ASTNode* ast_create_if(ASTNode* condition, ASTNode* if_body, ASTNode* else_body, int line);
+ASTNode* ast_create_while(ASTNode* condition, ASTNode* loop_body, int line);
+ASTNode* ast_create_assign(ASTNode* lvalue, ASTNode* rvalue, int line);
+ASTNode* ast_create_write(ASTNode* expression, int line);
+
 // Protótipo da função construtora (helper function)
 ASTNode* ast_create_node(NodeType type, int line);
+
+// print tree
+void ast_print(ASTNode* root);
+
+// construção
+ASTNode* ast_create_return(ASTNode* expression, int line);
+ASTNode* ast_create_string(char* value, int line);
+ASTNode* ast_create_novalinha(int line);
+ASTNode* ast_create_char(char value, int line);
+ASTNode* ast_create_funccall(ASTNode* id, ASTNode* args, int line);
+ASTNode* ast_create_read(ASTNode* id, int line);
 
 #endif
