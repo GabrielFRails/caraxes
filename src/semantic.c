@@ -22,47 +22,73 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             // Ex: if (lvalue->type_info != rvalue->type_info) { fprintf(stderr, "ERRO: Tipos incompativeis..."); }
             break;
 
-        case NODE_ID: { // Abrimos um bloco para poder declarar uma variável local
-            // 1. Procurar o nome do ID na pilha de tabelas de símbolos
+        case NODE_ID: {
             SymbolEntry* entry = search_name(stack, node->attr.id.name);
-
-            // 2. Verificar se foi encontrado
             if (entry == NULL) {
-                // ERRO: O símbolo não foi encontrado em nenhum escopo visível.
                 fprintf(stderr, "ERRO SEMÂNTICO: O identificador '%s' não foi declarado (linha %d)\n", 
                         node->attr.id.name, node->line);
-                // Futuramente, podemos ter um contador de erros para parar a compilação.
+                node->type_info = TYPE_UNKNOWN; // Define o tipo como desconhecido
             } else {
-                // 3. SUCESSO: O ID foi declarado. Agora vamos "decorar" o nó.
-                // Guardamos um ponteiro para a entrada da tabela dentro do próprio nó da ASA.
                 node->attr.id.entry = entry;
-                // Agora, em qualquer outra fase, para saber o tipo deste ID,
-                // basta acessar node->attr.id.entry->data_type.
+                node->type_info = entry->data_type; // Preenche o tipo do nó com o tipo da variável!
             }
             break;
         }
 
-        case NODE_OP_BIN:
-            // Visita os filhos primeiro
+        case NODE_OP_BIN: {
+            // Visita os filhos primeiro para que seus 'type_info' sejam preenchidos
             check_node(node->attr.op_bin.left, stack);
             check_node(node->attr.op_bin.right, stack);
 
-            // TODO: Verificar se os tipos dos filhos são válidos para a operação.
-            // Ex: Para OP_ADD, ambos devem ser do tipo inteiro.
-            break;
+            DataType type_left = node->attr.op_bin.left->type_info;
+            DataType type_right = node->attr.op_bin.right->type_info;
 
-        // ... Adicionar 'case' para todos os outros tipos de nós (IF, WHILE, WRITE, etc.)
-        
-        default:
-            // Nós que não precisam de checagem ou ainda não foram implementados
+            switch (node->attr.op_bin.op) {
+                case OP_ADD:
+                case OP_SUB:
+                case OP_MUL:
+                case OP_DIV:
+                    // Regra: Operadores aritméticos exigem operandos do tipo int.
+                    if (type_left != TYPE_INT || type_right != TYPE_INT) {
+                        fprintf(stderr, "ERRO SEMÂNTICO: Operação aritmética na linha %d exige operandos do tipo int.\n", node->line);
+                    }
+                    // O resultado de uma operação aritmética é sempre int.
+                    node->type_info = TYPE_INT;
+                    break;
+                
+                case OP_EQ:
+                case OP_NEQ:
+                case OP_LT:
+                case OP_LE:
+                case OP_GT:
+                case OP_GE:
+                    // Regra: Operadores relacionais exigem operandos do mesmo tipo.
+                    if (type_left != type_right) {
+                        fprintf(stderr, "ERRO SEMÂNTICO: Operação relacional na linha %d exige operandos do mesmo tipo.\n", node->line);
+                    }
+                    // O resultado de uma comparação é um valor lógico, representado por int.
+                    node->type_info = TYPE_INT;
+                    break;
+                
+                case OP_AND:
+                case OP_OR:
+                    // Regra: Operadores lógicos exigem operandos "lógicos" (int).
+                    if (type_left != TYPE_INT || type_right != TYPE_INT) {
+                         fprintf(stderr, "ERRO SEMÂNTICO: Operação lógica na linha %d exige operandos do tipo int.\n", node->line);
+                    }
+                    node->type_info = TYPE_INT;
+                    break;
+                default:
+                    break;
+            }
             break;
+        }
     }
 
     // Continua a verificação para o próximo comando na lista
     check_node(node->next, stack);
 }
 
-// Função principal que é chamada pelo main
 void check_semantics(ASTNode* ast_root, SymbolStack* symbol_stack) {
     printf("--- INICIANDO ANÁLISE SEMÂNTICA ---\n");
     check_node(ast_root, symbol_stack);

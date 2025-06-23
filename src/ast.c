@@ -12,6 +12,7 @@ ASTNode* ast_create_node(NodeType type, int line) {
     node->type = type;
     node->line = line;
     node->next = NULL; // Inicializa o 'next' como nulo por padrão
+    //node->type = TYPE_UNKNOWN; FEITO EM SEMANTIC.C
     return node;
 }
 
@@ -34,6 +35,7 @@ ASTNode* ast_create_op_un(OperatorType op, ASTNode* operand, int line) {
 ASTNode* ast_create_int(int value, int line) {
     ASTNode* node = ast_create_node(NODE_INTCONST, line);
     node->attr.int_val = value;
+    node->type_info = TYPE_INT; // Define o tipo do nó
     return node;
 }
 
@@ -84,6 +86,7 @@ ASTNode* ast_create_return(ASTNode* expression, int line) {
 ASTNode* ast_create_string(char* value, int line) {
     ASTNode* node = ast_create_node(NODE_STRINGCONST, line);
     node->attr.id.name = strdup(value); // Reutilizando o id_name para guardar a string
+    //node->type_info = TYPE_CHAR;
     return node;
 }
 
@@ -94,6 +97,7 @@ ASTNode* ast_create_novalinha(int line) {
 ASTNode* ast_create_char(char value, int line) {
     ASTNode* node = ast_create_node(NODE_CHARCONST, line);
     node->attr.char_val = value;
+    node->type_info = TYPE_CHAR;
     return node;
 }
 

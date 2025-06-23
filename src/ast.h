@@ -1,8 +1,7 @@
-// Em um novo arquivo: ast.h
-
 #ifndef AST_H
 #define AST_H
 
+#include "./symbol_table.h"
 // Enum para todos os tipos de nós possíveis na ASA
 typedef enum {
     // Nós de Comando
@@ -42,6 +41,7 @@ typedef enum {
 typedef struct ASTNode {
     NodeType type;
     int line;
+    DataType type_info;
     struct ASTNode *next; // Ponteiro para o próximo comando em uma sequência
 
     // União marcada para os atributos específicos de cada tipo de nó
