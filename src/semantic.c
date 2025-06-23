@@ -83,6 +83,27 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             }
             break;
         }
+
+        case NODE_IF: {
+            check_node(node->attr.if_stmt.condition, stack);
+            if (node->attr.if_stmt.condition->type_info != TYPE_INT) {
+                fprintf(stderr, "ERRO SEMÂNTICO: A condição do comando 'se' na linha %d deve ser do tipo int.\n", node->line);
+            }
+
+            check_node(node->attr.if_stmt.if_body, stack);
+            check_node(node->attr.if_stmt.else_body, stack);
+            break;
+        }
+
+        case NODE_WHILE: {
+            check_node(node->attr.while_stmt.condition, stack);
+            if (node->attr.while_stmt.condition->type_info != TYPE_INT) {
+                fprintf(stderr, "ERRO SEMÂNTICO: A condição do comando 'enquanto' na linha %d deve ser do tipo int.\n", node->line);
+            }
+
+            check_node(node->attr.while_stmt.loop_body, stack);
+            break;
+        }
     }
 
     // Continua a verificação para o próximo comando na lista
