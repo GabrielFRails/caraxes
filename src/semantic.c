@@ -90,7 +90,7 @@ void check_node(ASTNode* node, SymbolStack* stack) {
 }
 
 void check_semantics(ASTNode* ast_root, SymbolStack* symbol_stack) {
-    printf("--- INICIANDO ANÁLISE SEMÂNTICA ---\n");
+    printf("\n--- INICIANDO ANÁLISE SEMÂNTICA ---\n");
     check_node(ast_root, symbol_stack);
     printf("--- FIM DA ANÁLISE SEMÂNTICA ---\n");
 }

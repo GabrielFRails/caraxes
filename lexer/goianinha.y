@@ -251,12 +251,13 @@ int main(int argc, char* argv[]) {
     
     if (yyparse() == 0) {
         printf("Análise léxico-sintática concluída com sucesso.\n");
-        ast_print(ast_root); // Imprime a árvore gerada
-        check_semantics(ast_root, &symbol_stack);
     } else {
         printf("Falha na análise lexico-sintática.\n");
     }
     
+    check_semantics(ast_root, &symbol_stack);
+    ast_print(ast_root); // Imprime a árvore gerada
+
     fclose(yyin);
     //print_stack(&symbol_stack);
     destroy_stack(&symbol_stack);
