@@ -41,7 +41,7 @@ ASTNode* ast_create_id(char* name, int line) {
     ASTNode* node = ast_create_node(NODE_ID, line);
     // Usamos strdup para alocar uma nova string para o nome,
     // pois o yytext pode ser sobrescrito pelo lexer.
-    node->attr.id_name = strdup(name); 
+    node->attr.id.name = strdup(name); 
     return node;
 }
 
@@ -83,7 +83,7 @@ ASTNode* ast_create_return(ASTNode* expression, int line) {
 
 ASTNode* ast_create_string(char* value, int line) {
     ASTNode* node = ast_create_node(NODE_STRINGCONST, line);
-    node->attr.id_name = strdup(value); // Reutilizando o id_name para guardar a string
+    node->attr.id.name = strdup(value); // Reutilizando o id_name para guardar a string
     return node;
 }
 
@@ -137,7 +137,7 @@ void ast_print_recursive(ASTNode* node, int level) {
             printf("INTCONST (Valor: %d, Linha: %d)\n", node->attr.int_val, node->line);
             break;
         case NODE_ID:
-            printf("ID (Nome: %s, Linha: %d)\n", node->attr.id_name, node->line);
+            printf("ID (Nome: %s, Linha: %d)\n", node->attr.id.name, node->line);
             break;
         case NODE_IF:
             printf("IF (Linha: %d)\n", node->line);
@@ -165,7 +165,7 @@ void ast_print_recursive(ASTNode* node, int level) {
             break;
         case NODE_STRINGCONST:
             // Reutilizamos o id_name para guardar a string
-            printf("STRINGCONST (Valor: \"%s\", Linha: %d)\n", node->attr.id_name, node->line);
+            printf("STRINGCONST (Valor: \"%s\", Linha: %d)\n", node->attr.id.name, node->line);
             break;
         case NODE_NOVALINHA:
             printf("NOVALINHA (Linha: %d)\n", node->line);

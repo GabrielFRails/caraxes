@@ -94,10 +94,16 @@ typedef struct ASTNode {
             struct ASTNode *args; // Ponteiro para o primeiro argumento (NODE_ARGLIST)
         } func_call;
 
-        // Para constantes e identificadores
+        // Para constantes
         int int_val;
         char char_val;
-        char *id_name; // O lexema do identificador
+        char *string_val; // Usaremos este para strings
+
+        // Para Identificadores
+        struct {
+            char* name;
+            struct SymbolEntry* entry; // PONTEIRO PARA A ENTRADA NA TABELA!
+        } id;
     } attr;
 } ASTNode;
 

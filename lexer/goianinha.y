@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+// my libs
 #include "symbol_table.h"
 #include "ast.h" 
 #include "tokens.h"
+#include "semantic.h"
 
 
 extern int yylineno;
@@ -250,6 +252,7 @@ int main(int argc, char* argv[]) {
     if (yyparse() == 0) {
         printf("Análise léxico-sintática concluída com sucesso.\n");
         ast_print(ast_root); // Imprime a árvore gerada
+        check_semantics(ast_root, &symbol_stack);
     } else {
         printf("Falha na análise lexico-sintática.\n");
     }
