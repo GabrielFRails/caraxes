@@ -6,21 +6,34 @@ void check_node(ASTNode* node, SymbolStack* stack) {
     if (node == NULL) {
         return;
     }
-
-    // A estratégia geral é verificar os filhos primeiro (pós-ordem)
-    // e depois verificar o nó atual.
     
     switch (node->type) {
-        case NODE_ASSIGN:
-            // Visita os filhos primeiro
-            check_node(node->attr.assign_stmt.lvalue, stack);
-            check_node(node->attr.assign_stmt.rvalue, stack);
+        case NODE_ASSIGN: {
+            // Visita os filhos primeiro para que seus type_info sejam preenchidos
+            ASTNode* lvalue = node->attr.assign_stmt.lvalue;
+            ASTNode* rvalue = node->attr.assign_stmt.rvalue;
+            
+            check_node(lvalue, stack);
+            check_node(rvalue, stack);
 
-            // TODO: Agora, verifique a semântica da atribuição.
-            // 1. O filho da esquerda (lvalue) é um ID?
-            // 2. Os tipos dos dois filhos são compatíveis?
-            // Ex: if (lvalue->type_info != rvalue->type_info) { fprintf(stderr, "ERRO: Tipos incompativeis..."); }
+            // Agora, com os tipos dos filhos calculados, verificamos a semântica da atribuição.
+            
+            // 1. O tipo da variável que recebe (lvalue) deve ser o mesmo da expressão (rvalue).
+            //    Também verificamos se os tipos não são UNKNOWN para evitar erros em cascata.
+            if (lvalue->type_info != TYPE_UNKNOWN &&
+                rvalue->type_info != TYPE_UNKNOWN &&
+                lvalue->type_info != rvalue->type_info) 
+            {
+                fprintf(stderr, "ERRO SEMÂNTICO: Tipos incompatíveis na atribuição da linha %d. Não é possível atribuir um valor do tipo '%s' a uma variável do tipo '%s'.\n", 
+                        node->line, 
+                        rvalue->type_info == TYPE_INT ? "int" : "char", 
+                        lvalue->type_info == TYPE_INT ? "int" : "char");
+            }
+            
+            // 2. O tipo da expressão de atribuição como um todo é o tipo do lado esquerdo.
+            node->type_info = lvalue->type_info;
             break;
+        }
 
         case NODE_ID: {
             SymbolEntry* entry = search_name(stack, node->attr.id.name);
