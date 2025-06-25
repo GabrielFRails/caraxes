@@ -174,9 +174,18 @@ void ast_print_recursive(ASTNode* node, int level) {
         case NODE_NOVALINHA:
             printf("NOVALINHA (Linha: %d)\n", node->line);
             break;
-        case NODE_RETURN: // Adicione também os outros que faltam
+        case NODE_RETURN:
             printf("RETURN (Linha: %d)\n", node->line);
             ast_print_recursive(node->attr.write_ret_stmt.expression, level + 1);
+            break;
+        case NODE_FUNCCALL:
+            printf("FUNCCALL (Linha: %d)\n", node->line);
+            ast_print_recursive(node->attr.func_call.id, level + 1);
+            if (node->attr.func_call.args != NULL) {
+                 for (int i = 0; i < level + 1; i++) printf("  ");
+                 printf("ARGS:\n");
+                 ast_print_recursive(node->attr.func_call.args, level + 2);
+            }
             break;
         default:
             printf("Nó Desconhecido (Tipo: %d)\n", node->type);
