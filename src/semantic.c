@@ -37,40 +37,54 @@ void check_node(ASTNode* node, SymbolStack* stack) {
 
         case NODE_FUNCCALL: {
             ASTNode* func_id_node = node->attr.func_call.id;
-
             check_node(func_id_node, stack);
             check_node(node->attr.func_call.args, stack);
 
-            // primeiro ver se de fato temos uma função aqui
             SymbolEntry* func_entry = func_id_node->attr.id.entry;
             if (func_entry == NULL) {
                 node->type_info = TYPE_UNKNOWN;
                 break;
             }
+
+            //printf("DEBUG: Verificando o ID '%s'. Tipo de entrada encontrado: %s\n", 
+            //       func_entry->name,
+            //       func_entry->entry_type == ENTRY_VAR ? "Variavel" :
+            //       func_entry->entry_type == ENTRY_FUNC ? "Funcao" : "Parametro");
             if (func_entry->entry_type != ENTRY_FUNC) {
-                fprintf(stderr, "ERRO SEMÂNTICO: '%s' não é uma função e não pode ser chamada (linha %d).\n", func_entry->name, node->line);
+                fprintf(stderr, "ERRO SEMÂNTICO: '%s' não é uma função e não pode ser chamada (linha %d).\n", 
+                        func_entry->name, node->line);
                 node->type_info = TYPE_UNKNOWN;
                 break;
             }
 
-            // Verificação de argumentos
             int arg_count = 0;
             ASTNode* current_arg = node->attr.func_call.args;
             while (current_arg != NULL) {
                 arg_count++;
                 current_arg = current_arg->next;
             }
+
             if (arg_count != func_entry->num_params) {
                 fprintf(stderr, "ERRO SEMÂNTICO: Número incorreto de argumentos para a função '%s'. Esperava %d, mas recebeu %d (linha %d).\n",
                         func_entry->name, func_entry->num_params, arg_count, node->line);
             }
 
             // TODO (advanced): fazer verificação de todos os argumentos para ver se o tipo bate
-            // o tipo do node é o memso da função
             node->type_info = func_entry->data_type;
             break;
         }
 
+        // apenas veririca o que está sendo escrito
+        case NODE_WRITE: {
+            check_node(node->attr.write_ret_stmt.expression, stack);
+            break;
+        }
+
+        // por agora apenas verifica a expressao de retorno
+        case NODE_RETURN: {
+            check_node(node->attr.write_ret_stmt.expression, stack);
+            break;
+        }
         case NODE_ID: {
             SymbolEntry* entry = search_name(stack, node->attr.id.name);
             if (entry == NULL) {
@@ -153,6 +167,11 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             check_node(node->attr.while_stmt.loop_body, stack);
             break;
         }
+
+        default:
+            // prog. defensiva, casos n tratados serao explicitos aqui
+            printf("AVISO: Nenhum tratamento semântico definido para o tipo de nó %d (linha %d)\n", node->type, node->line);
+            break;
 
     }
 
