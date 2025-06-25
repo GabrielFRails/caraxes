@@ -191,6 +191,15 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             break;
         }
 
+        case NODE_WRITE: {
+            check_node(node->attr.write_ret_stmt.expression, stack);
+            DataType expr_type = node->attr.write_ret_stmt.expression->type_info;
+            if (expr_type != TYPE_INT && expr_type != TYPE_CHAR) {
+                 fprintf(stderr, "ERRO SEMÂNTICO: Tentando usar 'escreva' com um tipo de expressão inválido na linha %d.\n", node->line);
+            }
+            break;
+        }
+
         default:
             // prog. defensiva, casos n tratados serao explicitos aqui
             printf("AVISO: Nenhum tratamento semântico definido para o tipo de nó %d (linha %d)\n", node->type, node->line);
