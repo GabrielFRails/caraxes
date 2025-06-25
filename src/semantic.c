@@ -2,8 +2,8 @@
 #include "semantic.h"
 
 // Função recursiva que percorre a árvore
-// declarando como 'funcao privada' já que somente dentro desse arquivo ela é usada
-void _check_node(ASTNode* node, SymbolStack* stack) {
+// TODO: verificar se o retorno da função é de acordo com a definição da mesma
+void check_node(ASTNode* node, SymbolStack* stack) {
     if (node == NULL) {
         return;
     }
