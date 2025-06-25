@@ -168,6 +168,19 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             break;
         }
 
+        case NODE_OP_UN: {
+            check_node(node->attr.op_un.operand, stack);
+
+            DataType operand_type = node->attr.op_un.operand->type_info;
+
+            if (operand_type != TYPE_INT) {
+                fprintf(stderr, "ERRO SEMÂNTICO: O operador unário na linha %d requer um operando do tipo int.\n", node->line);
+            }
+
+            node->type_info = TYPE_INT;
+            break;
+        }
+
         default:
             // prog. defensiva, casos n tratados serao explicitos aqui
             printf("AVISO: Nenhum tratamento semântico definido para o tipo de nó %d (linha %d)\n", node->type, node->line);
