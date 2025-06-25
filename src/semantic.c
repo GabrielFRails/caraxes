@@ -181,6 +181,16 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             break;
         }
 
+        case NODE_READ: {
+            check_node(node->attr.read_stmt.id, stack);
+            SymbolEntry* entry = node->attr.read_stmt.id->attr.id.entry;
+            if (entry != NULL && entry->entry_type == ENTRY_FUNC) {
+                fprintf(stderr, "ERRO SEMÂNTICO: Não é possível usar o comando 'leia' em uma função ('%s') na linha %d.\n",
+                        entry->name, node->line);
+            }
+            break;
+        }
+
         default:
             // prog. defensiva, casos n tratados serao explicitos aqui
             printf("AVISO: Nenhum tratamento semântico definido para o tipo de nó %d (linha %d)\n", node->type, node->line);
