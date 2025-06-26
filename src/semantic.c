@@ -2,7 +2,8 @@
 #include "semantic.h"
 
 // Função recursiva que percorre a árvore
-void semantic_check_node(ASTNode* node, SymbolStack* stack) {
+// declarando como 'funcao privada' já que somente dentro desse arquivo ela é usada
+void _check_node(ASTNode* node, SymbolStack* stack) {
     if (node == NULL) {
         return;
     }
@@ -13,8 +14,8 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
             ASTNode* lvalue = node->attr.assign_stmt.lvalue;
             ASTNode* rvalue = node->attr.assign_stmt.rvalue;
             
-            semantic_check_node(lvalue, stack);
-            semantic_check_node(rvalue, stack);
+            _check_node(lvalue, stack);
+            _check_node(rvalue, stack);
 
             // Agora, com os tipos dos filhos calculados, verificamos a semântica da atribuição.
             
@@ -37,8 +38,8 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
 
         case NODE_FUNCCALL: {
             ASTNode* func_id_node = node->attr.func_call.id;
-            semantic_check_node(func_id_node, stack);
-            semantic_check_node(node->attr.func_call.args, stack);
+            _check_node(func_id_node, stack);
+            _check_node(node->attr.func_call.args, stack);
 
             SymbolEntry* func_entry = func_id_node->attr.id.entry;
             if (func_entry == NULL) {
@@ -76,7 +77,7 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
 
         // por agora apenas verifica a expressao de retorno
         case NODE_RETURN: {
-            semantic_check_node(node->attr.write_ret_stmt.expression, stack);
+            _check_node(node->attr.write_ret_stmt.expression, stack);
             break;
         }
         case NODE_ID: {
@@ -94,8 +95,8 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
 
         case NODE_OP_BIN: {
             // Visita os filhos primeiro para que seus 'type_info' sejam preenchidos
-            semantic_check_node(node->attr.op_bin.left, stack);
-            semantic_check_node(node->attr.op_bin.right, stack);
+            _check_node(node->attr.op_bin.left, stack);
+            _check_node(node->attr.op_bin.right, stack);
 
             DataType type_left = node->attr.op_bin.left->type_info;
             DataType type_right = node->attr.op_bin.right->type_info;
@@ -142,28 +143,28 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
         }
 
         case NODE_IF: {
-            semantic_check_node(node->attr.if_stmt.condition, stack);
+            _check_node(node->attr.if_stmt.condition, stack);
             if (node->attr.if_stmt.condition->type_info != TYPE_INT) {
                 fprintf(stderr, "ERRO SEMÂNTICO: A condição do comando 'se' na linha %d deve ser do tipo int.\n", node->line);
             }
 
-            semantic_check_node(node->attr.if_stmt.if_body, stack);
-            semantic_check_node(node->attr.if_stmt.else_body, stack);
+            _check_node(node->attr.if_stmt.if_body, stack);
+            _check_node(node->attr.if_stmt.else_body, stack);
             break;
         }
 
         case NODE_WHILE: {
-            semantic_check_node(node->attr.while_stmt.condition, stack);
+            _check_node(node->attr.while_stmt.condition, stack);
             if (node->attr.while_stmt.condition->type_info != TYPE_INT) {
                 fprintf(stderr, "ERRO SEMÂNTICO: A condição do comando 'enquanto' na linha %d deve ser do tipo int.\n", node->line);
             }
 
-            semantic_check_node(node->attr.while_stmt.loop_body, stack);
+            _check_node(node->attr.while_stmt.loop_body, stack);
             break;
         }
 
         case NODE_OP_UN: {
-            semantic_check_node(node->attr.op_un.operand, stack);
+            _check_node(node->attr.op_un.operand, stack);
 
             DataType operand_type = node->attr.op_un.operand->type_info;
 
@@ -176,7 +177,7 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
         }
 
         case NODE_READ: {
-            semantic_check_node(node->attr.read_stmt.id, stack);
+            _check_node(node->attr.read_stmt.id, stack);
             SymbolEntry* entry = node->attr.read_stmt.id->attr.id.entry;
             if (entry != NULL && entry->entry_type == ENTRY_FUNC) {
                 fprintf(stderr, "ERRO SEMÂNTICO: Não é possível usar o comando 'leia' em uma função ('%s') na linha %d.\n",
@@ -186,7 +187,7 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
         }
 
         case NODE_WRITE: {
-            semantic_check_node(node->attr.write_ret_stmt.expression, stack);
+            _check_node(node->attr.write_ret_stmt.expression, stack);
             DataType expr_type = node->attr.write_ret_stmt.expression->type_info;
             if (expr_type != TYPE_INT && expr_type != TYPE_CHAR) {
                  fprintf(stderr, "ERRO SEMÂNTICO: Tentando usar 'escreva' com um tipo de expressão inválido na linha %d.\n", node->line);
@@ -202,11 +203,11 @@ void semantic_check_node(ASTNode* node, SymbolStack* stack) {
     }
 
     // Continua a verificação para o próximo comando na lista
-    semantic_check_node(node->next, stack);
+    _check_node(node->next, stack);
 }
 
 void semantic_check_semantics(ASTNode* ast_root, SymbolStack* symbol_stack) {
     printf("\n--- INICIANDO ANÁLISE SEMÂNTICA ---\n");
-    semantic_check_node(ast_root, symbol_stack);
+    _check_node(ast_root, symbol_stack);
     printf("--- FIM DA ANÁLISE SEMÂNTICA ---\n");
 }
