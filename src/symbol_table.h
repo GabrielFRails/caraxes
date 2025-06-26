@@ -39,14 +39,14 @@ typedef struct SymbolStack {
 } SymbolStack;
 
 // function prototypes
-void init_stack(SymbolStack* stack);
-void new_scope(SymbolStack* stack);
-SymbolEntry* search_name(SymbolStack* stack, const char* name);
-void remove_scope(SymbolStack* stack);
-SymbolEntry* insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type);
-SymbolEntry* insert_variable(SymbolStack* stack, const char* name, DataType type, int position);
-SymbolEntry* insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func);
-void destroy_stack(SymbolStack* stack);
-void print_stack(SymbolStack* stack);
+void symbol_table_init_stack(SymbolStack* stack);
+void symbol_table_new_scope(SymbolStack* stack);
+SymbolEntry* symbol_table_search_name(SymbolStack* stack, const char* name);
+void symbol_table_remove_scope(SymbolStack* stack);
+SymbolEntry* symbol_table_insert_function(SymbolStack* stack, const char* name, int num_params, DataType return_type);
+SymbolEntry* symbol_table_insert_variable(SymbolStack* stack, const char* name, DataType type, int position);
+SymbolEntry* symbol_table_insert_parameter(SymbolStack* stack, const char* name, DataType type, int position, SymbolEntry* func);
+void symbol_table_destroy_stack(SymbolStack* stack);
+void symbol_table_print_stack(SymbolStack* stack);
 
 #endif

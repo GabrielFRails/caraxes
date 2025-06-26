@@ -69,18 +69,18 @@ Programa: DeclFuncVar DeclProg
     };
 
 DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
-        if (search_name(&symbol_stack, $2) != NULL) {
+        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
-            insert_variable(&symbol_stack, $2, current_type, 0);
+            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
         free($2);
     }
     | Tipo TOKEN_ID {
-        if (search_name(&symbol_stack, $2) != NULL) {
+        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
         } else {
-            current_func = insert_function(&symbol_stack, $2, 0, current_type);
+            current_func = symbol_table_insert_function(&symbol_stack, $2, 0, current_type);
         }
         free($2);
     } DeclFunc DeclFuncVar { }
@@ -92,10 +92,10 @@ Tipo: TOKEN_INT { current_type = TYPE_INT; }
     | TOKEN_CAR { current_type = TYPE_CHAR; };
 
 DeclVar: TOKEN_COMMA TOKEN_ID DeclVar {
-        if (search_name(&symbol_stack, $2) != NULL) {
+        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
-            insert_variable(&symbol_stack, $2, current_type, 0);
+            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
         free($2);
     }
@@ -110,29 +110,29 @@ ListaParametros: /* vazio */ { }
 
 ListaParametrosCont: Tipo TOKEN_ID {
         if (current_func != NULL) {
-            insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
+            symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
         free($2);
     }
     | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
         if (current_func != NULL) {
-            insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
+            symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
         free($2);
     };
 
-Bloco: TOKEN_LBRACE { new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE 
+Bloco: TOKEN_LBRACE { symbol_table_new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE 
     { 
         $$ = $4; /* O valor do Bloco é a lista de comandos */
-        remove_scope(&symbol_stack); 
+        symbol_table_remove_scope(&symbol_stack); 
     };
 
 ListaDeclVar: /* vazio */ { }
     | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
-        if (search_name(&symbol_stack, $2) != NULL) {
+        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
-            insert_variable(&symbol_stack, $2, current_type, 0);
+            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
         free($2);
     };
@@ -242,8 +242,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    init_stack(&symbol_stack);
-    new_scope(&symbol_stack);
+    symbol_table_init_stack(&symbol_stack);
+    symbol_table_new_scope(&symbol_stack);
     
     if (yyparse() == 0) {
         printf("Análise léxico-sintática concluída com sucesso.\n");
@@ -251,11 +251,11 @@ int main(int argc, char* argv[]) {
         printf("Falha na análise lexico-sintática, relatório a seguir:\n");
     }
     
-    check_semantics(ast_root, &symbol_stack);
+    semantic_check_semantics(ast_root, &symbol_stack);
     ast_print(ast_root); // Imprime a árvore gerada
 
     fclose(yyin);
-    //print_stack(&symbol_stack);
-    destroy_stack(&symbol_stack);
+    //symbol_table_print_stack(&symbol_stack);
+    symbol_table_destroy_stack(&symbol_stack);
     return 0;
 }
