@@ -54,7 +54,7 @@ The first step was to build the foundation upon which everything else would be b
 #### Symbol Table (The Memory)
 * **Responsibility:** To manage all identifiers declared in the program, storing information such as their type, scope, and nature (variable, function, or parameter).
 
-* **Implementation:** A **stack of scopes** (`SymbolStack`) data structure was implemented. Each time a new scope (`{...}`) is opened, a new table is pushed onto the stack. The search for a name (`search_name`) begins from the top of the stack (local scope) to the bottom (global scope), which naturally implements the variable shadowing rule.
+* **Implementation:** A **stack of scopes** (`SymbolStack`) data structure was implemented. Each time a new scope (`{...}`) is opened, a new table is pushed onto the stack. The search for a name (`symbol_table_search_name`) begins from the top of the stack (local scope) to the bottom (global scope), which naturally implements the variable shadowing rule.
 
 ### Phase 2: The Structure - Validating the "Grammar"
 
