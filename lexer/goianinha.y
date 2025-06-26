@@ -68,10 +68,6 @@ Programa: DeclFuncVar DeclProg
         ast_root = $2; // Simplificado por enquanto
     };
 
-/*
- * As regras de declaração (DeclFuncVar, DeclVar, etc.) continuam gerenciando a tabela de símbolos.
- * Por simplicidade, elas não retornarão nós da ASA, mas isso pode ser expandido para criar nós de declaração.
- */
 DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
         if (search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
@@ -242,7 +238,7 @@ int main(int argc, char* argv[]) {
 
     yyin = fopen(argv[1], "r");
     if (!yyin) {
-        fprintf(stderr, "Erro ao abrir %s\n", argv[1]);
+        fprintf(stderr, "Erro ao abrir o arquivo %s\n", argv[1]);
         return 1;
     }
 
@@ -252,7 +248,7 @@ int main(int argc, char* argv[]) {
     if (yyparse() == 0) {
         printf("Análise léxico-sintática concluída com sucesso.\n");
     } else {
-        printf("Falha na análise lexico-sintática.\n");
+        printf("Falha na análise lexico-sintática, relatório a seguir:\n");
     }
     
     check_semantics(ast_root, &symbol_stack);
