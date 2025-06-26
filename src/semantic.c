@@ -74,12 +74,6 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             break;
         }
 
-        // apenas veririca o que está sendo escrito
-        case NODE_WRITE: {
-            check_node(node->attr.write_ret_stmt.expression, stack);
-            break;
-        }
-
         // por agora apenas verifica a expressao de retorno
         case NODE_RETURN: {
             check_node(node->attr.write_ret_stmt.expression, stack);
