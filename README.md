@@ -102,6 +102,7 @@ A practical demonstration is the best way to illustrate the separation of phases
 1. After success in all steps above, translate goianinha to MIPS Assembly.
 2. Implement function return semantic value validation
 3. Improve project organization
+4. começar escopo novo na chamada da função
 
 ## Expected organization
 
