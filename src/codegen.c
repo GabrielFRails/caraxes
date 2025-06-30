@@ -23,11 +23,39 @@ static void free_temp_reg(int reg_num) {
     }
 }
 
-static void generate_node_code(ASTNode* node) {
+static int generate_node_code(ASTNode* node) {
     if (node == NULL) {
-        return;
+        return -1;
     }
-    // TODO: implement switch(node->type)
+
+    int reg1, reg2;
+    switch (node->type) {
+        case NODE_INTCONST: {
+            int reg = get_temp_reg();
+            fprintf(out, "    li $t%d, %d\n", reg, node->attr.int_val);
+            return reg;
+        }
+
+        case NODE_WRITE: {
+            reg1 = generate_node_code(node->attr.write_ret_stmt.expression);
+            fprintf(out, "\n    # Escreve um inteiro\n");
+            fprintf(out, "    move $a0, $t%d\n", reg1);
+            fprintf(out, "    li $v0, 1\n");
+            fprintf(out, "    syscall\n");
+
+            free_temp_reg(reg1);
+            break;
+        }
+        
+        default:
+            fprintf(stderr, "AVISO: Geração de código não implementada para o nó tipo %d\n", node->type);
+            break;
+    }
+
+    // recursion
+    generate_node_code(node->next);
+
+    return -1; // if the node is not a command
 }
 
 void generate_code(ASTNode* ast_root, const char* output_filename) {
