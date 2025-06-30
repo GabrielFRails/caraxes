@@ -3,6 +3,6 @@
 
 #include "ast.h"
 
-void generate_code(ASTNode* ast_root, const char* output_filename);
+void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* output_filename);
 
 #endif

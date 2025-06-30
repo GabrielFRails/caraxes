@@ -253,7 +253,7 @@ int main(int argc, char* argv[]) {
     }
     
     semantic_check_semantics(ast_root, &symbol_stack);
-    generate_code(ast_root, "output.asm");
+    generate_code(ast_root, &symbol_stack, "output.asm");
     ast_print(ast_root); // Imprime a árvore gerada
 
     fclose(yyin);
