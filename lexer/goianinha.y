@@ -10,6 +10,7 @@
 #include "ast.h" 
 #include "tokens.h"
 #include "semantic.h"
+#include "codegen.h"
 
 
 extern int yylineno;
@@ -252,6 +253,7 @@ int main(int argc, char* argv[]) {
     }
     
     semantic_check_semantics(ast_root, &symbol_stack);
+    generate_code(ast_root, "output.asm");
     ast_print(ast_root); // Imprime a árvore gerada
 
     fclose(yyin);
