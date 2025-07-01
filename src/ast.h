@@ -97,13 +97,18 @@ typedef struct ASTNode {
         // Para constantes
         int int_val;
         char char_val;
-        char *string_val; // Usaremos este para strings
+        //char *string_val; // Usaremos este para strings (DEPRECATED)
+        struct {
+            char* value;
+            int label_id; // ID para o label no .data (ex: _str0, _str1)
+        } string;
 
         // Para Identificadores
         struct {
             char* name;
             struct SymbolEntry* entry; // PONTEIRO PARA A ENTRADA NA TABELA!
         } id;
+        
     } attr;
 } ASTNode;
 

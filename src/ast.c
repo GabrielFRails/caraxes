@@ -85,8 +85,7 @@ ASTNode* ast_create_return(ASTNode* expression, int line) {
 
 ASTNode* ast_create_string(char* value, int line) {
     ASTNode* node = ast_create_node(NODE_STRINGCONST, line);
-    node->attr.id.name = strdup(value); // Reutilizando o id_name para guardar a string
-    //node->type_info = TYPE_CHAR;
+    node->attr.string.value = strdup(value);
     return node;
 }
 
