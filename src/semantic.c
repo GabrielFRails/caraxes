@@ -9,6 +9,35 @@ void check_node(ASTNode* node, SymbolStack* stack) {
     }
     
     switch (node->type) {
+        case NODE_BLOCK: {
+            symbol_table_new_scope(stack);
+            
+            // 1. Processar e inserir declarações
+            ASTNode* decl = node->attr.block.decls;
+            while (decl != NULL) {
+                if (decl->type == NODE_VAR_DECL) {
+                     if (symbol_table_search_name(stack, decl->attr.var_decl.name) != NULL) {
+                        fprintf(stderr, "ERRO SEMÂNTICO: Variável '%s' redeclarada na linha %d\n", 
+                                decl->attr.var_decl.name, decl->line);
+                     } else {
+                        // Insere na tabela
+                        SymbolEntry* entry = symbol_table_insert_variable(stack, 
+                                            decl->attr.var_decl.name, 
+                                            decl->attr.var_decl.type, 0);
+                        // Salva o ponteiro na AST para o CodeGen usar depois
+                        decl->attr.id.entry = entry; 
+                     }
+                }
+                decl = decl->next;
+            }
+
+            // 2. Verificar comandos dentro do escopo
+            check_node(node->attr.block.stats, stack);
+
+            symbol_table_remove_scope(stack);
+            break;
+        }
+        
         case NODE_ASSIGN: {
             // Visita os filhos primeiro para que seus type_info sejam preenchidos
             ASTNode* lvalue = node->attr.assign_stmt.lvalue;

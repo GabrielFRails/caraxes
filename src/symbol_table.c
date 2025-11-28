@@ -39,6 +39,10 @@ SymbolEntry* symbol_table_search_name(SymbolStack* stack, const char *name) {
 
 void symbol_table_remove_scope(SymbolStack* stack) {
     if (stack == NULL || stack->top < 0) return;
+    if (stack == NULL || stack->top < 0) return;
+    
+    // comentado pois está gerando erros em outras partes do compilador
+    /*
     SymbolTable* table = stack->tables[stack->top];
     SymbolEntry* current = table->entries;
     while (current != NULL) {
@@ -47,6 +51,7 @@ void symbol_table_remove_scope(SymbolStack* stack) {
         current = next;
     }
     free(table);
+    */
     stack->top--;
 }
 

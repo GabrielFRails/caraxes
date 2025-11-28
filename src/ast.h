@@ -26,6 +26,8 @@ typedef enum {
     NODE_NOVALINHA,     // Comando 'novalinha'
     
     // vamos ver se mais nós serão necessários depois
+    NODE_VAR_DECL,
+    NODE_BLOCK
 } NodeType;
 
 // Enum para os operadores, para clareza
@@ -108,6 +110,18 @@ typedef struct ASTNode {
             char* name;
             struct SymbolEntry* entry; // PONTEIRO PARA A ENTRADA NA TABELA!
         } id;
+
+        // Para declaração de variáveis
+        struct {
+            char* name;
+            DataType type;
+        } var_decl;
+
+        // Para Blocos (contém declarações E comandos)
+        struct {
+            struct ASTNode* decls; // Lista de NODE_VAR_DECL
+            struct ASTNode* stats; // Lista de comandos
+        } block;
         
     } attr;
 } ASTNode;
@@ -137,5 +151,7 @@ ASTNode* ast_create_novalinha(int line);
 ASTNode* ast_create_char(char value, int line);
 ASTNode* ast_create_funccall(ASTNode* id, ASTNode* args, int line);
 ASTNode* ast_create_read(ASTNode* id, int line);
+ASTNode* ast_create_var_decl(char* name, DataType type, int line);
+ASTNode* ast_create_block(ASTNode* decls, ASTNode* stats, int line);
 
 #endif

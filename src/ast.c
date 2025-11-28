@@ -113,6 +113,21 @@ ASTNode* ast_create_read(ASTNode* id, int line) {
     return node;
 }
 
+ASTNode* ast_create_var_decl(char* name, DataType type, int line) {
+    ASTNode* node = ast_create_node(NODE_VAR_DECL, line);
+    node->attr.var_decl.name = strdup(name);
+    node->attr.var_decl.type = type;
+    node->type_info = type; 
+    return node;
+}
+
+ASTNode* ast_create_block(ASTNode* decls, ASTNode* stats, int line) {
+    ASTNode* node = ast_create_node(NODE_BLOCK, line);
+    node->attr.block.decls = decls;
+    node->attr.block.stats = stats;
+    return node;
+}
+
 // prints
 void ast_print_recursive(ASTNode* node, int level) {
     if (node == NULL) {

@@ -33,7 +33,7 @@ ASTNode* ast_root = NULL; // Inicializa a árvore nula
 }
 
 /* não-terminais agora são 'node' */
-%type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar ListaComando Comando
+%type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar DeclVar ListaComando Comando
 %type <node> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr ListExpr
 
 /* Tokens com valores semânticos */
@@ -93,14 +93,39 @@ Tipo: TOKEN_INT { current_type = TYPE_INT; }
     | TOKEN_CAR { current_type = TYPE_CHAR; };
 
 DeclVar: TOKEN_COMMA TOKEN_ID DeclVar {
-        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
-            fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
-        } else {
-            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
-        }
+        // Agora retorna uma lista de nós de declaração
+        ASTNode* node = ast_create_var_decl($2, current_type, yylineno);
+        node->next = $3; // Encadeia
+        $$ = node;
         free($2);
     }
-    | /* vazio */ { };
+    | /* vazio */ { $$ = NULL; };
+
+ListaDeclVar: /* vazio */ { $$ = NULL; }
+    |
+    Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
+        // Cria nó para o primeiro ID
+        ASTNode* first = ast_create_var_decl($2, current_type, yylineno);
+        // Liga com os outros da mesma linha (x, y, z...)
+        first->next = $3;
+        
+        // Precisamos ligar o final da lista $3 com o começo da lista $5
+        ASTNode* current = first;
+        while(current->next != NULL) {
+            current = current->next;
+        }
+        current->next = $5;
+        
+        $$ = first;
+        free($2);
+    };
+
+Bloco: TOKEN_LBRACE ListaDeclVar ListaComando TOKEN_RBRACE 
+    { 
+        // Cria um nó de BLOCO contendo declarações E comandos
+        // Removemos symbol_table_new/remove_scope daqui!
+        $$ = ast_create_block($2, $3, yylineno);
+    };
 
 DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
         current_func = NULL;
@@ -118,22 +143,6 @@ ListaParametrosCont: Tipo TOKEN_ID {
     | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
         if (current_func != NULL) {
             symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
-        }
-        free($2);
-    };
-
-Bloco: TOKEN_LBRACE { symbol_table_new_scope(&symbol_stack); } ListaDeclVar ListaComando TOKEN_RBRACE 
-    { 
-        $$ = $4; /* O valor do Bloco é a lista de comandos */
-        symbol_table_remove_scope(&symbol_stack); 
-    };
-
-ListaDeclVar: /* vazio */ { }
-    | Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
-        if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
-            fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
-        } else {
-            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
         free($2);
     };

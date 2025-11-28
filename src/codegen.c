@@ -45,6 +45,15 @@ static int generate_node_code(ASTNode* node) {
 
     int reg1, reg2, label1, label2;
     switch (node->type) {
+        case NODE_BLOCK:
+            // Blocos apenas executam seus comandos internos
+            generate_node_code(node->attr.block.stats);
+            break;
+            
+        case NODE_VAR_DECL:
+            // Declaração não gera instrução MIPS, apenas metadados
+            break;
+
         case NODE_INTCONST: {
             int reg = get_temp_reg();
             fprintf(out, "    li $t%d, %d\n", reg, node->attr.int_val);
