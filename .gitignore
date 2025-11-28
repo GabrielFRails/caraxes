@@ -50,3 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+.DS_Store
+caraxes.log
+lexer/goianinha.output
+tests/sintatico/.DS_Store
+tests/sintatico/.DS_Store
+result.log
+output.asm
