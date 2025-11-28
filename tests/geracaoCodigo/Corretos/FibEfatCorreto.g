@@ -8,16 +8,15 @@ int fatorial(int n){
 	senao
 		retorne n* fatorial(n-1);
 }
+
 int somaFunc; 
-
-
 
 int fibonacci 
 (int seq){
 	se(seq==0)
 	entao   
 		retorne 0;
-	senão 
+	senao 
 		se (seq==1)
 			retorne 1;
 		senao
