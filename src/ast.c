@@ -142,6 +142,26 @@ void ast_print_recursive(ASTNode* node, int level) {
 
     // Imprime o tipo do nó e seus atributos
     switch (node->type) {
+        case NODE_BLOCK:
+            printf("BLOCK (Linha: %d)\n", node->line);
+            if (node->attr.block.decls != NULL) {
+                for (int i = 0; i < level+1; i++) printf("  ");
+                printf("DECLARAÇÕES:\n");
+                ast_print_recursive(node->attr.block.decls, level + 2);
+            }
+            if (node->attr.block.stats != NULL) {
+                for (int i = 0; i < level+1; i++) printf("  ");
+                printf("COMANDOS:\n");
+                ast_print_recursive(node->attr.block.stats, level + 2);
+            }
+            break;
+
+        case NODE_VAR_DECL:
+            printf("VAR_DECL (Nome: %s, Tipo: %s, Linha: %d)\n", 
+                   node->attr.var_decl.name, 
+                   node->attr.var_decl.type == TYPE_INT ? "int" : "car",
+                   node->line);
+            break;
         case NODE_OP_BIN:
             printf("OP_BIN (Op: %d, Linha: %d)\n", node->attr.op_bin.op, node->line);
             ast_print_recursive(node->attr.op_bin.left, level + 1);

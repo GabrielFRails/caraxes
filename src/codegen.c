@@ -54,6 +54,35 @@ static int generate_node_code(ASTNode* node) {
             // Declaração não gera instrução MIPS, apenas metadados
             break;
 
+        // --- IMPLEMENTAÇÃO DO LEIA ---
+        case NODE_READ: {
+            ASTNode* id_node = node->attr.read_stmt.id;
+            SymbolEntry* entry = id_node->attr.id.entry;
+            
+            if (entry == NULL) {
+                fprintf(stderr, "ERRO Codegen: Tentar ler para variável não declarada/encontrada.\n");
+                break;
+            }
+
+            if (entry->data_type == TYPE_INT) {
+                fprintf(out, "\n    # Leitura de Inteiro\n");
+                fprintf(out, "    li $v0, 5\n");       // Syscall read_int
+                fprintf(out, "    syscall\n");
+                // Salva o lido na variável
+                int offset = entry->position * 4; 
+                // ATENÇÃO: Se for var global ou local o cálculo de offset pode mudar
+                // Assumindo local ($fp) por enquanto como no seu padrão:
+                fprintf(out, "    sw $v0, %d($fp)\n", offset);
+            } else {
+                fprintf(out, "\n    # Leitura de Char\n");
+                fprintf(out, "    li $v0, 12\n");      // Syscall read_char
+                fprintf(out, "    syscall\n");
+                int offset = entry->position * 4;
+                fprintf(out, "    sw $v0, %d($fp)\n", offset);
+            }
+            break;
+        }
+
         case NODE_INTCONST: {
             int reg = get_temp_reg();
             fprintf(out, "    li $t%d, %d\n", reg, node->attr.int_val);

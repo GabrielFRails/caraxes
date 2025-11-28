@@ -1,5 +1,18 @@
 #include <stdio.h>
+#include <string.h>
 #include "semantic.h"
+
+int is_declared_in_current_scope(SymbolStack* stack, const char* name) {
+    if (stack->top < 0) return 0;
+    SymbolEntry* current = stack->tables[stack->top]->entries;
+    while (current != NULL) {
+        if (strcmp(current->name, name) == 0) {
+            return 1; // Encontrou no escopo atual
+        }
+        current = current->next;
+    }
+    return 0;
+}
 
 // Função recursiva que percorre a árvore
 // TODO: verificar se o retorno da função é de acordo com a definição da mesma
@@ -12,26 +25,26 @@ void check_node(ASTNode* node, SymbolStack* stack) {
         case NODE_BLOCK: {
             symbol_table_new_scope(stack);
             
-            // 1. Processar e inserir declarações
+            // 1. Inserir declarações
             ASTNode* decl = node->attr.block.decls;
             while (decl != NULL) {
                 if (decl->type == NODE_VAR_DECL) {
-                     if (symbol_table_search_name(stack, decl->attr.var_decl.name) != NULL) {
-                        fprintf(stderr, "ERRO SEMÂNTICO: Variável '%s' redeclarada na linha %d\n", 
+                    // CORREÇÃO: Verifica APENAS no escopo atual
+                    if (is_declared_in_current_scope(stack, decl->attr.var_decl.name)) {
+                        fprintf(stderr, "ERRO SEMÂNTICO: Variável '%s' redeclarada no mesmo escopo (linha %d)\n", 
                                 decl->attr.var_decl.name, decl->line);
-                     } else {
-                        // Insere na tabela
-                        SymbolEntry* entry = symbol_table_insert_variable(stack, 
+                    } else {
+                        // Insere e guarda a referência
+                        symbol_table_insert_variable(stack, 
                                             decl->attr.var_decl.name, 
                                             decl->attr.var_decl.type, 0);
-                        // Salva o ponteiro na AST para o CodeGen usar depois
-                        decl->attr.id.entry = entry; 
-                     }
+                        // Nota: Nós de uso (NODE_ID) encontrarão esta entrada via search_name
+                    }
                 }
                 decl = decl->next;
             }
 
-            // 2. Verificar comandos dentro do escopo
+            // 2. Verificar comandos
             check_node(node->attr.block.stats, stack);
 
             symbol_table_remove_scope(stack);
