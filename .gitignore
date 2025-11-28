@@ -57,3 +57,5 @@ tests/sintatico/.DS_Store
 tests/sintatico/.DS_Store
 result.log
 output.asm
+tests/semantico/.DS_Store
+tests/sintatico/.DS_Store
