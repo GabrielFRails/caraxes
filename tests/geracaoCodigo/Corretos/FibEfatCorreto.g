@@ -8,8 +8,9 @@ int fatorial(int n){
 	senao
 		retorne n* fatorial(n-1);
 }
-
 int somaFunc; 
+
+
 
 int fibonacci 
 (int seq){
@@ -18,9 +19,10 @@ int fibonacci
 		retorne 0;
 	senao 
 		se (seq==1)
+		entao
 			retorne 1;
 		senao
-			retorne fibonacci(n-1)+fibonacci(n-2);
+			retorne fibonacci(seq-1)+fibonacci(seq-2);
 }
 int  fat, fib;
 programa {
@@ -40,7 +42,7 @@ enquanto (n<0) execute {
 	fib=fibonacci(n);
 	escreva "Fibonacci de ";
 	escreva n;
-	escreva e: ";
+	escreva " e: ";
 	escreva fib;
 	novalinha;
 	escreva "A soma do valor do fatorial com o valor de fibonacci e: ";
