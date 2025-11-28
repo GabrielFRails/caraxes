@@ -50,6 +50,21 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             symbol_table_remove_scope(stack);
             break;
         }
+
+        // --- NOVOS CASES PARA SILENCIAR AVISOS ---
+        case NODE_INTCONST:
+            node->type_info = TYPE_INT;
+            break;
+        case NODE_CHARCONST:
+            node->type_info = TYPE_CHAR;
+            break;
+        case NODE_STRINGCONST:
+            // Strings não têm tipo "variável" compatível com int/char, mas ok passar
+            break; 
+        case NODE_NOVALINHA:
+            break; // Nada a verificar
+        case NODE_VAR_DECL:
+            break; // Já tratado no BLOCK, mas caso apareça solto, ignora
         
         case NODE_ASSIGN: {
             // Visita os filhos primeiro para que seus type_info sejam preenchidos
