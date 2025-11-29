@@ -221,6 +221,37 @@ static int generate_node_code(ASTNode* node) {
             free_temp_reg(reg2);
             return reg1;
         }
+
+        case NODE_FUNCCALL: {
+            int reg = get_temp_reg(); // Registrador para o valor de retorno ($v0)
+            
+            // 1. Passagem de Argumentos (Suporte básico para até 4 args em $a0-$a3)
+            ASTNode* arg = node->attr.func_call.args;
+            int arg_idx = 0;
+            
+            while(arg != NULL && arg_idx < 4) {
+                // Gera código para avaliar a expressão do argumento
+                int r_arg = generate_node_code(arg);
+                
+                // Move do temporário para o registrador de argumento MIPS ($a0, $a1...)
+                fprintf(out, "    move $a%d, $t%d\n", arg_idx, r_arg);
+                
+                free_temp_reg(r_arg); // Libera o temporário usado
+                arg = arg->next;
+                arg_idx++;
+            }
+            
+            // 2. Chamada da Função (JAL - Jump And Link)
+            // Usa o nome salvo na AST. 
+            // Nota: Se 'id' for um NODE_ID, pegamos o nome dele.
+            char* func_name = node->attr.func_call.id->attr.id.name;
+            fprintf(out, "    jal %s\n", func_name);
+            
+            // 3. Recupera o Retorno
+            fprintf(out, "    move $t%d, $v0\n", reg);
+            
+            return reg;
+        }
         
         default:
             fprintf(stderr, "AVISO: Geração de código não implementada para o nó tipo %d\n", node->type);

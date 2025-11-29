@@ -70,13 +70,37 @@ Programa: DeclFuncVar DeclProg
     };
 
 DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
+        // 1. Inserir o primeiro ID ($2) - Ex: 'fat'
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
             symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
+        
+        // 2. CORREÇÃO: Inserir os IDs restantes da lista ($3) - Ex: 'fib'
+        ASTNode* node = $3;
+        while (node != NULL) {
+            if (node->type == NODE_VAR_DECL) {
+                if (symbol_table_search_name(&symbol_stack, node->attr.var_decl.name) != NULL) {
+                     fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", 
+                             node->attr.var_decl.name, yylineno);
+                } else {
+                     // Insere na tabela global
+                     symbol_table_insert_variable(&symbol_stack, 
+                                        node->attr.var_decl.name, 
+                                        node->attr.var_decl.type, 0);
+                }
+            }
+            // Avança para a próxima variável (se houver, ex: int a, b, c;)
+            ASTNode* next = node->next;
+            // Opcional: free(node) se não for usar na AST global, 
+            // TODO: cuidado para não dar free no nome se a tabela usar a string.
+            node = next;
+        }
+
         free($2);
     }
+    |
     | Tipo TOKEN_ID {
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
