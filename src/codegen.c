@@ -121,8 +121,19 @@ static int generate_node_code(ASTNode* node) {
 
         case NODE_ID: {
             SymbolEntry* entry = node->attr.id.entry;
-            if (entry == NULL || entry->entry_type != ENTRY_VAR) {
-                fprintf(stderr, "ERRO de Geração: ID sem entrada na tabela ou não é variável.\n");
+            
+            // 1. Erro: O identificador não foi vinculado na análise semântica
+            if (entry == NULL) {
+                fprintf(stderr, "ERRO de Geração: O identificador '%s' (linha %d) não possui entrada na tabela de símbolos (Erro Semântico anterior?).\n", 
+                        node->attr.id.name, node->line);
+                return -1;
+            }
+
+            // 2. Erro: O identificador existe, mas não é uma variável ou parâmetro
+            if (entry->entry_type != ENTRY_VAR && entry->entry_type != ENTRY_PARAM) {
+                char* type_str = (entry->entry_type == ENTRY_FUNC) ? "FUNÇÃO" : "DESCONHECIDO";
+                fprintf(stderr, "ERRO de Geração: O identificador '%s' (linha %d) é do tipo %s, mas esperava-se uma VARIÁVEL ou PARÂMETRO.\n", 
+                        node->attr.id.name, node->line, type_str);
                 return -1;
             }
             int offset = entry->position * 4;
