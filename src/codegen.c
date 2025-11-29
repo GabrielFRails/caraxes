@@ -45,33 +45,48 @@ static int generate_node_code(ASTNode* node) {
 
     int reg1, reg2, label1, label2;
     switch (node->type) {
+        case NODE_BLOCK:
+            // Blocos apenas executam seus comandos internos
+            generate_node_code(node->attr.block.stats);
+            break;
+        
         case NODE_FUNC_DEF: {
-            // 1. Label da função
             fprintf(out, "\n%s:\n", node->attr.func_def.name);
-            
-            // 2. Prólogo da função (Salvar $fp, $ra, criar stack frame)
-            // Simplificado (você pode precisar ajustar o tamanho do frame)
-            fprintf(out, "    subu $sp, $sp, 32\n"); // Espaço minímo
-            fprintf(out, "    sw $ra, 20($sp)\n");
-            fprintf(out, "    sw $fp, 16($sp)\n");
-            fprintf(out, "    addu $fp, $sp, 32\n");
-            
-            // 3. Corpo da função
+            // Prólogo...
+             fprintf(out, "    subu $sp, $sp, 32\n");
+             fprintf(out, "    sw $ra, 20($sp)\n");
+             fprintf(out, "    sw $fp, 16($sp)\n");
+             fprintf(out, "    addu $fp, $sp, 32\n");
+             
+             // TRUQUE PARA PARÂMETROS NO MIPS (Convenção simples)
+             // Assumindo que quem chamou colocou args em $a0, $a1...
+             // Vamos salvar $a0 na pilha como se fosse variável local declarada.
+             ASTNode* param = node->attr.func_def.params;
+             int arg_idx = 0;
+             while(param != NULL && arg_idx < 4) {
+                 // Salva $a0...$a3 no stack frame local para ser usado como variável
+                 // Assumindo offsets locais 4, 8, 12...
+                 int offset = (arg_idx + 1) * 4; 
+                 fprintf(out, "    sw $a%d, -%d($fp)\n", arg_idx, offset);
+                 
+                 // IMPORTANTE: Precisamos "enganar" a tabela de símbolos para dizer
+                 // que esse parametro está nessa posição?
+                 // O symbol_table_insert_variable no semantic.c define a posição?
+                 // Se não, você precisa garantir que a posição do parametro bata com esse offset.
+                 
+                 param = param->next;
+                 arg_idx++;
+             }
+
             generate_node_code(node->attr.func_def.body);
             
-            // 4. Epílogo (Garantia de retorno caso não tenha 'retorne' explícito)
-            // (O comando 'retorne' deve tratar o jump back, mas é bom ter um fallback)
+            // Epílogo de segurança...
             fprintf(out, "    lw $ra, 20($sp)\n");
             fprintf(out, "    lw $fp, 16($sp)\n");
             fprintf(out, "    addu $sp, $sp, 32\n");
             fprintf(out, "    jr $ra\n");
             break;
         }
-
-        case NODE_BLOCK:
-            // Blocos apenas executam seus comandos internos
-            generate_node_code(node->attr.block.stats);
-            break;
             
         case NODE_VAR_DECL:
             // Declaração não gera instrução MIPS, apenas metadados
@@ -117,6 +132,20 @@ static int generate_node_code(ASTNode* node) {
             // Caracteres em MIPS são tratados como seus valores ASCII
             fprintf(out, "    li $t%d, %d\n", reg, node->attr.char_val);
             return reg;
+        }
+
+        case NODE_RETURN: {
+            if (node->attr.write_ret_stmt.expression != NULL) {
+                int reg = generate_node_code(node->attr.write_ret_stmt.expression);
+                fprintf(out, "    move $v0, $t%d\n", reg);
+                free_temp_reg(reg);
+            }
+            // Epílogo Padrão (recupera contexto e retorna)
+            fprintf(out, "    lw $ra, 20($sp)\n");
+            fprintf(out, "    lw $fp, 16($sp)\n");
+            fprintf(out, "    addu $sp, $sp, 32\n");
+            fprintf(out, "    jr $ra\n");
+            break;
         }
 
         case NODE_ID: {

@@ -128,10 +128,11 @@ ASTNode* ast_create_block(ASTNode* decls, ASTNode* stats, int line) {
     return node;
 }
 
-ASTNode* ast_create_func_def(char* name, DataType return_type, ASTNode* body, int line) {
+ASTNode* ast_create_func_def(char* name, DataType return_type, ASTNode* params, ASTNode* body, int line) {
     ASTNode* node = ast_create_node(NODE_FUNC_DEF, line);
     node->attr.func_def.name = strdup(name);
     node->attr.func_def.return_type = return_type;
+    node->attr.func_def.params = params;
     node->attr.func_def.body = body;
     return node;
 }
@@ -162,7 +163,7 @@ void ast_print_recursive(ASTNode* node, int level) {
                 printf("COMANDOS:\n");
                 ast_print_recursive(node->attr.block.stats, level + 2);
             }
-            break;
+            break;  
 
         case NODE_VAR_DECL:
             printf("VAR_DECL (Nome: %s, Tipo: %s, Linha: %d)\n", 

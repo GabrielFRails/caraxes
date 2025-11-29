@@ -50,6 +50,28 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             symbol_table_remove_scope(stack);
             break;
         }
+        case NODE_FUNC_DEF: {
+            // 1. Abre Escopo da Função
+            symbol_table_new_scope(stack);
+            
+            // 2. Registra os Parâmetros neste escopo
+            ASTNode* param = node->attr.func_def.params;
+            while (param != NULL) {
+                // Insere como variável local (parâmetro)
+                symbol_table_insert_variable(stack, 
+                                           param->attr.var_decl.name, 
+                                           param->attr.var_decl.type, 
+                                           0); // Posição pode ser ajustada se quiser
+                param = param->next;
+            }
+            
+            // 3. Analisa o Corpo da Função
+            check_node(node->attr.func_def.body, stack);
+            
+            // 4. Fecha Escopo
+            symbol_table_remove_scope(stack);
+            break;
+        }
 
         // --- NOVOS CASES PARA SILENCIAR AVISOS ---
         case NODE_INTCONST:

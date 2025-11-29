@@ -35,6 +35,7 @@ ASTNode* ast_root = NULL; // Inicializa a árvore nula
 /* não-terminais agora são 'node' */
 %type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar DeclVar ListaComando Comando DeclFunc
 %type <node> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr ListExpr
+%type <node> ListaParametros ListaParametrosCont
 
 /* Tokens com valores semânticos */
 %token <str_val> TOKEN_ID TOKEN_CARCONST TOKEN_STRING
@@ -136,16 +137,13 @@ DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
         }
         // REMOVIDO O free($2) DAQUI! Se der free aqui, não podemos usar $2 na ação final.
     } DeclFunc DeclFuncVar { 
-        // Cria o nó da função
-        // $2 é o nome (ID), $4 é o corpo (Bloco da função retornado por DeclFunc)
-        ASTNode* func_node = ast_create_func_def($2, current_type, $4, yylineno);
+        ASTNode* func_node = $4; 
+        if (func_node->attr.func_def.name) free(func_node->attr.func_def.name);
+        func_node->attr.func_def.name = strdup($2);
         
-        // Encadeia com o resto das declarações ($5)
         func_node->next = $5;
-        
-        $$ = func_node; // Retorna este nó
-        
-        free($2); // Agora sim podemos liberar a string do nome
+        $$ = func_node;
+        free($2);
     }
     | /* vazio */ { $$ = NULL; };
 
@@ -191,22 +189,29 @@ Bloco: TOKEN_LBRACE ListaDeclVar ListaComando TOKEN_RBRACE
 
 DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
         current_func = NULL;
-        $$ = $4;  /* Retorna o bloco da função para ser usado na definição */
+        $$ = ast_create_func_def("", current_type, $2, $4, yylineno);
     };
 
-ListaParametros: /* vazio */ { }
-    | ListaParametrosCont { };
+ListaParametros: /* vazio */ { $$ = NULL; }
+    | ListaParametrosCont { $$ = $1; };
 
 ListaParametrosCont: Tipo TOKEN_ID {
+        // Insere na tabela (para validação imediata)
         if (current_func != NULL) {
             symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
+        // Cria nó da AST para o parâmetro
+        $$ = ast_create_var_decl($2, current_type, yylineno);
         free($2);
     }
     | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
         if (current_func != NULL) {
             symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         }
+        // Cria nó e encadeia
+        ASTNode* node = ast_create_var_decl($2, current_type, yylineno);
+        node->next = $4;
+        $$ = node;
         free($2);
     };
 

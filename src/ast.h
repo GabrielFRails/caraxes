@@ -127,6 +127,7 @@ typedef struct ASTNode {
         struct {
             char* name;
             DataType return_type;
+            struct ASTNode* params;
             struct ASTNode* body; // O Bloco da função
         } func_def;
         
@@ -160,6 +161,6 @@ ASTNode* ast_create_funccall(ASTNode* id, ASTNode* args, int line);
 ASTNode* ast_create_read(ASTNode* id, int line);
 ASTNode* ast_create_var_decl(char* name, DataType type, int line);
 ASTNode* ast_create_block(ASTNode* decls, ASTNode* stats, int line);
-ASTNode* ast_create_func_def(char* name, DataType return_type, ASTNode* body, int line);
+ASTNode* ast_create_func_def(char* name, DataType return_type, ASTNode* params, ASTNode* body, int line);
 
 #endif
