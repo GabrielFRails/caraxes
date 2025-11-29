@@ -24,6 +24,7 @@ typedef struct SymbolEntry {
     DataType data_type;         // Tipo de dado (int, char)
     int position;               // Posição na lista de declaração (vars ou params)
     int num_params;             // Só para funções: número de parâmetros
+    int is_global;              // apenas para controle melhor futuro
     struct SymbolEntry* next;   // Próxima entrada na tabela (lista encadeada)
     struct SymbolEntry* func_ptr; // Só para parâmetros: ponteiro para a função
 } SymbolEntry;

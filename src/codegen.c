@@ -45,6 +45,29 @@ static int generate_node_code(ASTNode* node) {
 
     int reg1, reg2, label1, label2;
     switch (node->type) {
+        case NODE_FUNC_DEF: {
+            // 1. Label da função
+            fprintf(out, "\n%s:\n", node->attr.func_def.name);
+            
+            // 2. Prólogo da função (Salvar $fp, $ra, criar stack frame)
+            // Simplificado (você pode precisar ajustar o tamanho do frame)
+            fprintf(out, "    subu $sp, $sp, 32\n"); // Espaço minímo
+            fprintf(out, "    sw $ra, 20($sp)\n");
+            fprintf(out, "    sw $fp, 16($sp)\n");
+            fprintf(out, "    addu $fp, $sp, 32\n");
+            
+            // 3. Corpo da função
+            generate_node_code(node->attr.func_def.body);
+            
+            // 4. Epílogo (Garantia de retorno caso não tenha 'retorne' explícito)
+            // (O comando 'retorne' deve tratar o jump back, mas é bom ter um fallback)
+            fprintf(out, "    lw $ra, 20($sp)\n");
+            fprintf(out, "    lw $fp, 16($sp)\n");
+            fprintf(out, "    addu $sp, $sp, 32\n");
+            fprintf(out, "    jr $ra\n");
+            break;
+        }
+
         case NODE_BLOCK:
             // Blocos apenas executam seus comandos internos
             generate_node_code(node->attr.block.stats);
@@ -104,7 +127,16 @@ static int generate_node_code(ASTNode* node) {
             }
             int offset = entry->position * 4;
             int reg = get_temp_reg();
-            fprintf(out, "    lw $t%d, %d($fp)\n", reg, offset);
+            if (entry->is_global) {
+                // Global: Acessa pelo NOME (Label)
+                fprintf(out, "    lw $t%d, %s\n", reg, entry->name);
+            } else {
+                // Local: Acessa pelo Stack Pointer ($fp)
+                // Offset precisa considerar variáveis locais. 
+                // Assumindo que position 0 é -4($fp), 1 é -8($fp)...
+                int offset = (entry->position + 1) * 4; 
+                fprintf(out, "    lw $t%d, -%d($fp)\n", reg, offset);
+            }
             return reg;
         }
 
@@ -116,7 +148,12 @@ static int generate_node_code(ASTNode* node) {
             }
             reg1 = generate_node_code(node->attr.assign_stmt.rvalue);
             int offset = entry->position * 4;
-            fprintf(out, "    sw $t%d, %d($fp)\n", reg1, offset);
+            if (entry->is_global) {
+                 fprintf(out, "    sw $t%d, %s\n", reg1, entry->name);
+            } else {
+                 int offset = (entry->position + 1) * 4;
+                 fprintf(out, "    sw $t%d, -%d($fp)\n", reg1, offset);
+            }
             free_temp_reg(reg1);
             break;
         }
@@ -289,6 +326,12 @@ static void collect_strings(ASTNode* node) {
     }
 
     switch (node->type) {
+        case NODE_FUNC_DEF:
+            collect_strings(node->attr.func_def.body); // Entrar na função
+            break;
+        case NODE_BLOCK:
+            collect_strings(node->attr.block.stats);   // Entrar no bloco
+            break;
         case NODE_OP_BIN:
             collect_strings(node->attr.op_bin.left);
             collect_strings(node->attr.op_bin.right);
@@ -336,11 +379,23 @@ void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* out
     fprintf(out, ".data\n");
     fprintf(out, "_nl: .asciiz \"\\n\"\n");
 
-	// Itera sobre a lista de strings e as declara no .data
-    StringLabel* current = string_list_head;
+    // --- NOVO: GERA .DATA PARA VARIÁVEIS GLOBAIS ---
+    ASTNode* current = ast_root;
     while (current != NULL) {
-        fprintf(out, "_str%d: .asciiz \"%s\"\n", current->id, current->content);
+        if (current->type == NODE_VAR_DECL) {
+             // Gera:  fat: .word 0
+             fprintf(out, "%s: .word 0\n", current->attr.var_decl.name);
+        }
+        // Se entrou numa função ou no main, para de procurar globais
+        if (current->type == NODE_FUNC_DEF || current->type == NODE_BLOCK) break;
         current = current->next;
+    }
+
+	// Itera sobre a lista de strings e as declara no .data
+    StringLabel* s_curr = string_list_head;
+    while (s_curr != NULL) {
+        fprintf(out, "_str%d: .asciiz \"%s\"\n", s_curr->id, s_curr->content);
+        s_curr = s_curr->next;
     }
 
     // Seção .text

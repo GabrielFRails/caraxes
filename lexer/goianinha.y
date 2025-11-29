@@ -33,7 +33,7 @@ ASTNode* ast_root = NULL; // Inicializa a árvore nula
 }
 
 /* não-terminais agora são 'node' */
-%type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar DeclVar ListaComando Comando
+%type <node> Programa DeclFuncVar DeclProg Bloco ListaDeclVar DeclVar ListaComando Comando DeclFunc
 %type <node> Expr AssignExpr OrExpr AndExpr EqExpr DesigExpr AddExpr MulExpr UnExpr PrimExpr ListExpr
 
 /* Tokens com valores semânticos */
@@ -64,20 +64,31 @@ ASTNode* ast_root = NULL; // Inicializa a árvore nula
 
 Programa: DeclFuncVar DeclProg 
     { 
-        /* Regra inicial: conecta as declarações com o corpo do programa e define a raiz da árvore */
-        /* $$ = ast_create_seq($1, $2, yylineno); (Exemplo, se tiver um nó de sequência) */
-        ast_root = $2; // Simplificado por enquanto
+        if ($1 == NULL) {
+            ast_root = $2;
+        } else {
+            // Vamos encontrar o final da lista de declarações globais/funções ($1)
+            ASTNode* current = $1;
+            while (current->next != NULL) {
+                current = current->next;
+            }
+            // E conectar o Main ($2) no final dessa lista
+            current->next = $2;
+            
+            // A raiz agora é o começo de tudo
+            ast_root = $1; 
+        }
     };
 
-DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
-        // 1. Inserir o primeiro ID ($2) - Ex: 'fat'
+DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {        
+        // Verifica o primeiro ID ($2)
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
             symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
         }
         
-        // 2. CORREÇÃO: Inserir os IDs restantes da lista ($3) - Ex: 'fib'
+        // Verifica a lista de variáveis seguintes ($3)
         ASTNode* node = $3;
         while (node != NULL) {
             if (node->type == NODE_VAR_DECL) {
@@ -85,30 +96,57 @@ DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {
                      fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", 
                              node->attr.var_decl.name, yylineno);
                 } else {
-                     // Insere na tabela global
                      symbol_table_insert_variable(&symbol_stack, 
                                         node->attr.var_decl.name, 
                                         node->attr.var_decl.type, 0);
                 }
             }
-            // Avança para a próxima variável (se houver, ex: int a, b, c;)
-            ASTNode* next = node->next;
-            // Opcional: free(node) se não for usar na AST global, 
-            // TODO: cuidado para não dar free no nome se a tabela usar a string.
-            node = next;
+            node = node->next;
         }
+
+        // --- 2. Construção da AST (CORREÇÃO DO SEGFAULT) ---
+        
+        // Cria nó para a primeira variável ($2)
+        ASTNode* first = ast_create_var_decl($2, current_type, yylineno);
+        
+        // Conecta o primeiro nó com a lista de variáveis seguintes ($3)
+        // Ex: "int x, y, z;" -> first(x) aponta para lista(y->z)
+        first->next = $3;
+        
+        // Encontra o último nó dessa cadeia local para conectar com o resto ($5)
+        ASTNode* current = first;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        
+        // Conecta o fim desta lista com o restante das declarações globais/funções ($5)
+        current->next = $5;
+        
+        // RETORNA A LISTA COMPLETA (Crucial para evitar o crash)
+        $$ = first;
 
         free($2);
     }
-    |
     | Tipo TOKEN_ID {
+        // Ação de meio de regra: Apenas insere na tabela
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
         } else {
             current_func = symbol_table_insert_function(&symbol_stack, $2, 0, current_type);
         }
-        free($2);
-    } DeclFunc DeclFuncVar { }
+        // REMOVIDO O free($2) DAQUI! Se der free aqui, não podemos usar $2 na ação final.
+    } DeclFunc DeclFuncVar { 
+        // Cria o nó da função
+        // $2 é o nome (ID), $4 é o corpo (Bloco da função retornado por DeclFunc)
+        ASTNode* func_node = ast_create_func_def($2, current_type, $4, yylineno);
+        
+        // Encadeia com o resto das declarações ($5)
+        func_node->next = $5;
+        
+        $$ = func_node; // Retorna este nó
+        
+        free($2); // Agora sim podemos liberar a string do nome
+    }
     | /* vazio */ { $$ = NULL; };
 
 DeclProg: TOKEN_PROGRAMA Bloco { $$ = $2; };
@@ -153,6 +191,7 @@ Bloco: TOKEN_LBRACE ListaDeclVar ListaComando TOKEN_RBRACE
 
 DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
         current_func = NULL;
+        $$ = $4;  /* Retorna o bloco da função para ser usado na definição */
     };
 
 ListaParametros: /* vazio */ { }

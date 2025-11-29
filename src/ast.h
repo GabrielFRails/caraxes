@@ -27,7 +27,8 @@ typedef enum {
     
     // vamos ver se mais nós serão necessários depois
     NODE_VAR_DECL,
-    NODE_BLOCK
+    NODE_BLOCK,
+    NODE_FUNC_DEF
 } NodeType;
 
 // Enum para os operadores, para clareza
@@ -122,6 +123,12 @@ typedef struct ASTNode {
             struct ASTNode* decls; // Lista de NODE_VAR_DECL
             struct ASTNode* stats; // Lista de comandos
         } block;
+
+        struct {
+            char* name;
+            DataType return_type;
+            struct ASTNode* body; // O Bloco da função
+        } func_def;
         
     } attr;
 } ASTNode;
@@ -153,5 +160,6 @@ ASTNode* ast_create_funccall(ASTNode* id, ASTNode* args, int line);
 ASTNode* ast_create_read(ASTNode* id, int line);
 ASTNode* ast_create_var_decl(char* name, DataType type, int line);
 ASTNode* ast_create_block(ASTNode* decls, ASTNode* stats, int line);
+ASTNode* ast_create_func_def(char* name, DataType return_type, ASTNode* body, int line);
 
 #endif

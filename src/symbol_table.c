@@ -105,6 +105,7 @@ SymbolEntry* symbol_table_insert_variable(SymbolStack* stack, const char* name, 
     entry->data_type = type;
     entry->num_params = 0;
     entry->position = position;
+    entry->is_global = (stack->top == 0) ? 1 : 0;
     entry->next = stack->tables[stack->top]->entries;
     entry->func_ptr = NULL;
     stack->tables[stack->top]->entries = entry;
