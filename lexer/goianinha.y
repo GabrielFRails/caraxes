@@ -81,68 +81,67 @@ Programa: DeclFuncVar DeclProg
         }
     };
 
-DeclFuncVar: Tipo TOKEN_ID DeclVar TOKEN_SEMI DeclFuncVar {        
-        // Verifica o primeiro ID ($2)
+DeclFuncVar: 
+    /* Opção 1: Variáveis Globais (com correção de tipo via Mid-Rule Action) */
+    Tipo TOKEN_ID { $<num_val>$ = current_type; } DeclVar TOKEN_SEMI DeclFuncVar {
+        DataType type = (DataType)$<num_val>3; // Recupera o tipo salvo antes da recursão
+        
+        // 1. Tabela de Símbolos
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
             fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", $2, yylineno);
         } else {
-            symbol_table_insert_variable(&symbol_stack, $2, current_type, 0);
+            symbol_table_insert_variable(&symbol_stack, $2, type, 0);
         }
         
-        // Verifica a lista de variáveis seguintes ($3)
-        ASTNode* node = $3;
+        // Insere as outras variáveis da lista (x, y, z...)
+        ASTNode* node = $4;
         while (node != NULL) {
-            if (node->type == NODE_VAR_DECL) {
-                if (symbol_table_search_name(&symbol_stack, node->attr.var_decl.name) != NULL) {
-                     fprintf(stderr, "ERRO: Variável %s redeclarada na linha %d\n", 
-                             node->attr.var_decl.name, yylineno);
-                } else {
-                     symbol_table_insert_variable(&symbol_stack, 
-                                        node->attr.var_decl.name, 
-                                        node->attr.var_decl.type, 0);
-                }
-            }
-            node = node->next;
+             if (node->type == NODE_VAR_DECL) {
+                 if (symbol_table_search_name(&symbol_stack, node->attr.var_decl.name) != NULL) {
+                      fprintf(stderr, "ERRO: Variável %s redeclarada...\n", node->attr.var_decl.name);
+                 } else {
+                      symbol_table_insert_variable(&symbol_stack, node->attr.var_decl.name, node->attr.var_decl.type, 0);
+                 }
+             }
+             node = node->next;
         }
 
-        // --- 2. Construção da AST (CORREÇÃO DO SEGFAULT) ---
+        // 2. Construção da AST com o TIPO CORRETO
+        ASTNode* first = ast_create_var_decl($2, type, yylineno);
+        first->next = $4;
         
-        // Cria nó para a primeira variável ($2)
-        ASTNode* first = ast_create_var_decl($2, current_type, yylineno);
-        
-        // Conecta o primeiro nó com a lista de variáveis seguintes ($3)
-        // Ex: "int x, y, z;" -> first(x) aponta para lista(y->z)
-        first->next = $3;
-        
-        // Encontra o último nó dessa cadeia local para conectar com o resto ($5)
+        // Conecta ao resto das globais ($6)
         ASTNode* current = first;
-        while (current->next != NULL) {
-            current = current->next;
-        }
+        while (current->next != NULL) current = current->next;
+        current->next = $6; 
         
-        // Conecta o fim desta lista com o restante das declarações globais/funções ($5)
-        current->next = $5;
-        
-        // RETORNA A LISTA COMPLETA (Crucial para evitar o crash)
         $$ = first;
-
         free($2);
     }
-    | Tipo TOKEN_ID {
-        // Ação de meio de regra: Apenas insere na tabela
+    
+    /* Opção 2: Funções (com correção de tipo e nó de 5 argumentos) */
+    | Tipo TOKEN_ID { 
+        $<num_val>$ = current_type; // Salva o tipo de retorno
         if (symbol_table_search_name(&symbol_stack, $2) != NULL) {
-            fprintf(stderr, "ERRO: Função %s redeclarada na linha %d\n", $2, yylineno);
+            fprintf(stderr, "ERRO: Função %s redeclarada...\n", $2);
         } else {
             current_func = symbol_table_insert_function(&symbol_stack, $2, 0, current_type);
         }
-        // REMOVIDO O free($2) DAQUI! Se der free aqui, não podemos usar $2 na ação final.
     } DeclFunc DeclFuncVar { 
-        ASTNode* func_node = $4; 
+        DataType type = (DataType)$<num_val>3; // Recupera o tipo salvo
+        
+        // $4 agora é o nó FUNC_DEF criado em DeclFunc (que contém Params e Body)
+        ASTNode* func_node = $4;
+        
+        // CORREÇÃO: Atualiza o Nome (que estava "") e o Tipo de Retorno (que estava UNKNOWN)
         if (func_node->attr.func_def.name) free(func_node->attr.func_def.name);
         func_node->attr.func_def.name = strdup($2);
+        func_node->attr.func_def.return_type = type;
         
+        // Conecta com a próxima função/variável
         func_node->next = $5;
         $$ = func_node;
+        
         free($2);
     }
     | /* vazio */ { $$ = NULL; };
@@ -163,18 +162,15 @@ DeclVar: TOKEN_COMMA TOKEN_ID DeclVar {
 
 ListaDeclVar: /* vazio */ { $$ = NULL; }
     |
-    Tipo TOKEN_ID DeclVar TOKEN_SEMI ListaDeclVar {
-        // Cria nó para o primeiro ID
-        ASTNode* first = ast_create_var_decl($2, current_type, yylineno);
-        // Liga com os outros da mesma linha (x, y, z...)
-        first->next = $3;
+    Tipo TOKEN_ID { $<num_val>$ = current_type; } DeclVar TOKEN_SEMI ListaDeclVar {
+        DataType type = (DataType)$<num_val>3; // Recupera o tipo salvo
         
-        // Precisamos ligar o final da lista $3 com o começo da lista $5
+        ASTNode* first = ast_create_var_decl($2, type, yylineno);
+        first->next = $4; // Liga com DeclVar (x, y...)
+        
         ASTNode* current = first;
-        while(current->next != NULL) {
-            current = current->next;
-        }
-        current->next = $5;
+        while(current->next != NULL) current = current->next;
+        current->next = $6; // Liga com ListaDeclVar (próxima linha)
         
         $$ = first;
         free($2);
@@ -189,28 +185,28 @@ Bloco: TOKEN_LBRACE ListaDeclVar ListaComando TOKEN_RBRACE
 
 DeclFunc: TOKEN_LPAREN ListaParametros TOKEN_RPAREN Bloco {
         current_func = NULL;
-        $$ = ast_create_func_def("", current_type, $2, $4, yylineno);
+        /* Cria o nó FUNC_DEF aqui pois temos acesso aos parâmetros ($2).
+           O nome ("") e o tipo (TYPE_UNKNOWN) serão corrigidos pela regra pai (DeclFuncVar). */
+        $$ = ast_create_func_def("", TYPE_UNKNOWN, $2, $4, yylineno);
     };
 
 ListaParametros: /* vazio */ { $$ = NULL; }
     | ListaParametrosCont { $$ = $1; };
 
-ListaParametrosCont: Tipo TOKEN_ID {
-        // Insere na tabela (para validação imediata)
-        if (current_func != NULL) {
-            symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
-        }
-        // Cria nó da AST para o parâmetro
+ListaParametrosCont: 
+    Tipo TOKEN_ID {
+        // Caso base: não tem recursão, current_type é seguro
+        if (current_func != NULL) symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
         $$ = ast_create_var_decl($2, current_type, yylineno);
         free($2);
     }
-    | Tipo TOKEN_ID TOKEN_COMMA ListaParametrosCont {
-        if (current_func != NULL) {
-            symbol_table_insert_parameter(&symbol_stack, $2, current_type, ++(current_func->num_params), current_func);
-        }
-        // Cria nó e encadeia
-        ASTNode* node = ast_create_var_decl($2, current_type, yylineno);
-        node->next = $4;
+    | Tipo TOKEN_ID { $<num_val>$ = current_type; } TOKEN_COMMA ListaParametrosCont {
+        DataType type = (DataType)$<num_val>3; // Recupera o tipo salvo
+        
+        if (current_func != NULL) symbol_table_insert_parameter(&symbol_stack, $2, type, ++(current_func->num_params), current_func);
+        
+        ASTNode* node = ast_create_var_decl($2, type, yylineno);
+        node->next = $5;
         $$ = node;
         free($2);
     };

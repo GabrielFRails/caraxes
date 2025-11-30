@@ -251,6 +251,13 @@ void ast_print_recursive(ASTNode* node, int level) {
                  ast_print_recursive(node->attr.func_call.args, level + 2);
             }
             break;
+        case NODE_READ:
+            printf("READ (Linha: %d)\n", node->line);
+            ast_print_recursive(node->attr.read_stmt.id, level + 1);
+            break;
+        case NODE_CHARCONST:
+            printf("CHARCONST (Valor: '%c', Linha: %d)\n", node->attr.char_val, node->line);
+            break;
         default:
             printf("Nó Desconhecido (Tipo: %d)\n", node->type);
             break;
