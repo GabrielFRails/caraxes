@@ -163,7 +163,28 @@ void ast_print_recursive(ASTNode* node, int level) {
                 printf("COMANDOS:\n");
                 ast_print_recursive(node->attr.block.stats, level + 2);
             }
-            break;  
+            break;
+        
+        case NODE_FUNC_DEF:
+            printf("FUNC_DEF (Nome: %s, Tipo Retorno: %s, Linha: %d)\n", 
+                   node->attr.func_def.name,
+                   node->attr.func_def.return_type == TYPE_INT ? "int" : "car",
+                   node->line);
+            
+            // Imprime os parâmetros (se houver)
+            if (node->attr.func_def.params != NULL) {
+                 for (int i = 0; i < level + 1; i++) printf("  ");
+                 printf("PARAMS:\n");
+                 ast_print_recursive(node->attr.func_def.params, level + 2);
+            }
+            
+            // Imprime o corpo da função
+            if (node->attr.func_def.body != NULL) {
+                 for (int i = 0; i < level + 1; i++) printf("  ");
+                 printf("CORPO:\n");
+                 ast_print_recursive(node->attr.func_def.body, level + 2);
+            }
+            break;
 
         case NODE_VAR_DECL:
             printf("VAR_DECL (Nome: %s, Tipo: %s, Linha: %d)\n", 
