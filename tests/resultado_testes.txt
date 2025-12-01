@@ -1,4 +1,1523 @@
 RELATÓRIO DE COMPILAÇÃO - LINGUAGEM GOIANINHA
-Data de execução: Seg  1 Dez 2025 14:11:36 -03
+Data de execução: Seg  1 Dez 2025 14:15:07 -03
 ============================================================
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/expressao1Correto.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+BLOCK (Linha: 8)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: x, Tipo: int, Linha: 4)
+    VAR_DECL (Nome: y, Tipo: int, Linha: 3)
+    VAR_DECL (Nome: z, Tipo: int, Linha: 3)
+    VAR_DECL (Nome: v, Tipo: int, Linha: 3)
+  COMANDOS:
+    ASSIGN (Linha: 4)
+      ID (Nome: z, Linha: 4)
+      ASSIGN (Linha: 4)
+        ID (Nome: y, Linha: 4)
+        ASSIGN (Linha: 4)
+          ID (Nome: x, Linha: 4)
+          INTCONST (Valor: 50, Linha: 4)
+    WRITE (Linha: 5)
+      ID (Nome: x, Linha: 5)
+    STRINGCONST (Valor: "" "", Linha: 5)
+    WRITE (Linha: 5)
+      ID (Nome: y, Linha: 5)
+    STRINGCONST (Valor: "" "", Linha: 5)
+    WRITE (Linha: 5)
+      ID (Nome: z, Linha: 5)
+    NOVALINHA (Linha: 6)
+    WRITE (Linha: 7)
+      OP_BIN (Op: 1, Linha: 7)
+        OP_BIN (Op: 2, Linha: 7)
+          ID (Nome: x, Linha: 7)
+          INTCONST (Valor: 2, Linha: 7)
+        OP_BIN (Op: 3, Linha: 7)
+          ID (Nome: y, Linha: 7)
+          INTCONST (Valor: 4, Linha: 7)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str0: .asciiz "" ""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 0
+    move $fp, $sp
+
+    li $t0, 50
+    sw $t0, -4($fp)
+    sw $t-1, -4($fp)
+    sw $t-1, -4($fp)
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 0
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/fatorialCorreto.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 8)
+  PARAMS:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 2)
+  CORPO:
+    BLOCK (Linha: 8)
+      COMANDOS:
+        IF (Linha: 7)
+          OP_BIN (Op: 4, Linha: 3)
+            ID (Nome: n, Linha: 3)
+            INTCONST (Valor: 0, Linha: 3)
+          RETURN (Linha: 5)
+            INTCONST (Valor: 1, Linha: 5)
+        ELSE
+          RETURN (Linha: 7)
+            OP_BIN (Op: 2, Linha: 7)
+              ID (Nome: n, Linha: 7)
+              FUNCCALL (Linha: 7)
+                ID (Nome: fatorial, Linha: 7)
+                ARGS:
+                  OP_BIN (Op: 1, Linha: 7)
+                    ID (Nome: n, Linha: 7)
+                    INTCONST (Valor: 1, Linha: 7)
+BLOCK (Linha: 23)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 12)
+  COMANDOS:
+    ASSIGN (Linha: 12)
+      ID (Nome: n, Linha: 12)
+      INTCONST (Valor: 1, Linha: 12)
+    WHILE (Linha: 17)
+      OP_BIN (Op: 8, Linha: 13)
+        ID (Nome: n, Linha: 13)
+        INTCONST (Valor: 0, Linha: 13)
+      BLOCK (Linha: 17)
+        COMANDOS:
+          STRINGCONST (Valor: ""digite um numero"", Linha: 14)
+          NOVALINHA (Linha: 15)
+          READ (Linha: 16)
+            ID (Nome: n, Linha: 16)
+    STRINGCONST (Valor: ""O fatorial de "", Linha: 18)
+    WRITE (Linha: 19)
+      ID (Nome: n, Linha: 19)
+    STRINGCONST (Valor: "" e: "", Linha: 20)
+    WRITE (Linha: 21)
+      FUNCCALL (Linha: 21)
+        ID (Nome: fatorial, Linha: 21)
+        ARGS:
+          ID (Nome: n, Linha: 21)
+    NOVALINHA (Linha: 22)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str2: .asciiz "" e: ""
+_str1: .asciiz ""O fatorial de ""
+_str0: .asciiz ""digite um numero""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 0
+    move $fp, $sp
+
+
+fatorial:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+    li $t1, 0
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_0
+    li $t0, 1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_1
+_L_else_0:
+    lw $t0, -4($fp)
+    lw $t2, -4($fp)
+    li $t3, 1
+    sub $t2, $t2, $t3
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    mul $t0, $t0, $t1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+_L_endif_1:
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 1
+    sw $t0, -4($fp)
+_L_startwhile_2:
+    lw $t0, -4($fp)
+    li $t1, 0
+    sgt $t0, $t0, $t1
+    beq $t0, $zero, _L_endwhile_3
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    j _L_startwhile_2
+_L_endwhile_3:
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 0
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/FibEfatCorreto.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
+  PARAMS:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
+  CORPO:
+    BLOCK (Linha: 10)
+      COMANDOS:
+        IF (Linha: 9)
+          OP_BIN (Op: 4, Linha: 5)
+            ID (Nome: n, Linha: 5)
+            INTCONST (Valor: 0, Linha: 5)
+          RETURN (Linha: 7)
+            INTCONST (Valor: 1, Linha: 7)
+        ELSE
+          RETURN (Linha: 9)
+            OP_BIN (Op: 2, Linha: 9)
+              ID (Nome: n, Linha: 9)
+              FUNCCALL (Linha: 9)
+                ID (Nome: fatorial, Linha: 9)
+                ARGS:
+                  OP_BIN (Op: 1, Linha: 9)
+                    ID (Nome: n, Linha: 9)
+                    INTCONST (Valor: 1, Linha: 9)
+VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 28)
+FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 26)
+  PARAMS:
+    VAR_DECL (Nome: seq, Tipo: int, Linha: 16)
+  CORPO:
+    BLOCK (Linha: 26)
+      COMANDOS:
+        IF (Linha: 25)
+          OP_BIN (Op: 4, Linha: 17)
+            ID (Nome: seq, Linha: 17)
+            INTCONST (Valor: 0, Linha: 17)
+          RETURN (Linha: 19)
+            INTCONST (Valor: 0, Linha: 19)
+        ELSE
+          IF (Linha: 25)
+            OP_BIN (Op: 4, Linha: 21)
+              ID (Nome: seq, Linha: 21)
+              INTCONST (Valor: 1, Linha: 21)
+            RETURN (Linha: 23)
+              INTCONST (Valor: 1, Linha: 23)
+          ELSE
+            RETURN (Linha: 25)
+              OP_BIN (Op: 0, Linha: 25)
+                FUNCCALL (Linha: 25)
+                  ID (Nome: fibonacci, Linha: 25)
+                  ARGS:
+                    OP_BIN (Op: 1, Linha: 25)
+                      ID (Nome: seq, Linha: 25)
+                      INTCONST (Valor: 1, Linha: 25)
+                FUNCCALL (Linha: 25)
+                  ID (Nome: fibonacci, Linha: 25)
+                  ARGS:
+                    OP_BIN (Op: 1, Linha: 25)
+                      ID (Nome: seq, Linha: 25)
+                      INTCONST (Valor: 2, Linha: 25)
+VAR_DECL (Nome: fat, Tipo: int, Linha: 28)
+VAR_DECL (Nome: fib, Tipo: int, Linha: 27)
+BLOCK (Linha: 55)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 30)
+  COMANDOS:
+    ASSIGN (Linha: 30)
+      ID (Nome: n, Linha: 30)
+      OP_BIN (Op: 1, Linha: 30)
+        INTCONST (Valor: 1, Linha: 30)
+        INTCONST (Valor: 0, Linha: 30)
+    WHILE (Linha: 35)
+      OP_BIN (Op: 6, Linha: 31)
+        ID (Nome: n, Linha: 31)
+        INTCONST (Valor: 0, Linha: 31)
+      BLOCK (Linha: 35)
+        COMANDOS:
+          STRINGCONST (Valor: ""digite um numero"", Linha: 32)
+          NOVALINHA (Linha: 33)
+          READ (Linha: 34)
+            ID (Nome: n, Linha: 34)
+    ASSIGN (Linha: 36)
+      ID (Nome: fat, Linha: 36)
+      FUNCCALL (Linha: 36)
+        ID (Nome: fatorial, Linha: 36)
+        ARGS:
+          ID (Nome: n, Linha: 36)
+    STRINGCONST (Valor: ""O fatorial de "", Linha: 37)
+    WRITE (Linha: 38)
+      ID (Nome: n, Linha: 38)
+    STRINGCONST (Valor: "" e: "", Linha: 39)
+    WRITE (Linha: 40)
+      ID (Nome: fat, Linha: 40)
+    NOVALINHA (Linha: 41)
+    ASSIGN (Linha: 42)
+      ID (Nome: fib, Linha: 42)
+      FUNCCALL (Linha: 42)
+        ID (Nome: fibonacci, Linha: 42)
+        ARGS:
+          ID (Nome: n, Linha: 42)
+    STRINGCONST (Valor: ""Fibonacci de "", Linha: 43)
+    WRITE (Linha: 44)
+      ID (Nome: n, Linha: 44)
+    STRINGCONST (Valor: "" e: "", Linha: 45)
+    WRITE (Linha: 46)
+      ID (Nome: fib, Linha: 46)
+    NOVALINHA (Linha: 47)
+    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 48)
+    ASSIGN (Linha: 49)
+      ID (Nome: somaFunc, Linha: 49)
+      OP_BIN (Op: 0, Linha: 49)
+        ID (Nome: fat, Linha: 49)
+        ID (Nome: fib, Linha: 49)
+    WRITE (Linha: 50)
+      ID (Nome: somaFunc, Linha: 50)
+    NOVALINHA (Linha: 51)
+    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 52)
+    WRITE (Linha: 53)
+      OP_BIN (Op: 1, Linha: 53)
+        ID (Nome: fat, Linha: 53)
+        ID (Nome: fib, Linha: 53)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
+_str3: .asciiz ""Fibonacci de ""
+_str2: .asciiz "" e: ""
+_str1: .asciiz ""O fatorial de ""
+_str0: .asciiz ""digite um numero""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 12
+    move $fp, $sp
+
+
+fatorial:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+    li $t1, 0
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_0
+    li $t0, 1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_1
+_L_else_0:
+    lw $t0, -4($fp)
+    lw $t2, -4($fp)
+    li $t3, 1
+    sub $t2, $t2, $t3
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    mul $t0, $t0, $t1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+_L_endif_1:
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+
+fibonacci:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+    li $t1, 0
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_2
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_3
+_L_else_2:
+    lw $t0, -4($fp)
+    li $t1, 1
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_4
+    li $t0, 1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_5
+_L_else_4:
+    lw $t1, -4($fp)
+    li $t2, 1
+    sub $t1, $t1, $t2
+    move $a0, $t1
+    jal fibonacci
+    move $t0, $v0
+    lw $t2, -4($fp)
+    li $t3, 2
+    sub $t2, $t2, $t3
+    move $a0, $t2
+    jal fibonacci
+    move $t1, $v0
+    add $t0, $t0, $t1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+_L_endif_5:
+_L_endif_3:
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 1
+    li $t1, 0
+    sub $t0, $t0, $t1
+    sw $t0, -4($fp)
+_L_startwhile_6:
+    lw $t0, -4($fp)
+    li $t1, 0
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_endwhile_7
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+    sw $t0, fat
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fibonacci
+    move $t0, $v0
+    sw $t0, fib
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fib
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+    lw $t1, fib
+    add $t0, $t0, $t1
+    sw $t0, somaFunc
+    lw $t0, somaFunc
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+    lw $t1, fib
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 12
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/FibEfatCorretoVersao2.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 9)
+  PARAMS:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 3)
+  CORPO:
+    BLOCK (Linha: 9)
+      COMANDOS:
+        IF (Linha: 8)
+          OP_BIN (Op: 4, Linha: 4)
+            ID (Nome: n, Linha: 4)
+            INTCONST (Valor: 0, Linha: 4)
+          RETURN (Linha: 6)
+            INTCONST (Valor: 1, Linha: 6)
+        ELSE
+          RETURN (Linha: 8)
+            OP_BIN (Op: 2, Linha: 8)
+              ID (Nome: n, Linha: 8)
+              FUNCCALL (Linha: 8)
+                ID (Nome: fatorial, Linha: 8)
+                ARGS:
+                  OP_BIN (Op: 1, Linha: 8)
+                    ID (Nome: n, Linha: 8)
+                    INTCONST (Valor: 1, Linha: 8)
+VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
+FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
+  PARAMS:
+    VAR_DECL (Nome: seq, Tipo: int, Linha: 12)
+  CORPO:
+    BLOCK (Linha: 25)
+      COMANDOS:
+        IF (Linha: 24)
+          OP_BIN (Op: 4, Linha: 13)
+            ID (Nome: seq, Linha: 13)
+            INTCONST (Valor: 0, Linha: 13)
+          RETURN (Linha: 15)
+            INTCONST (Valor: 0, Linha: 15)
+        ELSE
+          IF (Linha: 24)
+            OP_BIN (Op: 4, Linha: 17)
+              ID (Nome: seq, Linha: 17)
+              INTCONST (Valor: 1, Linha: 17)
+            RETURN (Linha: 19)
+              INTCONST (Valor: 1, Linha: 19)
+          ELSE
+            BLOCK (Linha: 24)
+              DECLARAÇÕES:
+                VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 22)
+              COMANDOS:
+                ASSIGN (Linha: 22)
+                  ID (Nome: somaFunc, Linha: 22)
+                  OP_BIN (Op: 0, Linha: 22)
+                    FUNCCALL (Linha: 22)
+                      ID (Nome: fibonacci, Linha: 22)
+                      ARGS:
+                        OP_BIN (Op: 1, Linha: 22)
+                          ID (Nome: seq, Linha: 22)
+                          INTCONST (Valor: 1, Linha: 22)
+                    FUNCCALL (Linha: 22)
+                      ID (Nome: fibonacci, Linha: 22)
+                      ARGS:
+                        OP_BIN (Op: 1, Linha: 22)
+                          ID (Nome: seq, Linha: 22)
+                          INTCONST (Valor: 2, Linha: 22)
+                RETURN (Linha: 23)
+                  ID (Nome: somaFunc, Linha: 23)
+VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
+VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
+BLOCK (Linha: 54)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
+  COMANDOS:
+    ASSIGN (Linha: 29)
+      ID (Nome: n, Linha: 29)
+      OP_BIN (Op: 1, Linha: 29)
+        INTCONST (Valor: 1, Linha: 29)
+        INTCONST (Valor: 0, Linha: 29)
+    WHILE (Linha: 34)
+      OP_BIN (Op: 6, Linha: 30)
+        ID (Nome: n, Linha: 30)
+        INTCONST (Valor: 0, Linha: 30)
+      BLOCK (Linha: 34)
+        COMANDOS:
+          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
+          NOVALINHA (Linha: 32)
+          READ (Linha: 33)
+            ID (Nome: n, Linha: 33)
+    ASSIGN (Linha: 35)
+      ID (Nome: fat, Linha: 35)
+      FUNCCALL (Linha: 35)
+        ID (Nome: fatorial, Linha: 35)
+        ARGS:
+          ID (Nome: n, Linha: 35)
+    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
+    WRITE (Linha: 37)
+      ID (Nome: n, Linha: 37)
+    STRINGCONST (Valor: "" e: "", Linha: 38)
+    WRITE (Linha: 39)
+      ID (Nome: fat, Linha: 39)
+    NOVALINHA (Linha: 40)
+    ASSIGN (Linha: 41)
+      ID (Nome: fib, Linha: 41)
+      FUNCCALL (Linha: 41)
+        ID (Nome: fibonacci, Linha: 41)
+        ARGS:
+          ID (Nome: n, Linha: 41)
+    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
+    WRITE (Linha: 43)
+      ID (Nome: n, Linha: 43)
+    STRINGCONST (Valor: "" e: "", Linha: 44)
+    WRITE (Linha: 45)
+      ID (Nome: fib, Linha: 45)
+    NOVALINHA (Linha: 46)
+    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
+    ASSIGN (Linha: 48)
+      ID (Nome: somaFunc, Linha: 48)
+      OP_BIN (Op: 0, Linha: 48)
+        ID (Nome: fat, Linha: 48)
+        ID (Nome: fib, Linha: 48)
+    WRITE (Linha: 49)
+      ID (Nome: somaFunc, Linha: 49)
+    NOVALINHA (Linha: 50)
+    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
+    WRITE (Linha: 52)
+      OP_BIN (Op: 1, Linha: 52)
+        ID (Nome: fat, Linha: 52)
+        ID (Nome: fib, Linha: 52)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
+_str3: .asciiz ""Fibonacci de ""
+_str2: .asciiz "" e: ""
+_str1: .asciiz ""O fatorial de ""
+_str0: .asciiz ""digite um numero""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 12
+    move $fp, $sp
+
+
+fatorial:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+    li $t1, 0
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_0
+    li $t0, 1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_1
+_L_else_0:
+    lw $t0, -4($fp)
+    lw $t2, -4($fp)
+    li $t3, 1
+    sub $t2, $t2, $t3
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    mul $t0, $t0, $t1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+_L_endif_1:
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+
+fibonacci:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+    li $t1, 0
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_2
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_3
+_L_else_2:
+    lw $t0, -4($fp)
+    li $t1, 1
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_4
+    li $t0, 1
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    j _L_endif_5
+_L_else_4:
+    lw $t1, -4($fp)
+    li $t2, 1
+    sub $t1, $t1, $t2
+    move $a0, $t1
+    jal fibonacci
+    move $t0, $v0
+    lw $t2, -4($fp)
+    li $t3, 2
+    sub $t2, $t2, $t3
+    move $a0, $t2
+    jal fibonacci
+    move $t1, $v0
+    add $t0, $t0, $t1
+    sw $t0, -4($fp)
+    lw $t0, -4($fp)
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+_L_endif_5:
+_L_endif_3:
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 1
+    li $t1, 0
+    sub $t0, $t0, $t1
+    sw $t0, -4($fp)
+_L_startwhile_6:
+    lw $t0, -4($fp)
+    li $t1, 0
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_endwhile_7
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+    sw $t0, fat
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fibonacci
+    move $t0, $v0
+    sw $t0, fib
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fib
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+    lw $t1, fib
+    add $t0, $t0, $t1
+    sw $t0, somaFunc
+    lw $t0, somaFunc
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, fat
+    lw $t1, fib
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 12
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/NotaEmConceito.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+BLOCK (Linha: 44)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: nota, Tipo: int, Linha: 4)
+    VAR_DECL (Nome: conceito, Tipo: car, Linha: 4)
+  COMANDOS:
+    STRINGCONST (Valor: ""Digite um valor inteiro para a nota de um aluno"", Linha: 4)
+    NOVALINHA (Linha: 5)
+    READ (Linha: 6)
+      ID (Nome: nota, Linha: 6)
+    IF (Linha: 42)
+      OP_BIN (Op: 6, Linha: 8)
+        ID (Nome: nota, Linha: 8)
+        INTCONST (Valor: 6, Linha: 8)
+      BLOCK (Linha: 15)
+        DECLARAÇÕES:
+          VAR_DECL (Nome: conceito, Tipo: car, Linha: 11)
+        COMANDOS:
+          ASSIGN (Linha: 11)
+            ID (Nome: conceito, Linha: 11)
+            CHARCONST (Valor: 'D', Linha: 11)
+          STRINGCONST (Valor: ""Conceito: "", Linha: 12)
+          WRITE (Linha: 13)
+            ID (Nome: conceito, Linha: 13)
+          NOVALINHA (Linha: 14)
+    ELSE
+      BLOCK (Linha: 42)
+        COMANDOS:
+          IF (Linha: 41)
+            OP_BIN (Op: 6, Linha: 17)
+              ID (Nome: nota, Linha: 17)
+              INTCONST (Valor: 7, Linha: 17)
+            BLOCK (Linha: 24)
+              DECLARAÇÕES:
+                VAR_DECL (Nome: conceito, Tipo: car, Linha: 20)
+              COMANDOS:
+                ASSIGN (Linha: 20)
+                  ID (Nome: conceito, Linha: 20)
+                  CHARCONST (Valor: 'C', Linha: 20)
+                STRINGCONST (Valor: ""Conceito: "", Linha: 21)
+                WRITE (Linha: 22)
+                  ID (Nome: conceito, Linha: 22)
+                NOVALINHA (Linha: 23)
+          ELSE
+            BLOCK (Linha: 41)
+              COMANDOS:
+                IF (Linha: 40)
+                  OP_BIN (Op: 6, Linha: 26)
+                    ID (Nome: nota, Linha: 26)
+                    INTCONST (Valor: 9, Linha: 26)
+                  BLOCK (Linha: 33)
+                    DECLARAÇÕES:
+                      VAR_DECL (Nome: conceito, Tipo: car, Linha: 29)
+                    COMANDOS:
+                      ASSIGN (Linha: 29)
+                        ID (Nome: conceito, Linha: 29)
+                        CHARCONST (Valor: 'B', Linha: 29)
+                      STRINGCONST (Valor: ""Conceito: "", Linha: 30)
+                      WRITE (Linha: 31)
+                        ID (Nome: conceito, Linha: 31)
+                      NOVALINHA (Linha: 32)
+                ELSE
+                  BLOCK (Linha: 40)
+                    DECLARAÇÕES:
+                      VAR_DECL (Nome: conceito, Tipo: car, Linha: 36)
+                    COMANDOS:
+                      ASSIGN (Linha: 36)
+                        ID (Nome: conceito, Linha: 36)
+                        CHARCONST (Valor: 'A', Linha: 36)
+                      STRINGCONST (Valor: ""Conceito: "", Linha: 37)
+                      WRITE (Linha: 38)
+                        ID (Nome: conceito, Linha: 38)
+                      NOVALINHA (Linha: 39)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str1: .asciiz ""Conceito: ""
+_str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 0
+    move $fp, $sp
+
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_0
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_1
+_L_else_0:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_2
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_3
+_L_else_2:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_4
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_5
+_L_else_4:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_5:
+_L_endif_3:
+_L_endif_1:
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 0
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/SeqOrdenada.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+FUNC_DEF (Nome: checaOrd, Tipo Retorno: car, Linha: 26)
+  PARAMS:
+    VAR_DECL (Nome: quant, Tipo: int, Linha: 1)
+  CORPO:
+    BLOCK (Linha: 26)
+      DECLARAÇÕES:
+        VAR_DECL (Nome: cont, Tipo: int, Linha: 5)
+        VAR_DECL (Nome: valAtual, Tipo: int, Linha: 3)
+        VAR_DECL (Nome: ordenado, Tipo: car, Linha: 5)
+      COMANDOS:
+        ASSIGN (Linha: 5)
+          ID (Nome: ordenado, Linha: 5)
+          CHARCONST (Valor: 'v', Linha: 5)
+        ASSIGN (Linha: 6)
+          ID (Nome: cont, Linha: 6)
+          INTCONST (Valor: 1, Linha: 6)
+        READ (Linha: 7)
+          ID (Nome: valAtual, Linha: 7)
+        STRINGCONST (Valor: ""digite uma sequencia de "", Linha: 8)
+        WRITE (Linha: 9)
+          ID (Nome: quant, Linha: 9)
+        STRINGCONST (Valor: "" numeros inteiros separados entre si por um espaco"", Linha: 10)
+        WHILE (Linha: 24)
+          OP_BIN (Op: 6, Linha: 12)
+            ID (Nome: cont, Linha: 12)
+            ID (Nome: quant, Linha: 12)
+          BLOCK (Linha: 24)
+            DECLARAÇÕES:
+              VAR_DECL (Nome: proxVal, Tipo: int, Linha: 14)
+            COMANDOS:
+              READ (Linha: 14)
+                ID (Nome: proxVal, Linha: 14)
+              IF (Linha: 22)
+                OP_BIN (Op: 6, Linha: 15)
+                  ID (Nome: valAtual, Linha: 15)
+                  ID (Nome: proxVal, Linha: 15)
+                ASSIGN (Linha: 17)
+                  ID (Nome: valAtual, Linha: 17)
+                  ID (Nome: proxVal, Linha: 17)
+              ELSE
+                BLOCK (Linha: 22)
+                  COMANDOS:
+                    ASSIGN (Linha: 20)
+                      ID (Nome: ordenado, Linha: 20)
+                      CHARCONST (Valor: 'f', Linha: 20)
+                    ASSIGN (Linha: 21)
+                      ID (Nome: cont, Linha: 21)
+                      ID (Nome: quant, Linha: 21)
+              ASSIGN (Linha: 23)
+                ID (Nome: cont, Linha: 23)
+                OP_BIN (Op: 0, Linha: 23)
+                  ID (Nome: cont, Linha: 23)
+                  INTCONST (Valor: 1, Linha: 23)
+        RETURN (Linha: 25)
+          ID (Nome: ordenado, Linha: 25)
+BLOCK (Linha: 46)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: quant, Tipo: int, Linha: 31)
+  COMANDOS:
+    STRINGCONST (Valor: ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."", Linha: 31)
+    READ (Linha: 32)
+      ID (Nome: quant, Linha: 32)
+    WHILE (Linha: 45)
+      OP_BIN (Op: 5, Linha: 34)
+        ID (Nome: quant, Linha: 34)
+        INTCONST (Valor: 0, Linha: 34)
+      BLOCK (Linha: 45)
+        COMANDOS:
+          IF (Linha: 43)
+            OP_BIN (Op: 4, Linha: 35)
+              FUNCCALL (Linha: 35)
+                ID (Nome: checaOrd, Linha: 35)
+                ARGS:
+                  ID (Nome: quant, Linha: 35)
+              CHARCONST (Valor: 'v', Linha: 35)
+            BLOCK (Linha: 39)
+              COMANDOS:
+                STRINGCONST (Valor: ""ORDENADA"", Linha: 37)
+                NOVALINHA (Linha: 38)
+          ELSE
+            BLOCK (Linha: 43)
+              COMANDOS:
+                STRINGCONST (Valor: ""DESORDENADA"", Linha: 41)
+                NOVALINHA (Linha: 42)
+          READ (Linha: 44)
+            ID (Nome: quant, Linha: 44)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+_str4: .asciiz ""DESORDENADA""
+_str3: .asciiz ""ORDENADA""
+_str2: .asciiz ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar.""
+_str1: .asciiz "" numeros inteiros separados entre si por um espaco""
+_str0: .asciiz ""digite uma sequencia de ""
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 0
+    move $fp, $sp
+
+
+checaOrd:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    li $t0, 118
+    sw $t0, -4($fp)
+    li $t0, 1
+    sw $t0, -4($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+_L_startwhile_0:
+    lw $t0, -4($fp)
+    lw $t1, -4($fp)
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_endwhile_1
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    lw $t1, -4($fp)
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_2
+    lw $t0, -4($fp)
+    sw $t0, -4($fp)
+    j _L_endif_3
+_L_else_2:
+    li $t0, 102
+    sw $t0, -4($fp)
+    lw $t0, -4($fp)
+    sw $t0, -4($fp)
+_L_endif_3:
+    lw $t0, -4($fp)
+    li $t1, 1
+    add $t0, $t0, $t1
+    sw $t0, -4($fp)
+    j _L_startwhile_0
+_L_endwhile_1:
+    lw $t0, -4($fp)
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+_L_startwhile_4:
+    lw $t0, -4($fp)
+    li $t1, 0
+    sne $t0, $t0, $t1
+    beq $t0, $zero, _L_endwhile_5
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal checaOrd
+    move $t0, $v0
+    li $t1, 118
+    seq $t0, $t0, $t1
+    beq $t0, $zero, _L_else_6
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_7
+_L_else_6:
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_7:
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    j _L_startwhile_4
+_L_endwhile_5:
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 0
+    li $v0, 10
+    syscall
+
+-e 
+
+
+############################################################
+ARQUIVO FONTE: sintatico/Corretos/variaveisGlobaisVariaveisFuncoesCorreto.g
+############################################################
+
+--- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Variável x redeclarada na linha 8
+Análise léxico-sintática concluída com sucesso.
+
+--- INICIANDO ANÁLISE SEMÂNTICA ---
+--- FIM DA ANÁLISE SEMÂNTICA ---
+Código MIPS gerado com sucesso em output.asm
+--- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
+VAR_DECL (Nome: x, Tipo: int, Linha: 8)
+FUNC_DEF (Nome: duplicado, Tipo Retorno: int, Linha: 6)
+  PARAMS:
+    VAR_DECL (Nome: x, Tipo: int, Linha: 2)
+  CORPO:
+    BLOCK (Linha: 6)
+      COMANDOS:
+        WRITE (Linha: 4)
+          ID (Nome: x, Linha: 4)
+        RETURN (Linha: 5)
+          INTCONST (Valor: 0, Linha: 5)
+BLOCK (Linha: 12)
+  DECLARAÇÕES:
+    VAR_DECL (Nome: x, Tipo: int, Linha: 10)
+  COMANDOS:
+    ASSIGN (Linha: 10)
+      ID (Nome: x, Linha: 10)
+      INTCONST (Valor: 2, Linha: 10)
+    FUNCCALL (Linha: 11)
+      ID (Nome: duplicado, Linha: 11)
+      ARGS:
+        ID (Nome: x, Linha: 11)
+--- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
+
+--- CÓDIGO ASSEMBLY MIPS GERADO ---
+.data
+_nl: .asciiz "\n"
+x: .word 0
+
+.text
+.globl main
+
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 0
+    move $fp, $sp
+
+
+duplicado:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 2
+    sw $t0, -4($fp)
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal duplicado
+    move $t0, $v0
+
+    # Limpeza do Stack Frame
+    addu $sp, $sp, 0
+    li $v0, 10
+    syscall
+
+-e 
+
 
