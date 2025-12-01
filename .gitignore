@@ -59,3 +59,8 @@ result.log
 output.asm
 tests/semantico/.DS_Store
 tests/sintatico/.DS_Store
+lexer/goianinha
+.gitignore
+lexer/goianinha.tab.c
+lexer/goianinha.tab.h
+lexer/goianinha.c
