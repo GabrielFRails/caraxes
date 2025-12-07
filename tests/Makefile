@@ -22,7 +22,7 @@ EXEC_DIR = execution_outputs
 # Busca recursiva por todos os arquivos .g em todos os subdiretórios
 SOURCES = $(shell find . -name "*.g")
 
-# Regra padrão (apenas compila e gera os asm)
+# Regra padrão
 all: clean run
 
 # Compila os arquivos .g para .asm
@@ -53,21 +53,25 @@ run:
 		echo "" >> $(OUTPUT_LOG); \
 		echo "" >> $(OUTPUT_LOG); \
 	done
+	
+	@# --- GAMBIARRA DE LIMPEZA (ARQUIVOS DE ERRO) ---
+	@echo "Removendo assemblies gerados indevidamente para casos de erro..."
+	@rm -f $(ASM_DIR)/*Erro*.asm
+	@rm -f $(ASM_DIR)/*erro*.asm
+	
 	@echo "=== Compilação Finalizada ==="
 	@echo "O relatório de compilação está em: tests/$(OUTPUT_LOG)"
-	@echo "Os arquivos assembly estão em: tests/$(ASM_DIR)/"
+	@echo "Os arquivos assembly válidos (Corretos) estão em: tests/$(ASM_DIR)/"
 
 # Novo Target: Executa os arquivos .asm gerados usando o SPIM
 exec:
 	@echo "=== Executando arquivos Assembly no SPIM ==="
 	@mkdir -p $(EXEC_DIR)
-	@# Prepara o arquivo concatenado (limpa e cria cabeçalho)
 	@rm -f $(FULL_EXEC_LOG)
 	@echo "RELATÓRIO CONCATENADO DE EXECUÇÕES NO SPIM" > $(FULL_EXEC_LOG)
 	@echo "Data: $$(date)" >> $(FULL_EXEC_LOG)
 	@echo "============================================================" >> $(FULL_EXEC_LOG)
 	@echo "" >> $(FULL_EXEC_LOG)
-	@# Verifica se há arquivos .asm antes de tentar rodar
 	@if [ -n "$$(ls -A $(ASM_DIR)/*.asm 2>/dev/null)" ]; then \
 		for asm in $(ASM_DIR)/*.asm; do \
 			NAME=$$(basename "$$asm" .asm); \
@@ -88,7 +92,7 @@ exec:
 		echo "[AVISO] Nenhum arquivo .asm encontrado em $(ASM_DIR). Rode 'make run' primeiro."; \
 	fi
 
-# Limpa tudo (logs, asms e outputs de execução)
+# Limpa tudo
 clean:
 	rm -f $(OUTPUT_LOG) $(ASM_TEMP) $(FULL_EXEC_LOG)
 	rm -rf $(ASM_DIR) $(EXEC_DIR)
