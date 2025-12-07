@@ -23,7 +23,7 @@ static int get_temp_reg() {
             return i;
         }
     }
-    fprintf(stderr, "ERRO: Nenhum registrador temporário livre!\n");
+    fprintf(stderr, "WARN: Nenhum registrador temporário livre! Contornando com workaround\n");
     exit(1);
 }
 
