@@ -12,7 +12,7 @@ _str0: .asciiz ""digite uma sequencia de ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 12
     move $fp, $sp
 
 

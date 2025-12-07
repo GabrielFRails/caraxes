@@ -9,7 +9,7 @@ _str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 8
     move $fp, $sp
 
     li $v0, 4
@@ -621,6 +621,6 @@ _L_endif_21:
 _L_endif_19:
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    addu $sp, $sp, 8
     li $v0, 10
     syscall

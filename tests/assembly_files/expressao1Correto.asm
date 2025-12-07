@@ -8,7 +8,7 @@ _str0: .asciiz "" ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 4
     move $fp, $sp
 
     li $t0, 50
@@ -204,6 +204,6 @@ main:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    addu $sp, $sp, 4
     li $v0, 10
     syscall
