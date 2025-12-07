@@ -1,5 +1,5 @@
 RELATÓRIO DE COMPILAÇÃO - LINGUAGEM GOIANINHA
-Data de execução: Dom  7 Dez 2025 17:30:24 -03
+Data de execução: Dom  7 Dez 2025 20:03:53 -03
 ============================================================
 
 ############################################################
@@ -7,7 +7,7 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -218,7 +218,7 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -832,7 +832,7 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -2257,7 +2257,7 @@ ARQUIVO FONTE: ./semantico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -2468,7 +2468,7 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -3082,7 +3082,7 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -4776,7 +4776,7 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroCarEIntNaEprLin8.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Operação aritmética na linha 9 exige operandos do tipo int.
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -5402,7 +5402,7 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroTIposDiferentesExpEnquntoLin30.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Operação relacional na linha 30 exige operandos do mesmo tipo.
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -5866,7 +5866,7 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatVersao2ErroAtribuicaoVarDeTipoDiferent
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Tipos incompatíveis na atribuição da linha 22. Não é possível atribuir um valor do tipo 'int' a uma variável do tipo 'char'.
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -6329,7 +6329,7 @@ ARQUIVO FONTE: ./sintatico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -6540,7 +6540,7 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -7154,7 +7154,7 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Nenhum registrador temporário livre!
+WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
