@@ -45,10 +45,21 @@ static int generate_node_code(ASTNode* node) {
 
     int reg1, reg2, label1, label2;
     switch (node->type) {
-        case NODE_BLOCK:
-            // Blocos apenas executam seus comandos internos
-            generate_node_code(node->attr.block.stats);
-            break;
+        case NODE_BLOCK: {
+            ASTNode* stmt = node->attr.block.stats;
+            while (stmt != NULL) {
+                int res = generate_node_code(stmt);
+                
+                // Se o comando retornou um registrador (ex: uma atribuição x=1 solta no código),
+                // precisamos liberá-lo, senão o registrador fica "preso" para sempre.
+                if (res != -1) {
+                    free_temp_reg(res);
+                }
+                
+                stmt = stmt->next;
+            }
+            break; 
+        }
         
         case NODE_FUNC_DEF: {
             fprintf(out, "\n%s:\n", node->attr.func_def.name);
@@ -186,16 +197,18 @@ static int generate_node_code(ASTNode* node) {
                 fprintf(stderr, "ERRO de Geração: L-value da atribuição inválido.\n");
                 break;
             }
+            // Gera o código do lado direito (Ex: 50) e pega o registrador (Ex: $t0)
             reg1 = generate_node_code(node->attr.assign_stmt.rvalue);
-            int offset = entry->position * 4;
+            
+            // Gera o SW (Store Word)
             if (entry->is_global) {
                  fprintf(out, "    sw $t%d, %s\n", reg1, entry->name);
             } else {
                  int offset = (entry->position + 1) * 4;
                  fprintf(out, "    sw $t%d, -%d($fp)\n", reg1, offset);
             }
-            free_temp_reg(reg1);
-            break;
+            
+            return reg1; // <--- Retorna $t0 para quem chamou
         }
 
         case NODE_WRITE: {
