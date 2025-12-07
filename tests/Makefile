@@ -10,6 +10,9 @@ OUTPUT_LOG = resultado_testes.txt
 # Nome do arquivo temporário que seu código C gera (hardcoded no goianinha.y)
 ASM_TEMP = output.asm
 
+# Diretório onde os arquivos assembly individuais serão salvos
+ASM_DIR = assembly_files
+
 # Busca recursiva por todos os arquivos .g em todos os subdiretórios
 SOURCES = $(shell find . -name "*.g")
 
@@ -22,6 +25,7 @@ run:
 	@echo "Data de execução: $$(date)" >> $(OUTPUT_LOG)
 	@echo "============================================================" >> $(OUTPUT_LOG)
 	@echo "" >> $(OUTPUT_LOG)
+	@mkdir -p $(ASM_DIR)
 	@for file in $(SOURCES); do \
 		echo "Testando: $$file"; \
 		echo "############################################################" >> $(OUTPUT_LOG); \
@@ -34,7 +38,8 @@ run:
 		echo "--- CÓDIGO ASSEMBLY MIPS GERADO ---" >> $(OUTPUT_LOG); \
 		if [ -f $(ASM_TEMP) ]; then \
 			cat $(ASM_TEMP) >> $(OUTPUT_LOG); \
-			rm $(ASM_TEMP); \
+			NAME=$$(basename "$$file" .g); \
+			mv $(ASM_TEMP) $(ASM_DIR)/$$NAME.asm; \
 		else \
 			echo "[ERRO] O arquivo $(ASM_TEMP) não foi gerado." >> $(OUTPUT_LOG); \
 		fi; \
@@ -43,6 +48,8 @@ run:
 	done
 	@echo "=== Testes Finalizados ==="
 	@echo "O relatório completo está em: tests/$(OUTPUT_LOG)"
+	@echo "Os arquivos assembly individuais estão em: tests/$(ASM_DIR)/"
 
 clean:
 	rm -f $(OUTPUT_LOG) $(ASM_TEMP)
+	rm -rf $(ASM_DIR)
