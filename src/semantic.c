@@ -2,6 +2,8 @@
 #include <string.h>
 #include "semantic.h"
 
+static DataType current_function_return_type = TYPE_UNKNOWN;
+
 int is_declared_in_current_scope(SymbolStack* stack, const char* name) {
     if (stack->top < 0) return 0;
     SymbolEntry* current = stack->tables[stack->top]->entries;
@@ -52,6 +54,8 @@ void check_node(ASTNode* node, SymbolStack* stack) {
         }
         case NODE_FUNC_DEF: {
             // 1. Abre Escopo da Função
+            DataType old_type = current_function_return_type;
+            current_function_return_type = node->attr.func_def.return_type;
             symbol_table_new_scope(stack);
             
             // 2. Registra os Parâmetros neste escopo
@@ -70,6 +74,7 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             
             // 4. Fecha Escopo
             symbol_table_remove_scope(stack);
+            current_function_return_type = old_type;
             break;
         }
 
@@ -154,9 +159,22 @@ void check_node(ASTNode* node, SymbolStack* stack) {
             break;
         }
 
-        // por agora apenas verifica a expressao de retorno
         case NODE_RETURN: {
+            // 1. Analisa a expressão retornada
             check_node(node->attr.write_ret_stmt.expression, stack);
+
+            // 2. Validação de Tipo
+            DataType expr_type = node->attr.write_ret_stmt.expression->type_info;
+            
+            if (current_function_return_type != TYPE_UNKNOWN && 
+                expr_type != TYPE_UNKNOWN && 
+                expr_type != current_function_return_type) {
+
+                fprintf(stderr, "ERRO SEMÂNTICO: Tipo de retorno incompatível na linha %d. A função espera '%s', mas retornou '%s'.\n", 
+                        node->line,
+                        current_function_return_type == TYPE_INT ? "int" : "car",
+                        expr_type == TYPE_INT ? "int" : "car");
+            }
             break;
         }
         case NODE_ID: {
