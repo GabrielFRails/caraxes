@@ -71,6 +71,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -91,6 +106,87 @@ _L_endwhile_3:
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha

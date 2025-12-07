@@ -59,72 +59,139 @@ _L_startwhile_0:
     sw $t0, -4($fp)
     j _L_endif_3
 _L_else_2:
-    li $t0, 102
-    sw $t0, -4($fp)
-    lw $t0, -4($fp)
-    sw $t0, -4($fp)
+    li $t1, 102
+    sw $t1, -4($fp)
+    lw $t1, -4($fp)
+    sw $t1, -4($fp)
 _L_endif_3:
-    lw $t0, -4($fp)
-    li $t1, 1
-    add $t0, $t0, $t1
-    sw $t0, -4($fp)
+    lw $t1, -4($fp)
+    li $t2, 1
+    add $t1, $t1, $t2
+    sw $t1, -4($fp)
+    lw $t2, -4($fp)
+    lw $t3, -4($fp)
+    slt $t2, $t2, $t3
+    beq $t2, $zero, _L_else_4
+    lw $t2, -4($fp)
+    sw $t2, -4($fp)
+    j _L_endif_5
+_L_else_4:
+    li $t3, 102
+    sw $t3, -4($fp)
+    lw $t3, -4($fp)
+    sw $t3, -4($fp)
+_L_endif_5:
+    lw $t3, -4($fp)
+    li $t4, 1
+    add $t3, $t3, $t4
+    sw $t3, -4($fp)
+    lw $t4, -4($fp)
+    li $t5, 1
+    add $t4, $t4, $t5
+    sw $t4, -4($fp)
     j _L_startwhile_0
 _L_endwhile_1:
-    lw $t0, -4($fp)
-    move $v0, $t0
-    lw $ra, 20($sp)
-    lw $fp, 16($sp)
-    addu $sp, $sp, 32
-    jr $ra
+    lw $t4, -4($fp)
+    move $v0, $t4
     lw $ra, 20($sp)
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
     li $v0, 4
     syscall
+    lw $t4, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+_L_startwhile_6:
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_endwhile_7
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-_L_startwhile_4:
-    lw $t0, -4($fp)
-    li $t1, 0
-    sne $t0, $t0, $t1
-    beq $t0, $zero, _L_endwhile_5
-    lw $t1, -4($fp)
-    move $a0, $t1
-    jal checaOrd
-    move $t0, $v0
-    li $t1, 118
-    seq $t0, $t0, $t1
-    beq $t0, $zero, _L_else_6
-    li $v0, 4
-    syscall
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_else_8
+    lw $t4, -4($fp)
+    sw $t4, -4($fp)
+    j _L_endif_9
+_L_else_8:
+    li $t5, 102
+    sw $t5, -4($fp)
+    lw $t5, -4($fp)
+    sw $t5, -4($fp)
+_L_endif_9:
+    lw $t5, -4($fp)
+    li $t6, 1
+    add $t5, $t5, $t6
+    sw $t5, -4($fp)
+    lw $t6, -4($fp)
+    lw $t7, -4($fp)
+    slt $t6, $t6, $t7
+    beq $t6, $zero, _L_else_10
+    lw $t6, -4($fp)
+    sw $t6, -4($fp)
+    j _L_endif_11
+_L_else_10:
+    li $t7, 102
+    sw $t7, -4($fp)
+    lw $t7, -4($fp)
+    sw $t7, -4($fp)
+_L_endif_11:
+    lw $t7, -4($fp)
+    li $t8, 1
+    add $t7, $t7, $t8
+    sw $t7, -4($fp)
+    lw $t8, -4($fp)
+    li $t9, 1
+    add $t8, $t8, $t9
+    sw $t8, -4($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t8, -4($fp)
+    move $v0, $t8
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $t8, -4($fp)
 
-    # Imprime uma nova linha
-    la $a0, _nl
+    # Escreve um inteiro
+    move $a0, $t8
+    li $v0, 1
+    syscall
     li $v0, 4
     syscall
-    j _L_endif_7
-_L_else_6:
-    li $v0, 4
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-_L_endif_7:
+_L_startwhile_12:
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_endwhile_13
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-    j _L_startwhile_4
-_L_endwhile_5:
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_else_14
+    lw $t8, -4($fp)
+    sw $t8, -4($fp)
+    j _L_endif_15
+_L_else_14:
+    li $t9, 102
+    sw $t9, -4($fp)
+    lw $t9, -4($fp)
+    sw $t9, -4($fp)
+_L_endif_15:
+    lw $t9, -4($fp)

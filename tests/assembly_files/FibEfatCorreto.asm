@@ -129,6 +129,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -136,46 +151,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -185,14 +278,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -202,16 +303,40 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat

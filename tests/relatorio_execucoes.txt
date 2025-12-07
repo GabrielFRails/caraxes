@@ -1,0 +1,253 @@
+RELATÓRIO CONCATENADO DE EXECUÇÕES NO SPIM
+Data: Dom  7 Dez 2025 17:30:46 -03
+============================================================
+
+############################################################
+EXECUÇÃO: erroLin6AsteriscoAmais.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: erroLin6Caractereinvalido.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: expressao1Correto.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+50Memory address out of bounds
+
+
+############################################################
+EXECUÇÃO: expressao1ErroLin4CadeiaNaoTermina.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: expressao1ErroLin4PontoVirg.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: fatorialCorreto.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/fatorialCorreto.asm
+	  .asciiz "" e: ""
+	             ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: fatorialErroEntquantoSemExecuteLinha13.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: fatorialErroLin15String2linhas.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: fatorialErroLin3NomeDeclaradoNoMesmoEscopo.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/fatorialErroLin3NomeDeclaradoNoMesmoEscopo.asm
+	  .asciiz "" e: ""
+	             ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: fatorialErroLin5TipoRetornado.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/fatorialErroLin5TipoRetornado.asm
+	  .asciiz "" e: ""
+	             ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FibEfatCorreto.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/FibEfatCorreto.asm
+	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FibEfatCorretoVersao2.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/FibEfatCorretoVersao2.asm
+	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FibEfatErroBlocoEnquantoNaoTerminaLin30.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: FibEfatErroCarEIntNaEprLin8.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/FibEfatErroCarEIntNaEprLin8.asm
+	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FibEfatErroTIposDiferentesExpEnquntoLin30.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/FibEfatErroTIposDiferentesExpEnquntoLin30.asm
+	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FibEfatVersao2ErroAtribuicaoVarDeTipoDiferenteDaExpressaoLin22.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/FibEfatVersao2ErroAtribuicaoVarDeTipoDiferenteDaExpressaoLin22.asm
+	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: FuncSomaErroNumParamDeChamaaDifNumParamFormal.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: FuncSomaErroParamDeChamaaDifDoParamFormalLin10.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: NotaEmConceito.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/NotaEmConceito.asm
+	  .asciiz ""Conceito: ""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: NotaEmConceitoErroSenaoSemSeLin25.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: SeqOrdenada.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+spim: (parser) syntax error on line 3 of file assembly_files/SeqOrdenada.asm
+	  .asciiz ""DESORDENADA""
+	            ^
+The following symbols are undefined:
+main
+
+Instruction references undefined symbol at 0x00400014
+  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+
+
+############################################################
+EXECUÇÃO: sintatico_fatorialErroLin1Comentario.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: string_multilinha.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+
+
+############################################################
+EXECUÇÃO: variaveisGlobaisVariaveisFuncoesCorreto.asm
+############################################################
+
+Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
+1
+

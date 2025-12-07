@@ -49,6 +49,11 @@ soma:
     li $v0, 4
     syscall
 
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
     li $v0, 10

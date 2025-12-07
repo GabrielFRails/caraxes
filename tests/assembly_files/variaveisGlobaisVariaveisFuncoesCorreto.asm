@@ -30,6 +30,12 @@ duplicado:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
     lw $ra, 20($sp)
     lw $fp, 16($sp)
     addu $sp, $sp, 32

@@ -1,5 +1,5 @@
 RELATÓRIO DE COMPILAÇÃO - LINGUAGEM GOIANINHA
-Data de execução: Dom  7 Dez 2025 16:45:52 -03
+Data de execução: Dom  7 Dez 2025 17:30:24 -03
 ============================================================
 
 ############################################################
@@ -7,99 +7,11 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: checaOrd, Tipo Retorno: car, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 1)
-  CORPO:
-    BLOCK (Linha: 26)
-      DECLARAÇÕES:
-        VAR_DECL (Nome: cont, Tipo: int, Linha: 5)
-        VAR_DECL (Nome: valAtual, Tipo: int, Linha: 3)
-        VAR_DECL (Nome: ordenado, Tipo: car, Linha: 5)
-      COMANDOS:
-        ASSIGN (Linha: 5)
-          ID (Nome: ordenado, Linha: 5)
-          CHARCONST (Valor: 'v', Linha: 5)
-        ASSIGN (Linha: 6)
-          ID (Nome: cont, Linha: 6)
-          INTCONST (Valor: 1, Linha: 6)
-        READ (Linha: 7)
-          ID (Nome: valAtual, Linha: 7)
-        STRINGCONST (Valor: ""digite uma sequencia de "", Linha: 8)
-        WRITE (Linha: 9)
-          ID (Nome: quant, Linha: 9)
-        STRINGCONST (Valor: "" numeros inteiros separados entre si por um espaco"", Linha: 10)
-        WHILE (Linha: 24)
-          OP_BIN (Op: 6, Linha: 12)
-            ID (Nome: cont, Linha: 12)
-            ID (Nome: quant, Linha: 12)
-          BLOCK (Linha: 24)
-            DECLARAÇÕES:
-              VAR_DECL (Nome: proxVal, Tipo: int, Linha: 14)
-            COMANDOS:
-              READ (Linha: 14)
-                ID (Nome: proxVal, Linha: 14)
-              IF (Linha: 22)
-                OP_BIN (Op: 6, Linha: 15)
-                  ID (Nome: valAtual, Linha: 15)
-                  ID (Nome: proxVal, Linha: 15)
-                ASSIGN (Linha: 17)
-                  ID (Nome: valAtual, Linha: 17)
-                  ID (Nome: proxVal, Linha: 17)
-              ELSE
-                BLOCK (Linha: 22)
-                  COMANDOS:
-                    ASSIGN (Linha: 20)
-                      ID (Nome: ordenado, Linha: 20)
-                      CHARCONST (Valor: 'f', Linha: 20)
-                    ASSIGN (Linha: 21)
-                      ID (Nome: cont, Linha: 21)
-                      ID (Nome: quant, Linha: 21)
-              ASSIGN (Linha: 23)
-                ID (Nome: cont, Linha: 23)
-                OP_BIN (Op: 0, Linha: 23)
-                  ID (Nome: cont, Linha: 23)
-                  INTCONST (Valor: 1, Linha: 23)
-        RETURN (Linha: 25)
-          ID (Nome: ordenado, Linha: 25)
-BLOCK (Linha: 46)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 31)
-  COMANDOS:
-    STRINGCONST (Valor: ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."", Linha: 31)
-    READ (Linha: 32)
-      ID (Nome: quant, Linha: 32)
-    WHILE (Linha: 45)
-      OP_BIN (Op: 5, Linha: 34)
-        ID (Nome: quant, Linha: 34)
-        INTCONST (Valor: 0, Linha: 34)
-      BLOCK (Linha: 45)
-        COMANDOS:
-          IF (Linha: 43)
-            OP_BIN (Op: 4, Linha: 35)
-              FUNCCALL (Linha: 35)
-                ID (Nome: checaOrd, Linha: 35)
-                ARGS:
-                  ID (Nome: quant, Linha: 35)
-              CHARCONST (Valor: 'v', Linha: 35)
-            BLOCK (Linha: 39)
-              COMANDOS:
-                STRINGCONST (Valor: ""ORDENADA"", Linha: 37)
-                NOVALINHA (Linha: 38)
-          ELSE
-            BLOCK (Linha: 43)
-              COMANDOS:
-                STRINGCONST (Valor: ""DESORDENADA"", Linha: 41)
-                NOVALINHA (Linha: 42)
-          READ (Linha: 44)
-            ID (Nome: quant, Linha: 44)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -163,75 +75,142 @@ _L_startwhile_0:
     sw $t0, -4($fp)
     j _L_endif_3
 _L_else_2:
-    li $t0, 102
-    sw $t0, -4($fp)
-    lw $t0, -4($fp)
-    sw $t0, -4($fp)
+    li $t1, 102
+    sw $t1, -4($fp)
+    lw $t1, -4($fp)
+    sw $t1, -4($fp)
 _L_endif_3:
-    lw $t0, -4($fp)
-    li $t1, 1
-    add $t0, $t0, $t1
-    sw $t0, -4($fp)
+    lw $t1, -4($fp)
+    li $t2, 1
+    add $t1, $t1, $t2
+    sw $t1, -4($fp)
+    lw $t2, -4($fp)
+    lw $t3, -4($fp)
+    slt $t2, $t2, $t3
+    beq $t2, $zero, _L_else_4
+    lw $t2, -4($fp)
+    sw $t2, -4($fp)
+    j _L_endif_5
+_L_else_4:
+    li $t3, 102
+    sw $t3, -4($fp)
+    lw $t3, -4($fp)
+    sw $t3, -4($fp)
+_L_endif_5:
+    lw $t3, -4($fp)
+    li $t4, 1
+    add $t3, $t3, $t4
+    sw $t3, -4($fp)
+    lw $t4, -4($fp)
+    li $t5, 1
+    add $t4, $t4, $t5
+    sw $t4, -4($fp)
     j _L_startwhile_0
 _L_endwhile_1:
-    lw $t0, -4($fp)
-    move $v0, $t0
-    lw $ra, 20($sp)
-    lw $fp, 16($sp)
-    addu $sp, $sp, 32
-    jr $ra
+    lw $t4, -4($fp)
+    move $v0, $t4
     lw $ra, 20($sp)
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
     li $v0, 4
     syscall
+    lw $t4, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+_L_startwhile_6:
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_endwhile_7
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-_L_startwhile_4:
-    lw $t0, -4($fp)
-    li $t1, 0
-    sne $t0, $t0, $t1
-    beq $t0, $zero, _L_endwhile_5
-    lw $t1, -4($fp)
-    move $a0, $t1
-    jal checaOrd
-    move $t0, $v0
-    li $t1, 118
-    seq $t0, $t0, $t1
-    beq $t0, $zero, _L_else_6
-    li $v0, 4
-    syscall
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_else_8
+    lw $t4, -4($fp)
+    sw $t4, -4($fp)
+    j _L_endif_9
+_L_else_8:
+    li $t5, 102
+    sw $t5, -4($fp)
+    lw $t5, -4($fp)
+    sw $t5, -4($fp)
+_L_endif_9:
+    lw $t5, -4($fp)
+    li $t6, 1
+    add $t5, $t5, $t6
+    sw $t5, -4($fp)
+    lw $t6, -4($fp)
+    lw $t7, -4($fp)
+    slt $t6, $t6, $t7
+    beq $t6, $zero, _L_else_10
+    lw $t6, -4($fp)
+    sw $t6, -4($fp)
+    j _L_endif_11
+_L_else_10:
+    li $t7, 102
+    sw $t7, -4($fp)
+    lw $t7, -4($fp)
+    sw $t7, -4($fp)
+_L_endif_11:
+    lw $t7, -4($fp)
+    li $t8, 1
+    add $t7, $t7, $t8
+    sw $t7, -4($fp)
+    lw $t8, -4($fp)
+    li $t9, 1
+    add $t8, $t8, $t9
+    sw $t8, -4($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t8, -4($fp)
+    move $v0, $t8
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $t8, -4($fp)
 
-    # Imprime uma nova linha
-    la $a0, _nl
+    # Escreve um inteiro
+    move $a0, $t8
+    li $v0, 1
+    syscall
     li $v0, 4
     syscall
-    j _L_endif_7
-_L_else_6:
-    li $v0, 4
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-_L_endif_7:
+_L_startwhile_12:
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_endwhile_13
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-    j _L_startwhile_4
-_L_endwhile_5:
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_else_14
+    lw $t8, -4($fp)
+    sw $t8, -4($fp)
+    j _L_endif_15
+_L_else_14:
+    li $t9, 102
+    sw $t9, -4($fp)
+    lw $t9, -4($fp)
+    sw $t9, -4($fp)
+_L_endif_15:
+    lw $t9, -4($fp)
 
 
 ############################################################
@@ -239,138 +218,11 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 9)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 3)
-  CORPO:
-    BLOCK (Linha: 9)
-      COMANDOS:
-        IF (Linha: 8)
-          OP_BIN (Op: 4, Linha: 4)
-            ID (Nome: n, Linha: 4)
-            INTCONST (Valor: 0, Linha: 4)
-          RETURN (Linha: 6)
-            INTCONST (Valor: 1, Linha: 6)
-        ELSE
-          RETURN (Linha: 8)
-            OP_BIN (Op: 2, Linha: 8)
-              ID (Nome: n, Linha: 8)
-              FUNCCALL (Linha: 8)
-                ID (Nome: fatorial, Linha: 8)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 8)
-                    ID (Nome: n, Linha: 8)
-                    INTCONST (Valor: 1, Linha: 8)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 12)
-  CORPO:
-    BLOCK (Linha: 25)
-      COMANDOS:
-        IF (Linha: 24)
-          OP_BIN (Op: 4, Linha: 13)
-            ID (Nome: seq, Linha: 13)
-            INTCONST (Valor: 0, Linha: 13)
-          RETURN (Linha: 15)
-            INTCONST (Valor: 0, Linha: 15)
-        ELSE
-          IF (Linha: 24)
-            OP_BIN (Op: 4, Linha: 17)
-              ID (Nome: seq, Linha: 17)
-              INTCONST (Valor: 1, Linha: 17)
-            RETURN (Linha: 19)
-              INTCONST (Valor: 1, Linha: 19)
-          ELSE
-            BLOCK (Linha: 24)
-              DECLARAÇÕES:
-                VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 22)
-              COMANDOS:
-                ASSIGN (Linha: 22)
-                  ID (Nome: somaFunc, Linha: 22)
-                  OP_BIN (Op: 0, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 1, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 2, Linha: 22)
-                RETURN (Linha: 23)
-                  ID (Nome: somaFunc, Linha: 23)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
-BLOCK (Linha: 54)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
-  COMANDOS:
-    ASSIGN (Linha: 29)
-      ID (Nome: n, Linha: 29)
-      OP_BIN (Op: 1, Linha: 29)
-        INTCONST (Valor: 1, Linha: 29)
-        INTCONST (Valor: 0, Linha: 29)
-    WHILE (Linha: 34)
-      OP_BIN (Op: 6, Linha: 30)
-        ID (Nome: n, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-      BLOCK (Linha: 34)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
-          NOVALINHA (Linha: 32)
-          READ (Linha: 33)
-            ID (Nome: n, Linha: 33)
-    ASSIGN (Linha: 35)
-      ID (Nome: fat, Linha: 35)
-      FUNCCALL (Linha: 35)
-        ID (Nome: fatorial, Linha: 35)
-        ARGS:
-          ID (Nome: n, Linha: 35)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
-    WRITE (Linha: 37)
-      ID (Nome: n, Linha: 37)
-    STRINGCONST (Valor: "" e: "", Linha: 38)
-    WRITE (Linha: 39)
-      ID (Nome: fat, Linha: 39)
-    NOVALINHA (Linha: 40)
-    ASSIGN (Linha: 41)
-      ID (Nome: fib, Linha: 41)
-      FUNCCALL (Linha: 41)
-        ID (Nome: fibonacci, Linha: 41)
-        ARGS:
-          ID (Nome: n, Linha: 41)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
-    WRITE (Linha: 43)
-      ID (Nome: n, Linha: 43)
-    STRINGCONST (Valor: "" e: "", Linha: 44)
-    WRITE (Linha: 45)
-      ID (Nome: fib, Linha: 45)
-    NOVALINHA (Linha: 46)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
-    ASSIGN (Linha: 48)
-      ID (Nome: somaFunc, Linha: 48)
-      OP_BIN (Op: 0, Linha: 48)
-        ID (Nome: fat, Linha: 48)
-        ID (Nome: fib, Linha: 48)
-    WRITE (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-    NOVALINHA (Linha: 50)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
-    WRITE (Linha: 52)
-      OP_BIN (Op: 1, Linha: 52)
-        ID (Nome: fat, Linha: 52)
-        ID (Nome: fib, Linha: 52)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -506,6 +358,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -513,46 +380,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -562,14 +507,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -579,19 +532,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -654,8 +631,8 @@ main:
 
     li $t0, 50
     sw $t0, -4($fp)
-    sw $t-1, -4($fp)
-    sw $t-1, -4($fp)
+    sw $t0, -4($fp)
+    sw $t0, -4($fp)
     lw $t0, -4($fp)
 
     # Escreve um inteiro
@@ -696,6 +673,153 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -708,131 +832,11 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
-  CORPO:
-    BLOCK (Linha: 10)
-      COMANDOS:
-        IF (Linha: 9)
-          OP_BIN (Op: 4, Linha: 5)
-            ID (Nome: n, Linha: 5)
-            INTCONST (Valor: 0, Linha: 5)
-          RETURN (Linha: 7)
-            INTCONST (Valor: 1, Linha: 7)
-        ELSE
-          RETURN (Linha: 9)
-            OP_BIN (Op: 2, Linha: 9)
-              ID (Nome: n, Linha: 9)
-              FUNCCALL (Linha: 9)
-                ID (Nome: fatorial, Linha: 9)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 9)
-                    ID (Nome: n, Linha: 9)
-                    INTCONST (Valor: 1, Linha: 9)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 28)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 16)
-  CORPO:
-    BLOCK (Linha: 26)
-      COMANDOS:
-        IF (Linha: 25)
-          OP_BIN (Op: 4, Linha: 17)
-            ID (Nome: seq, Linha: 17)
-            INTCONST (Valor: 0, Linha: 17)
-          RETURN (Linha: 19)
-            INTCONST (Valor: 0, Linha: 19)
-        ELSE
-          IF (Linha: 25)
-            OP_BIN (Op: 4, Linha: 21)
-              ID (Nome: seq, Linha: 21)
-              INTCONST (Valor: 1, Linha: 21)
-            RETURN (Linha: 23)
-              INTCONST (Valor: 1, Linha: 23)
-          ELSE
-            RETURN (Linha: 25)
-              OP_BIN (Op: 0, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 1, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 2, Linha: 25)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 28)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 27)
-BLOCK (Linha: 55)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 30)
-  COMANDOS:
-    ASSIGN (Linha: 30)
-      ID (Nome: n, Linha: 30)
-      OP_BIN (Op: 1, Linha: 30)
-        INTCONST (Valor: 1, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-    WHILE (Linha: 35)
-      OP_BIN (Op: 6, Linha: 31)
-        ID (Nome: n, Linha: 31)
-        INTCONST (Valor: 0, Linha: 31)
-      BLOCK (Linha: 35)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 32)
-          NOVALINHA (Linha: 33)
-          READ (Linha: 34)
-            ID (Nome: n, Linha: 34)
-    ASSIGN (Linha: 36)
-      ID (Nome: fat, Linha: 36)
-      FUNCCALL (Linha: 36)
-        ID (Nome: fatorial, Linha: 36)
-        ARGS:
-          ID (Nome: n, Linha: 36)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 37)
-    WRITE (Linha: 38)
-      ID (Nome: n, Linha: 38)
-    STRINGCONST (Valor: "" e: "", Linha: 39)
-    WRITE (Linha: 40)
-      ID (Nome: fat, Linha: 40)
-    NOVALINHA (Linha: 41)
-    ASSIGN (Linha: 42)
-      ID (Nome: fib, Linha: 42)
-      FUNCCALL (Linha: 42)
-        ID (Nome: fibonacci, Linha: 42)
-        ARGS:
-          ID (Nome: n, Linha: 42)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 43)
-    WRITE (Linha: 44)
-      ID (Nome: n, Linha: 44)
-    STRINGCONST (Valor: "" e: "", Linha: 45)
-    WRITE (Linha: 46)
-      ID (Nome: fib, Linha: 46)
-    NOVALINHA (Linha: 47)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 48)
-    ASSIGN (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-      OP_BIN (Op: 0, Linha: 49)
-        ID (Nome: fat, Linha: 49)
-        ID (Nome: fib, Linha: 49)
-    WRITE (Linha: 50)
-      ID (Nome: somaFunc, Linha: 50)
-    NOVALINHA (Linha: 51)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 52)
-    WRITE (Linha: 53)
-      OP_BIN (Op: 1, Linha: 53)
-        ID (Nome: fat, Linha: 53)
-        ID (Nome: fib, Linha: 53)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -966,6 +970,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -973,46 +992,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -1022,14 +1119,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -1039,19 +1144,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -1117,6 +1246,12 @@ duplicado:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
     li $t0, 0
     move $v0, $t0
     lw $ra, 20($sp)
@@ -1271,6 +1406,22 @@ main:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_1
 _L_else_0:
     lw $t0, -4($fp)
@@ -1286,6 +1437,22 @@ _L_else_0:
     # Escreve um caractere
     move $a0, $t0
     li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha
@@ -1313,6 +1480,22 @@ _L_else_2:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_5
 _L_else_4:
     li $t0, 65
@@ -1330,9 +1513,475 @@ _L_else_4:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 _L_endif_5:
 _L_endif_3:
 _L_endif_1:
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_6
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_7
+_L_else_6:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_8
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_9
+_L_else_8:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_10
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_11
+_L_else_10:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_11:
+_L_endif_9:
+_L_endif_7:
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_12
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_13
+_L_else_12:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_14
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_15
+_L_else_14:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_16
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_17
+_L_else_16:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_17:
+_L_endif_15:
+_L_endif_13:
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_18
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_19
+_L_else_18:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_20
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_21
+_L_else_20:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_22
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_23
+_L_else_22:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_23:
+_L_endif_21:
+_L_endif_19:
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -1474,6 +2123,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -1500,6 +2164,87 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -1512,99 +2257,11 @@ ARQUIVO FONTE: ./semantico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: checaOrd, Tipo Retorno: car, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 1)
-  CORPO:
-    BLOCK (Linha: 26)
-      DECLARAÇÕES:
-        VAR_DECL (Nome: cont, Tipo: int, Linha: 5)
-        VAR_DECL (Nome: valAtual, Tipo: int, Linha: 3)
-        VAR_DECL (Nome: ordenado, Tipo: car, Linha: 5)
-      COMANDOS:
-        ASSIGN (Linha: 5)
-          ID (Nome: ordenado, Linha: 5)
-          CHARCONST (Valor: 'v', Linha: 5)
-        ASSIGN (Linha: 6)
-          ID (Nome: cont, Linha: 6)
-          INTCONST (Valor: 1, Linha: 6)
-        READ (Linha: 7)
-          ID (Nome: valAtual, Linha: 7)
-        STRINGCONST (Valor: ""digite uma sequencia de "", Linha: 8)
-        WRITE (Linha: 9)
-          ID (Nome: quant, Linha: 9)
-        STRINGCONST (Valor: "" numeros inteiros separados entre si por um espaco"", Linha: 10)
-        WHILE (Linha: 24)
-          OP_BIN (Op: 6, Linha: 12)
-            ID (Nome: cont, Linha: 12)
-            ID (Nome: quant, Linha: 12)
-          BLOCK (Linha: 24)
-            DECLARAÇÕES:
-              VAR_DECL (Nome: proxVal, Tipo: int, Linha: 14)
-            COMANDOS:
-              READ (Linha: 14)
-                ID (Nome: proxVal, Linha: 14)
-              IF (Linha: 22)
-                OP_BIN (Op: 6, Linha: 15)
-                  ID (Nome: valAtual, Linha: 15)
-                  ID (Nome: proxVal, Linha: 15)
-                ASSIGN (Linha: 17)
-                  ID (Nome: valAtual, Linha: 17)
-                  ID (Nome: proxVal, Linha: 17)
-              ELSE
-                BLOCK (Linha: 22)
-                  COMANDOS:
-                    ASSIGN (Linha: 20)
-                      ID (Nome: ordenado, Linha: 20)
-                      CHARCONST (Valor: 'f', Linha: 20)
-                    ASSIGN (Linha: 21)
-                      ID (Nome: cont, Linha: 21)
-                      ID (Nome: quant, Linha: 21)
-              ASSIGN (Linha: 23)
-                ID (Nome: cont, Linha: 23)
-                OP_BIN (Op: 0, Linha: 23)
-                  ID (Nome: cont, Linha: 23)
-                  INTCONST (Valor: 1, Linha: 23)
-        RETURN (Linha: 25)
-          ID (Nome: ordenado, Linha: 25)
-BLOCK (Linha: 46)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 31)
-  COMANDOS:
-    STRINGCONST (Valor: ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."", Linha: 31)
-    READ (Linha: 32)
-      ID (Nome: quant, Linha: 32)
-    WHILE (Linha: 45)
-      OP_BIN (Op: 5, Linha: 34)
-        ID (Nome: quant, Linha: 34)
-        INTCONST (Valor: 0, Linha: 34)
-      BLOCK (Linha: 45)
-        COMANDOS:
-          IF (Linha: 43)
-            OP_BIN (Op: 4, Linha: 35)
-              FUNCCALL (Linha: 35)
-                ID (Nome: checaOrd, Linha: 35)
-                ARGS:
-                  ID (Nome: quant, Linha: 35)
-              CHARCONST (Valor: 'v', Linha: 35)
-            BLOCK (Linha: 39)
-              COMANDOS:
-                STRINGCONST (Valor: ""ORDENADA"", Linha: 37)
-                NOVALINHA (Linha: 38)
-          ELSE
-            BLOCK (Linha: 43)
-              COMANDOS:
-                STRINGCONST (Valor: ""DESORDENADA"", Linha: 41)
-                NOVALINHA (Linha: 42)
-          READ (Linha: 44)
-            ID (Nome: quant, Linha: 44)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -1668,75 +2325,142 @@ _L_startwhile_0:
     sw $t0, -4($fp)
     j _L_endif_3
 _L_else_2:
-    li $t0, 102
-    sw $t0, -4($fp)
-    lw $t0, -4($fp)
-    sw $t0, -4($fp)
+    li $t1, 102
+    sw $t1, -4($fp)
+    lw $t1, -4($fp)
+    sw $t1, -4($fp)
 _L_endif_3:
-    lw $t0, -4($fp)
-    li $t1, 1
-    add $t0, $t0, $t1
-    sw $t0, -4($fp)
+    lw $t1, -4($fp)
+    li $t2, 1
+    add $t1, $t1, $t2
+    sw $t1, -4($fp)
+    lw $t2, -4($fp)
+    lw $t3, -4($fp)
+    slt $t2, $t2, $t3
+    beq $t2, $zero, _L_else_4
+    lw $t2, -4($fp)
+    sw $t2, -4($fp)
+    j _L_endif_5
+_L_else_4:
+    li $t3, 102
+    sw $t3, -4($fp)
+    lw $t3, -4($fp)
+    sw $t3, -4($fp)
+_L_endif_5:
+    lw $t3, -4($fp)
+    li $t4, 1
+    add $t3, $t3, $t4
+    sw $t3, -4($fp)
+    lw $t4, -4($fp)
+    li $t5, 1
+    add $t4, $t4, $t5
+    sw $t4, -4($fp)
     j _L_startwhile_0
 _L_endwhile_1:
-    lw $t0, -4($fp)
-    move $v0, $t0
-    lw $ra, 20($sp)
-    lw $fp, 16($sp)
-    addu $sp, $sp, 32
-    jr $ra
+    lw $t4, -4($fp)
+    move $v0, $t4
     lw $ra, 20($sp)
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
     li $v0, 4
     syscall
+    lw $t4, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+_L_startwhile_6:
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_endwhile_7
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-_L_startwhile_4:
-    lw $t0, -4($fp)
-    li $t1, 0
-    sne $t0, $t0, $t1
-    beq $t0, $zero, _L_endwhile_5
-    lw $t1, -4($fp)
-    move $a0, $t1
-    jal checaOrd
-    move $t0, $v0
-    li $t1, 118
-    seq $t0, $t0, $t1
-    beq $t0, $zero, _L_else_6
-    li $v0, 4
-    syscall
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_else_8
+    lw $t4, -4($fp)
+    sw $t4, -4($fp)
+    j _L_endif_9
+_L_else_8:
+    li $t5, 102
+    sw $t5, -4($fp)
+    lw $t5, -4($fp)
+    sw $t5, -4($fp)
+_L_endif_9:
+    lw $t5, -4($fp)
+    li $t6, 1
+    add $t5, $t5, $t6
+    sw $t5, -4($fp)
+    lw $t6, -4($fp)
+    lw $t7, -4($fp)
+    slt $t6, $t6, $t7
+    beq $t6, $zero, _L_else_10
+    lw $t6, -4($fp)
+    sw $t6, -4($fp)
+    j _L_endif_11
+_L_else_10:
+    li $t7, 102
+    sw $t7, -4($fp)
+    lw $t7, -4($fp)
+    sw $t7, -4($fp)
+_L_endif_11:
+    lw $t7, -4($fp)
+    li $t8, 1
+    add $t7, $t7, $t8
+    sw $t7, -4($fp)
+    lw $t8, -4($fp)
+    li $t9, 1
+    add $t8, $t8, $t9
+    sw $t8, -4($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t8, -4($fp)
+    move $v0, $t8
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $t8, -4($fp)
 
-    # Imprime uma nova linha
-    la $a0, _nl
+    # Escreve um inteiro
+    move $a0, $t8
+    li $v0, 1
+    syscall
     li $v0, 4
     syscall
-    j _L_endif_7
-_L_else_6:
-    li $v0, 4
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-_L_endif_7:
+_L_startwhile_12:
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_endwhile_13
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-    j _L_startwhile_4
-_L_endwhile_5:
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_else_14
+    lw $t8, -4($fp)
+    sw $t8, -4($fp)
+    j _L_endif_15
+_L_else_14:
+    li $t9, 102
+    sw $t9, -4($fp)
+    lw $t9, -4($fp)
+    sw $t9, -4($fp)
+_L_endif_15:
+    lw $t9, -4($fp)
 
 
 ############################################################
@@ -1744,138 +2468,11 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 9)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 3)
-  CORPO:
-    BLOCK (Linha: 9)
-      COMANDOS:
-        IF (Linha: 8)
-          OP_BIN (Op: 4, Linha: 4)
-            ID (Nome: n, Linha: 4)
-            INTCONST (Valor: 0, Linha: 4)
-          RETURN (Linha: 6)
-            INTCONST (Valor: 1, Linha: 6)
-        ELSE
-          RETURN (Linha: 8)
-            OP_BIN (Op: 2, Linha: 8)
-              ID (Nome: n, Linha: 8)
-              FUNCCALL (Linha: 8)
-                ID (Nome: fatorial, Linha: 8)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 8)
-                    ID (Nome: n, Linha: 8)
-                    INTCONST (Valor: 1, Linha: 8)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 12)
-  CORPO:
-    BLOCK (Linha: 25)
-      COMANDOS:
-        IF (Linha: 24)
-          OP_BIN (Op: 4, Linha: 13)
-            ID (Nome: seq, Linha: 13)
-            INTCONST (Valor: 0, Linha: 13)
-          RETURN (Linha: 15)
-            INTCONST (Valor: 0, Linha: 15)
-        ELSE
-          IF (Linha: 24)
-            OP_BIN (Op: 4, Linha: 17)
-              ID (Nome: seq, Linha: 17)
-              INTCONST (Valor: 1, Linha: 17)
-            RETURN (Linha: 19)
-              INTCONST (Valor: 1, Linha: 19)
-          ELSE
-            BLOCK (Linha: 24)
-              DECLARAÇÕES:
-                VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 22)
-              COMANDOS:
-                ASSIGN (Linha: 22)
-                  ID (Nome: somaFunc, Linha: 22)
-                  OP_BIN (Op: 0, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 1, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 2, Linha: 22)
-                RETURN (Linha: 23)
-                  ID (Nome: somaFunc, Linha: 23)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
-BLOCK (Linha: 54)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
-  COMANDOS:
-    ASSIGN (Linha: 29)
-      ID (Nome: n, Linha: 29)
-      OP_BIN (Op: 1, Linha: 29)
-        INTCONST (Valor: 1, Linha: 29)
-        INTCONST (Valor: 0, Linha: 29)
-    WHILE (Linha: 34)
-      OP_BIN (Op: 6, Linha: 30)
-        ID (Nome: n, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-      BLOCK (Linha: 34)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
-          NOVALINHA (Linha: 32)
-          READ (Linha: 33)
-            ID (Nome: n, Linha: 33)
-    ASSIGN (Linha: 35)
-      ID (Nome: fat, Linha: 35)
-      FUNCCALL (Linha: 35)
-        ID (Nome: fatorial, Linha: 35)
-        ARGS:
-          ID (Nome: n, Linha: 35)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
-    WRITE (Linha: 37)
-      ID (Nome: n, Linha: 37)
-    STRINGCONST (Valor: "" e: "", Linha: 38)
-    WRITE (Linha: 39)
-      ID (Nome: fat, Linha: 39)
-    NOVALINHA (Linha: 40)
-    ASSIGN (Linha: 41)
-      ID (Nome: fib, Linha: 41)
-      FUNCCALL (Linha: 41)
-        ID (Nome: fibonacci, Linha: 41)
-        ARGS:
-          ID (Nome: n, Linha: 41)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
-    WRITE (Linha: 43)
-      ID (Nome: n, Linha: 43)
-    STRINGCONST (Valor: "" e: "", Linha: 44)
-    WRITE (Linha: 45)
-      ID (Nome: fib, Linha: 45)
-    NOVALINHA (Linha: 46)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
-    ASSIGN (Linha: 48)
-      ID (Nome: somaFunc, Linha: 48)
-      OP_BIN (Op: 0, Linha: 48)
-        ID (Nome: fat, Linha: 48)
-        ID (Nome: fib, Linha: 48)
-    WRITE (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-    NOVALINHA (Linha: 50)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
-    WRITE (Linha: 52)
-      OP_BIN (Op: 1, Linha: 52)
-        ID (Nome: fat, Linha: 52)
-        ID (Nome: fib, Linha: 52)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -2011,6 +2608,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -2018,46 +2630,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -2067,14 +2757,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -2084,19 +2782,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -2159,8 +2881,8 @@ main:
 
     li $t0, 50
     sw $t0, -4($fp)
-    sw $t-1, -4($fp)
-    sw $t-1, -4($fp)
+    sw $t0, -4($fp)
+    sw $t0, -4($fp)
     lw $t0, -4($fp)
 
     # Escreve um inteiro
@@ -2201,6 +2923,153 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -2213,131 +3082,11 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
-  CORPO:
-    BLOCK (Linha: 10)
-      COMANDOS:
-        IF (Linha: 9)
-          OP_BIN (Op: 4, Linha: 5)
-            ID (Nome: n, Linha: 5)
-            INTCONST (Valor: 0, Linha: 5)
-          RETURN (Linha: 7)
-            INTCONST (Valor: 1, Linha: 7)
-        ELSE
-          RETURN (Linha: 9)
-            OP_BIN (Op: 2, Linha: 9)
-              ID (Nome: n, Linha: 9)
-              FUNCCALL (Linha: 9)
-                ID (Nome: fatorial, Linha: 9)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 9)
-                    ID (Nome: n, Linha: 9)
-                    INTCONST (Valor: 1, Linha: 9)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 28)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 16)
-  CORPO:
-    BLOCK (Linha: 26)
-      COMANDOS:
-        IF (Linha: 25)
-          OP_BIN (Op: 4, Linha: 17)
-            ID (Nome: seq, Linha: 17)
-            INTCONST (Valor: 0, Linha: 17)
-          RETURN (Linha: 19)
-            INTCONST (Valor: 0, Linha: 19)
-        ELSE
-          IF (Linha: 25)
-            OP_BIN (Op: 4, Linha: 21)
-              ID (Nome: seq, Linha: 21)
-              INTCONST (Valor: 1, Linha: 21)
-            RETURN (Linha: 23)
-              INTCONST (Valor: 1, Linha: 23)
-          ELSE
-            RETURN (Linha: 25)
-              OP_BIN (Op: 0, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 1, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 2, Linha: 25)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 28)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 27)
-BLOCK (Linha: 55)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 30)
-  COMANDOS:
-    ASSIGN (Linha: 30)
-      ID (Nome: n, Linha: 30)
-      OP_BIN (Op: 1, Linha: 30)
-        INTCONST (Valor: 1, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-    WHILE (Linha: 35)
-      OP_BIN (Op: 6, Linha: 31)
-        ID (Nome: n, Linha: 31)
-        INTCONST (Valor: 0, Linha: 31)
-      BLOCK (Linha: 35)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 32)
-          NOVALINHA (Linha: 33)
-          READ (Linha: 34)
-            ID (Nome: n, Linha: 34)
-    ASSIGN (Linha: 36)
-      ID (Nome: fat, Linha: 36)
-      FUNCCALL (Linha: 36)
-        ID (Nome: fatorial, Linha: 36)
-        ARGS:
-          ID (Nome: n, Linha: 36)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 37)
-    WRITE (Linha: 38)
-      ID (Nome: n, Linha: 38)
-    STRINGCONST (Valor: "" e: "", Linha: 39)
-    WRITE (Linha: 40)
-      ID (Nome: fat, Linha: 40)
-    NOVALINHA (Linha: 41)
-    ASSIGN (Linha: 42)
-      ID (Nome: fib, Linha: 42)
-      FUNCCALL (Linha: 42)
-        ID (Nome: fibonacci, Linha: 42)
-        ARGS:
-          ID (Nome: n, Linha: 42)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 43)
-    WRITE (Linha: 44)
-      ID (Nome: n, Linha: 44)
-    STRINGCONST (Valor: "" e: "", Linha: 45)
-    WRITE (Linha: 46)
-      ID (Nome: fib, Linha: 46)
-    NOVALINHA (Linha: 47)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 48)
-    ASSIGN (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-      OP_BIN (Op: 0, Linha: 49)
-        ID (Nome: fat, Linha: 49)
-        ID (Nome: fib, Linha: 49)
-    WRITE (Linha: 50)
-      ID (Nome: somaFunc, Linha: 50)
-    NOVALINHA (Linha: 51)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 52)
-    WRITE (Linha: 53)
-      OP_BIN (Op: 1, Linha: 53)
-        ID (Nome: fat, Linha: 53)
-        ID (Nome: fib, Linha: 53)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -2471,6 +3220,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -2478,46 +3242,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -2527,14 +3369,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -2544,19 +3394,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -2622,6 +3496,12 @@ duplicado:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
     li $t0, 0
     move $v0, $t0
     lw $ra, 20($sp)
@@ -2776,6 +3656,22 @@ main:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_1
 _L_else_0:
     lw $t0, -4($fp)
@@ -2791,6 +3687,22 @@ _L_else_0:
     # Escreve um caractere
     move $a0, $t0
     li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha
@@ -2818,6 +3730,22 @@ _L_else_2:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_5
 _L_else_4:
     li $t0, 65
@@ -2835,9 +3763,475 @@ _L_else_4:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 _L_endif_5:
 _L_endif_3:
 _L_endif_1:
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_6
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_7
+_L_else_6:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_8
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_9
+_L_else_8:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_10
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_11
+_L_else_10:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_11:
+_L_endif_9:
+_L_endif_7:
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_12
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_13
+_L_else_12:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_14
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_15
+_L_else_14:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_16
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_17
+_L_else_16:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_17:
+_L_endif_15:
+_L_endif_13:
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_18
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_19
+_L_else_18:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_20
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_21
+_L_else_20:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_22
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_23
+_L_else_22:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_23:
+_L_endif_21:
+_L_endif_19:
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -2979,6 +4373,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -2999,6 +4408,87 @@ _L_endwhile_3:
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha
@@ -3151,6 +4641,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -3177,6 +4682,87 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -3190,131 +4776,11 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroCarEIntNaEprLin8.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Operação aritmética na linha 9 exige operandos do tipo int.
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
-  CORPO:
-    BLOCK (Linha: 10)
-      COMANDOS:
-        IF (Linha: 9)
-          OP_BIN (Op: 4, Linha: 5)
-            ID (Nome: n, Linha: 5)
-            INTCONST (Valor: 0, Linha: 5)
-          RETURN (Linha: 7)
-            INTCONST (Valor: 1, Linha: 7)
-        ELSE
-          RETURN (Linha: 9)
-            OP_BIN (Op: 2, Linha: 9)
-              CHARCONST (Valor: 'n', Linha: 9)
-              FUNCCALL (Linha: 9)
-                ID (Nome: fatorial, Linha: 9)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 9)
-                    ID (Nome: n, Linha: 9)
-                    INTCONST (Valor: 1, Linha: 9)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 28)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 16)
-  CORPO:
-    BLOCK (Linha: 26)
-      COMANDOS:
-        IF (Linha: 25)
-          OP_BIN (Op: 4, Linha: 17)
-            ID (Nome: seq, Linha: 17)
-            INTCONST (Valor: 0, Linha: 17)
-          RETURN (Linha: 19)
-            INTCONST (Valor: 0, Linha: 19)
-        ELSE
-          IF (Linha: 25)
-            OP_BIN (Op: 4, Linha: 21)
-              ID (Nome: seq, Linha: 21)
-              INTCONST (Valor: 1, Linha: 21)
-            RETURN (Linha: 23)
-              INTCONST (Valor: 1, Linha: 23)
-          ELSE
-            RETURN (Linha: 25)
-              OP_BIN (Op: 0, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 1, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 2, Linha: 25)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 28)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 27)
-BLOCK (Linha: 55)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 30)
-  COMANDOS:
-    ASSIGN (Linha: 30)
-      ID (Nome: n, Linha: 30)
-      OP_BIN (Op: 1, Linha: 30)
-        INTCONST (Valor: 1, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-    WHILE (Linha: 35)
-      OP_BIN (Op: 6, Linha: 31)
-        ID (Nome: n, Linha: 31)
-        INTCONST (Valor: 0, Linha: 31)
-      BLOCK (Linha: 35)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 32)
-          NOVALINHA (Linha: 33)
-          READ (Linha: 34)
-            ID (Nome: n, Linha: 34)
-    ASSIGN (Linha: 36)
-      ID (Nome: fat, Linha: 36)
-      FUNCCALL (Linha: 36)
-        ID (Nome: fatorial, Linha: 36)
-        ARGS:
-          ID (Nome: n, Linha: 36)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 37)
-    WRITE (Linha: 38)
-      ID (Nome: n, Linha: 38)
-    STRINGCONST (Valor: "" e: "", Linha: 39)
-    WRITE (Linha: 40)
-      ID (Nome: fat, Linha: 40)
-    NOVALINHA (Linha: 41)
-    ASSIGN (Linha: 42)
-      ID (Nome: fib, Linha: 42)
-      FUNCCALL (Linha: 42)
-        ID (Nome: fibonacci, Linha: 42)
-        ARGS:
-          ID (Nome: n, Linha: 42)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 43)
-    WRITE (Linha: 44)
-      ID (Nome: n, Linha: 44)
-    STRINGCONST (Valor: "" e: "", Linha: 45)
-    WRITE (Linha: 46)
-      ID (Nome: fib, Linha: 46)
-    NOVALINHA (Linha: 47)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 48)
-    ASSIGN (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-      OP_BIN (Op: 0, Linha: 49)
-        ID (Nome: fat, Linha: 49)
-        ID (Nome: fib, Linha: 49)
-    WRITE (Linha: 50)
-      ID (Nome: somaFunc, Linha: 50)
-    NOVALINHA (Linha: 51)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 52)
-    WRITE (Linha: 53)
-      OP_BIN (Op: 1, Linha: 53)
-        ID (Nome: fat, Linha: 53)
-        ID (Nome: fib, Linha: 53)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -3448,6 +4914,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -3455,46 +4936,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -3504,14 +5063,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -3521,19 +5088,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -3676,6 +5267,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -3702,6 +5308,87 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -3715,131 +5402,11 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroTIposDiferentesExpEnquntoLin30.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Operação relacional na linha 30 exige operandos do mesmo tipo.
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
-  CORPO:
-    BLOCK (Linha: 10)
-      COMANDOS:
-        IF (Linha: 9)
-          OP_BIN (Op: 4, Linha: 5)
-            ID (Nome: n, Linha: 5)
-            INTCONST (Valor: 0, Linha: 5)
-          RETURN (Linha: 7)
-            INTCONST (Valor: 1, Linha: 7)
-        ELSE
-          RETURN (Linha: 9)
-            OP_BIN (Op: 2, Linha: 9)
-              ID (Nome: n, Linha: 9)
-              FUNCCALL (Linha: 9)
-                ID (Nome: fatorial, Linha: 9)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 9)
-                    ID (Nome: n, Linha: 9)
-                    INTCONST (Valor: 1, Linha: 9)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 15)
-  CORPO:
-    BLOCK (Linha: 25)
-      COMANDOS:
-        IF (Linha: 24)
-          OP_BIN (Op: 4, Linha: 16)
-            ID (Nome: seq, Linha: 16)
-            INTCONST (Valor: 0, Linha: 16)
-          RETURN (Linha: 18)
-            INTCONST (Valor: 0, Linha: 18)
-        ELSE
-          IF (Linha: 24)
-            OP_BIN (Op: 4, Linha: 20)
-              ID (Nome: seq, Linha: 20)
-              INTCONST (Valor: 1, Linha: 20)
-            RETURN (Linha: 22)
-              INTCONST (Valor: 1, Linha: 22)
-          ELSE
-            RETURN (Linha: 24)
-              OP_BIN (Op: 0, Linha: 24)
-                FUNCCALL (Linha: 24)
-                  ID (Nome: fibonacci, Linha: 24)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 24)
-                      ID (Nome: seq, Linha: 24)
-                      INTCONST (Valor: 1, Linha: 24)
-                FUNCCALL (Linha: 24)
-                  ID (Nome: fibonacci, Linha: 24)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 24)
-                      ID (Nome: seq, Linha: 24)
-                      INTCONST (Valor: 2, Linha: 24)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
-BLOCK (Linha: 54)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
-  COMANDOS:
-    ASSIGN (Linha: 29)
-      ID (Nome: n, Linha: 29)
-      OP_BIN (Op: 1, Linha: 29)
-        INTCONST (Valor: 1, Linha: 29)
-        INTCONST (Valor: 0, Linha: 29)
-    WHILE (Linha: 34)
-      OP_BIN (Op: 6, Linha: 30)
-        ID (Nome: n, Linha: 30)
-        CHARCONST (Valor: '0', Linha: 30)
-      BLOCK (Linha: 34)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
-          NOVALINHA (Linha: 32)
-          READ (Linha: 33)
-            ID (Nome: n, Linha: 33)
-    ASSIGN (Linha: 35)
-      ID (Nome: fat, Linha: 35)
-      FUNCCALL (Linha: 35)
-        ID (Nome: fatorial, Linha: 35)
-        ARGS:
-          ID (Nome: n, Linha: 35)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
-    WRITE (Linha: 37)
-      ID (Nome: n, Linha: 37)
-    STRINGCONST (Valor: "" e: "", Linha: 38)
-    WRITE (Linha: 39)
-      ID (Nome: fat, Linha: 39)
-    NOVALINHA (Linha: 40)
-    ASSIGN (Linha: 41)
-      ID (Nome: fib, Linha: 41)
-      FUNCCALL (Linha: 41)
-        ID (Nome: fibonacci, Linha: 41)
-        ARGS:
-          ID (Nome: n, Linha: 41)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
-    WRITE (Linha: 43)
-      ID (Nome: n, Linha: 43)
-    STRINGCONST (Valor: "" e: "", Linha: 44)
-    WRITE (Linha: 45)
-      ID (Nome: fib, Linha: 45)
-    NOVALINHA (Linha: 46)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
-    ASSIGN (Linha: 48)
-      ID (Nome: somaFunc, Linha: 48)
-      OP_BIN (Op: 0, Linha: 48)
-        ID (Nome: fat, Linha: 48)
-        ID (Nome: fib, Linha: 48)
-    WRITE (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-    NOVALINHA (Linha: 50)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
-    WRITE (Linha: 52)
-      OP_BIN (Op: 1, Linha: 52)
-        ID (Nome: fat, Linha: 52)
-        ID (Nome: fib, Linha: 52)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -3973,6 +5540,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -3980,46 +5562,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -4029,14 +5689,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -4046,19 +5714,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -4157,6 +5849,11 @@ soma:
     li $v0, 4
     syscall
 
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
     li $v0, 10
@@ -4169,138 +5866,11 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatVersao2ErroAtribuicaoVarDeTipoDiferent
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO SEMÂNTICO: Tipos incompatíveis na atribuição da linha 22. Não é possível atribuir um valor do tipo 'int' a uma variável do tipo 'char'.
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 9)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 3)
-  CORPO:
-    BLOCK (Linha: 9)
-      COMANDOS:
-        IF (Linha: 8)
-          OP_BIN (Op: 4, Linha: 4)
-            ID (Nome: n, Linha: 4)
-            INTCONST (Valor: 0, Linha: 4)
-          RETURN (Linha: 6)
-            INTCONST (Valor: 1, Linha: 6)
-        ELSE
-          RETURN (Linha: 8)
-            OP_BIN (Op: 2, Linha: 8)
-              ID (Nome: n, Linha: 8)
-              FUNCCALL (Linha: 8)
-                ID (Nome: fatorial, Linha: 8)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 8)
-                    ID (Nome: n, Linha: 8)
-                    INTCONST (Valor: 1, Linha: 8)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 12)
-  CORPO:
-    BLOCK (Linha: 25)
-      COMANDOS:
-        IF (Linha: 24)
-          OP_BIN (Op: 4, Linha: 13)
-            ID (Nome: seq, Linha: 13)
-            INTCONST (Valor: 0, Linha: 13)
-          RETURN (Linha: 15)
-            INTCONST (Valor: 0, Linha: 15)
-        ELSE
-          IF (Linha: 24)
-            OP_BIN (Op: 4, Linha: 17)
-              ID (Nome: seq, Linha: 17)
-              INTCONST (Valor: 1, Linha: 17)
-            RETURN (Linha: 19)
-              INTCONST (Valor: 1, Linha: 19)
-          ELSE
-            BLOCK (Linha: 24)
-              DECLARAÇÕES:
-                VAR_DECL (Nome: somaFunc, Tipo: car, Linha: 22)
-              COMANDOS:
-                ASSIGN (Linha: 22)
-                  ID (Nome: somaFunc, Linha: 22)
-                  OP_BIN (Op: 0, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 1, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: n, Linha: 22)
-                          INTCONST (Valor: 2, Linha: 22)
-                RETURN (Linha: 23)
-                  ID (Nome: somaFunc, Linha: 23)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
-BLOCK (Linha: 54)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
-  COMANDOS:
-    ASSIGN (Linha: 29)
-      ID (Nome: n, Linha: 29)
-      OP_BIN (Op: 1, Linha: 29)
-        INTCONST (Valor: 1, Linha: 29)
-        INTCONST (Valor: 0, Linha: 29)
-    WHILE (Linha: 34)
-      OP_BIN (Op: 6, Linha: 30)
-        ID (Nome: n, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-      BLOCK (Linha: 34)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
-          NOVALINHA (Linha: 32)
-          READ (Linha: 33)
-            ID (Nome: n, Linha: 33)
-    ASSIGN (Linha: 35)
-      ID (Nome: fat, Linha: 35)
-      FUNCCALL (Linha: 35)
-        ID (Nome: fatorial, Linha: 35)
-        ARGS:
-          ID (Nome: n, Linha: 35)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
-    WRITE (Linha: 37)
-      ID (Nome: n, Linha: 37)
-    STRINGCONST (Valor: "" e: "", Linha: 38)
-    WRITE (Linha: 39)
-      ID (Nome: fat, Linha: 39)
-    NOVALINHA (Linha: 40)
-    ASSIGN (Linha: 41)
-      ID (Nome: fib, Linha: 41)
-      FUNCCALL (Linha: 41)
-        ID (Nome: fibonacci, Linha: 41)
-        ARGS:
-          ID (Nome: n, Linha: 41)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
-    WRITE (Linha: 43)
-      ID (Nome: n, Linha: 43)
-    STRINGCONST (Valor: "" e: "", Linha: 44)
-    WRITE (Linha: 45)
-      ID (Nome: fib, Linha: 45)
-    NOVALINHA (Linha: 46)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
-    ASSIGN (Linha: 48)
-      ID (Nome: somaFunc, Linha: 48)
-      OP_BIN (Op: 0, Linha: 48)
-        ID (Nome: fat, Linha: 48)
-        ID (Nome: fib, Linha: 48)
-    WRITE (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-    NOVALINHA (Linha: 50)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
-    WRITE (Linha: 52)
-      OP_BIN (Op: 1, Linha: 52)
-        ID (Nome: fat, Linha: 52)
-        ID (Nome: fib, Linha: 52)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -4436,6 +6006,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -4443,46 +6028,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -4492,14 +6155,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -4509,19 +6180,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -4618,6 +6313,11 @@ soma:
     li $v0, 4
     syscall
 
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
     li $v0, 10
@@ -4629,99 +6329,11 @@ ARQUIVO FONTE: ./sintatico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: checaOrd, Tipo Retorno: car, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 1)
-  CORPO:
-    BLOCK (Linha: 26)
-      DECLARAÇÕES:
-        VAR_DECL (Nome: cont, Tipo: int, Linha: 5)
-        VAR_DECL (Nome: valAtual, Tipo: int, Linha: 3)
-        VAR_DECL (Nome: ordenado, Tipo: car, Linha: 5)
-      COMANDOS:
-        ASSIGN (Linha: 5)
-          ID (Nome: ordenado, Linha: 5)
-          CHARCONST (Valor: 'v', Linha: 5)
-        ASSIGN (Linha: 6)
-          ID (Nome: cont, Linha: 6)
-          INTCONST (Valor: 1, Linha: 6)
-        READ (Linha: 7)
-          ID (Nome: valAtual, Linha: 7)
-        STRINGCONST (Valor: ""digite uma sequencia de "", Linha: 8)
-        WRITE (Linha: 9)
-          ID (Nome: quant, Linha: 9)
-        STRINGCONST (Valor: "" numeros inteiros separados entre si por um espaco"", Linha: 10)
-        WHILE (Linha: 24)
-          OP_BIN (Op: 6, Linha: 12)
-            ID (Nome: cont, Linha: 12)
-            ID (Nome: quant, Linha: 12)
-          BLOCK (Linha: 24)
-            DECLARAÇÕES:
-              VAR_DECL (Nome: proxVal, Tipo: int, Linha: 14)
-            COMANDOS:
-              READ (Linha: 14)
-                ID (Nome: proxVal, Linha: 14)
-              IF (Linha: 22)
-                OP_BIN (Op: 6, Linha: 15)
-                  ID (Nome: valAtual, Linha: 15)
-                  ID (Nome: proxVal, Linha: 15)
-                ASSIGN (Linha: 17)
-                  ID (Nome: valAtual, Linha: 17)
-                  ID (Nome: proxVal, Linha: 17)
-              ELSE
-                BLOCK (Linha: 22)
-                  COMANDOS:
-                    ASSIGN (Linha: 20)
-                      ID (Nome: ordenado, Linha: 20)
-                      CHARCONST (Valor: 'f', Linha: 20)
-                    ASSIGN (Linha: 21)
-                      ID (Nome: cont, Linha: 21)
-                      ID (Nome: quant, Linha: 21)
-              ASSIGN (Linha: 23)
-                ID (Nome: cont, Linha: 23)
-                OP_BIN (Op: 0, Linha: 23)
-                  ID (Nome: cont, Linha: 23)
-                  INTCONST (Valor: 1, Linha: 23)
-        RETURN (Linha: 25)
-          ID (Nome: ordenado, Linha: 25)
-BLOCK (Linha: 46)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: quant, Tipo: int, Linha: 31)
-  COMANDOS:
-    STRINGCONST (Valor: ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."", Linha: 31)
-    READ (Linha: 32)
-      ID (Nome: quant, Linha: 32)
-    WHILE (Linha: 45)
-      OP_BIN (Op: 5, Linha: 34)
-        ID (Nome: quant, Linha: 34)
-        INTCONST (Valor: 0, Linha: 34)
-      BLOCK (Linha: 45)
-        COMANDOS:
-          IF (Linha: 43)
-            OP_BIN (Op: 4, Linha: 35)
-              FUNCCALL (Linha: 35)
-                ID (Nome: checaOrd, Linha: 35)
-                ARGS:
-                  ID (Nome: quant, Linha: 35)
-              CHARCONST (Valor: 'v', Linha: 35)
-            BLOCK (Linha: 39)
-              COMANDOS:
-                STRINGCONST (Valor: ""ORDENADA"", Linha: 37)
-                NOVALINHA (Linha: 38)
-          ELSE
-            BLOCK (Linha: 43)
-              COMANDOS:
-                STRINGCONST (Valor: ""DESORDENADA"", Linha: 41)
-                NOVALINHA (Linha: 42)
-          READ (Linha: 44)
-            ID (Nome: quant, Linha: 44)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -4785,75 +6397,142 @@ _L_startwhile_0:
     sw $t0, -4($fp)
     j _L_endif_3
 _L_else_2:
-    li $t0, 102
-    sw $t0, -4($fp)
-    lw $t0, -4($fp)
-    sw $t0, -4($fp)
+    li $t1, 102
+    sw $t1, -4($fp)
+    lw $t1, -4($fp)
+    sw $t1, -4($fp)
 _L_endif_3:
-    lw $t0, -4($fp)
-    li $t1, 1
-    add $t0, $t0, $t1
-    sw $t0, -4($fp)
+    lw $t1, -4($fp)
+    li $t2, 1
+    add $t1, $t1, $t2
+    sw $t1, -4($fp)
+    lw $t2, -4($fp)
+    lw $t3, -4($fp)
+    slt $t2, $t2, $t3
+    beq $t2, $zero, _L_else_4
+    lw $t2, -4($fp)
+    sw $t2, -4($fp)
+    j _L_endif_5
+_L_else_4:
+    li $t3, 102
+    sw $t3, -4($fp)
+    lw $t3, -4($fp)
+    sw $t3, -4($fp)
+_L_endif_5:
+    lw $t3, -4($fp)
+    li $t4, 1
+    add $t3, $t3, $t4
+    sw $t3, -4($fp)
+    lw $t4, -4($fp)
+    li $t5, 1
+    add $t4, $t4, $t5
+    sw $t4, -4($fp)
     j _L_startwhile_0
 _L_endwhile_1:
-    lw $t0, -4($fp)
-    move $v0, $t0
-    lw $ra, 20($sp)
-    lw $fp, 16($sp)
-    addu $sp, $sp, 32
-    jr $ra
+    lw $t4, -4($fp)
+    move $v0, $t4
     lw $ra, 20($sp)
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
     li $v0, 4
     syscall
+    lw $t4, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+_L_startwhile_6:
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_endwhile_7
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-_L_startwhile_4:
-    lw $t0, -4($fp)
-    li $t1, 0
-    sne $t0, $t0, $t1
-    beq $t0, $zero, _L_endwhile_5
-    lw $t1, -4($fp)
-    move $a0, $t1
-    jal checaOrd
-    move $t0, $v0
-    li $t1, 118
-    seq $t0, $t0, $t1
-    beq $t0, $zero, _L_else_6
-    li $v0, 4
-    syscall
+    lw $t4, -4($fp)
+    lw $t5, -4($fp)
+    slt $t4, $t4, $t5
+    beq $t4, $zero, _L_else_8
+    lw $t4, -4($fp)
+    sw $t4, -4($fp)
+    j _L_endif_9
+_L_else_8:
+    li $t5, 102
+    sw $t5, -4($fp)
+    lw $t5, -4($fp)
+    sw $t5, -4($fp)
+_L_endif_9:
+    lw $t5, -4($fp)
+    li $t6, 1
+    add $t5, $t5, $t6
+    sw $t5, -4($fp)
+    lw $t6, -4($fp)
+    lw $t7, -4($fp)
+    slt $t6, $t6, $t7
+    beq $t6, $zero, _L_else_10
+    lw $t6, -4($fp)
+    sw $t6, -4($fp)
+    j _L_endif_11
+_L_else_10:
+    li $t7, 102
+    sw $t7, -4($fp)
+    lw $t7, -4($fp)
+    sw $t7, -4($fp)
+_L_endif_11:
+    lw $t7, -4($fp)
+    li $t8, 1
+    add $t7, $t7, $t8
+    sw $t7, -4($fp)
+    lw $t8, -4($fp)
+    li $t9, 1
+    add $t8, $t8, $t9
+    sw $t8, -4($fp)
+    j _L_startwhile_6
+_L_endwhile_7:
+    lw $t8, -4($fp)
+    move $v0, $t8
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $t8, -4($fp)
 
-    # Imprime uma nova linha
-    la $a0, _nl
+    # Escreve um inteiro
+    move $a0, $t8
+    li $v0, 1
+    syscall
     li $v0, 4
     syscall
-    j _L_endif_7
-_L_else_6:
-    li $v0, 4
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-_L_endif_7:
+_L_startwhile_12:
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_endwhile_13
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
     sw $v0, 0($fp)
-    j _L_startwhile_4
-_L_endwhile_5:
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
+    lw $t8, -4($fp)
+    lw $t9, -4($fp)
+    slt $t8, $t8, $t9
+    beq $t8, $zero, _L_else_14
+    lw $t8, -4($fp)
+    sw $t8, -4($fp)
+    j _L_endif_15
+_L_else_14:
+    li $t9, 102
+    sw $t9, -4($fp)
+    lw $t9, -4($fp)
+    sw $t9, -4($fp)
+_L_endif_15:
+    lw $t9, -4($fp)
 
 
 ############################################################
@@ -4861,138 +6540,11 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 9)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 3)
-  CORPO:
-    BLOCK (Linha: 9)
-      COMANDOS:
-        IF (Linha: 8)
-          OP_BIN (Op: 4, Linha: 4)
-            ID (Nome: n, Linha: 4)
-            INTCONST (Valor: 0, Linha: 4)
-          RETURN (Linha: 6)
-            INTCONST (Valor: 1, Linha: 6)
-        ELSE
-          RETURN (Linha: 8)
-            OP_BIN (Op: 2, Linha: 8)
-              ID (Nome: n, Linha: 8)
-              FUNCCALL (Linha: 8)
-                ID (Nome: fatorial, Linha: 8)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 8)
-                    ID (Nome: n, Linha: 8)
-                    INTCONST (Valor: 1, Linha: 8)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 27)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 25)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 12)
-  CORPO:
-    BLOCK (Linha: 25)
-      COMANDOS:
-        IF (Linha: 24)
-          OP_BIN (Op: 4, Linha: 13)
-            ID (Nome: seq, Linha: 13)
-            INTCONST (Valor: 0, Linha: 13)
-          RETURN (Linha: 15)
-            INTCONST (Valor: 0, Linha: 15)
-        ELSE
-          IF (Linha: 24)
-            OP_BIN (Op: 4, Linha: 17)
-              ID (Nome: seq, Linha: 17)
-              INTCONST (Valor: 1, Linha: 17)
-            RETURN (Linha: 19)
-              INTCONST (Valor: 1, Linha: 19)
-          ELSE
-            BLOCK (Linha: 24)
-              DECLARAÇÕES:
-                VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 22)
-              COMANDOS:
-                ASSIGN (Linha: 22)
-                  ID (Nome: somaFunc, Linha: 22)
-                  OP_BIN (Op: 0, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 1, Linha: 22)
-                    FUNCCALL (Linha: 22)
-                      ID (Nome: fibonacci, Linha: 22)
-                      ARGS:
-                        OP_BIN (Op: 1, Linha: 22)
-                          ID (Nome: seq, Linha: 22)
-                          INTCONST (Valor: 2, Linha: 22)
-                RETURN (Linha: 23)
-                  ID (Nome: somaFunc, Linha: 23)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 27)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 26)
-BLOCK (Linha: 54)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 29)
-  COMANDOS:
-    ASSIGN (Linha: 29)
-      ID (Nome: n, Linha: 29)
-      OP_BIN (Op: 1, Linha: 29)
-        INTCONST (Valor: 1, Linha: 29)
-        INTCONST (Valor: 0, Linha: 29)
-    WHILE (Linha: 34)
-      OP_BIN (Op: 6, Linha: 30)
-        ID (Nome: n, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-      BLOCK (Linha: 34)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 31)
-          NOVALINHA (Linha: 32)
-          READ (Linha: 33)
-            ID (Nome: n, Linha: 33)
-    ASSIGN (Linha: 35)
-      ID (Nome: fat, Linha: 35)
-      FUNCCALL (Linha: 35)
-        ID (Nome: fatorial, Linha: 35)
-        ARGS:
-          ID (Nome: n, Linha: 35)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 36)
-    WRITE (Linha: 37)
-      ID (Nome: n, Linha: 37)
-    STRINGCONST (Valor: "" e: "", Linha: 38)
-    WRITE (Linha: 39)
-      ID (Nome: fat, Linha: 39)
-    NOVALINHA (Linha: 40)
-    ASSIGN (Linha: 41)
-      ID (Nome: fib, Linha: 41)
-      FUNCCALL (Linha: 41)
-        ID (Nome: fibonacci, Linha: 41)
-        ARGS:
-          ID (Nome: n, Linha: 41)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 42)
-    WRITE (Linha: 43)
-      ID (Nome: n, Linha: 43)
-    STRINGCONST (Valor: "" e: "", Linha: 44)
-    WRITE (Linha: 45)
-      ID (Nome: fib, Linha: 45)
-    NOVALINHA (Linha: 46)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 47)
-    ASSIGN (Linha: 48)
-      ID (Nome: somaFunc, Linha: 48)
-      OP_BIN (Op: 0, Linha: 48)
-        ID (Nome: fat, Linha: 48)
-        ID (Nome: fib, Linha: 48)
-    WRITE (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-    NOVALINHA (Linha: 50)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 51)
-    WRITE (Linha: 52)
-      OP_BIN (Op: 1, Linha: 52)
-        ID (Nome: fat, Linha: 52)
-        ID (Nome: fib, Linha: 52)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -5128,6 +6680,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -5135,46 +6702,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -5184,14 +6829,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -5201,19 +6854,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -5276,8 +6953,8 @@ main:
 
     li $t0, 50
     sw $t0, -4($fp)
-    sw $t-1, -4($fp)
-    sw $t-1, -4($fp)
+    sw $t0, -4($fp)
+    sw $t0, -4($fp)
     lw $t0, -4($fp)
 
     # Escreve um inteiro
@@ -5318,6 +6995,153 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -5330,131 +7154,11 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO: Nenhum registrador temporário livre!
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
-Código MIPS gerado com sucesso em output.asm
---- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 10)
-  PARAMS:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 4)
-  CORPO:
-    BLOCK (Linha: 10)
-      COMANDOS:
-        IF (Linha: 9)
-          OP_BIN (Op: 4, Linha: 5)
-            ID (Nome: n, Linha: 5)
-            INTCONST (Valor: 0, Linha: 5)
-          RETURN (Linha: 7)
-            INTCONST (Valor: 1, Linha: 7)
-        ELSE
-          RETURN (Linha: 9)
-            OP_BIN (Op: 2, Linha: 9)
-              ID (Nome: n, Linha: 9)
-              FUNCCALL (Linha: 9)
-                ID (Nome: fatorial, Linha: 9)
-                ARGS:
-                  OP_BIN (Op: 1, Linha: 9)
-                    ID (Nome: n, Linha: 9)
-                    INTCONST (Valor: 1, Linha: 9)
-VAR_DECL (Nome: somaFunc, Tipo: int, Linha: 28)
-FUNC_DEF (Nome: fibonacci, Tipo Retorno: int, Linha: 26)
-  PARAMS:
-    VAR_DECL (Nome: seq, Tipo: int, Linha: 16)
-  CORPO:
-    BLOCK (Linha: 26)
-      COMANDOS:
-        IF (Linha: 25)
-          OP_BIN (Op: 4, Linha: 17)
-            ID (Nome: seq, Linha: 17)
-            INTCONST (Valor: 0, Linha: 17)
-          RETURN (Linha: 19)
-            INTCONST (Valor: 0, Linha: 19)
-        ELSE
-          IF (Linha: 25)
-            OP_BIN (Op: 4, Linha: 21)
-              ID (Nome: seq, Linha: 21)
-              INTCONST (Valor: 1, Linha: 21)
-            RETURN (Linha: 23)
-              INTCONST (Valor: 1, Linha: 23)
-          ELSE
-            RETURN (Linha: 25)
-              OP_BIN (Op: 0, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 1, Linha: 25)
-                FUNCCALL (Linha: 25)
-                  ID (Nome: fibonacci, Linha: 25)
-                  ARGS:
-                    OP_BIN (Op: 1, Linha: 25)
-                      ID (Nome: seq, Linha: 25)
-                      INTCONST (Valor: 2, Linha: 25)
-VAR_DECL (Nome: fat, Tipo: int, Linha: 28)
-VAR_DECL (Nome: fib, Tipo: int, Linha: 27)
-BLOCK (Linha: 55)
-  DECLARAÇÕES:
-    VAR_DECL (Nome: n, Tipo: int, Linha: 30)
-  COMANDOS:
-    ASSIGN (Linha: 30)
-      ID (Nome: n, Linha: 30)
-      OP_BIN (Op: 1, Linha: 30)
-        INTCONST (Valor: 1, Linha: 30)
-        INTCONST (Valor: 0, Linha: 30)
-    WHILE (Linha: 35)
-      OP_BIN (Op: 6, Linha: 31)
-        ID (Nome: n, Linha: 31)
-        INTCONST (Valor: 0, Linha: 31)
-      BLOCK (Linha: 35)
-        COMANDOS:
-          STRINGCONST (Valor: ""digite um numero"", Linha: 32)
-          NOVALINHA (Linha: 33)
-          READ (Linha: 34)
-            ID (Nome: n, Linha: 34)
-    ASSIGN (Linha: 36)
-      ID (Nome: fat, Linha: 36)
-      FUNCCALL (Linha: 36)
-        ID (Nome: fatorial, Linha: 36)
-        ARGS:
-          ID (Nome: n, Linha: 36)
-    STRINGCONST (Valor: ""O fatorial de "", Linha: 37)
-    WRITE (Linha: 38)
-      ID (Nome: n, Linha: 38)
-    STRINGCONST (Valor: "" e: "", Linha: 39)
-    WRITE (Linha: 40)
-      ID (Nome: fat, Linha: 40)
-    NOVALINHA (Linha: 41)
-    ASSIGN (Linha: 42)
-      ID (Nome: fib, Linha: 42)
-      FUNCCALL (Linha: 42)
-        ID (Nome: fibonacci, Linha: 42)
-        ARGS:
-          ID (Nome: n, Linha: 42)
-    STRINGCONST (Valor: ""Fibonacci de "", Linha: 43)
-    WRITE (Linha: 44)
-      ID (Nome: n, Linha: 44)
-    STRINGCONST (Valor: "" e: "", Linha: 45)
-    WRITE (Linha: 46)
-      ID (Nome: fib, Linha: 46)
-    NOVALINHA (Linha: 47)
-    STRINGCONST (Valor: ""A soma do valor do fatorial com o valor de fibonacci e: "", Linha: 48)
-    ASSIGN (Linha: 49)
-      ID (Nome: somaFunc, Linha: 49)
-      OP_BIN (Op: 0, Linha: 49)
-        ID (Nome: fat, Linha: 49)
-        ID (Nome: fib, Linha: 49)
-    WRITE (Linha: 50)
-      ID (Nome: somaFunc, Linha: 50)
-    NOVALINHA (Linha: 51)
-    STRINGCONST (Valor: ""A subtracao do valor do fatorial pelo valor de finbonacci e: "", Linha: 52)
-    WRITE (Linha: 53)
-      OP_BIN (Op: 1, Linha: 53)
-        ID (Nome: fat, Linha: 53)
-        ID (Nome: fib, Linha: 53)
---- FIM DA ÁRVORE SINTÁTICA ABSTRATA ---
 
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
@@ -5588,6 +7292,21 @@ _L_startwhile_6:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -5595,46 +7314,124 @@ _L_endwhile_7:
     jal fatorial
     move $t0, $v0
     sw $t0, fat
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, fat
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
+    lw $t2, -4($fp)
+    move $a0, $t2
+    jal fatorial
+    move $t1, $v0
+    sw $t1, fat
     li $v0, 4
     syscall
     lw $t1, -4($fp)
+
+    # Escreve um inteiro
     move $a0, $t1
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, fat
+
+    # Escreve um inteiro
+    move $a0, $t1
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t2, -4($fp)
+    move $a0, $t2
     jal fibonacci
-    move $t0, $v0
-    sw $t0, fib
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
+    move $t1, $v0
+    sw $t1, fib
+    lw $t2, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
     li $v0, 1
     syscall
     li $v0, 4
     syscall
-    lw $t0, fib
+    lw $t2, fat
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t2
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t3, -4($fp)
+    move $a0, $t3
+    jal fibonacci
+    move $t2, $v0
+    sw $t2, fib
+    li $v0, 4
+    syscall
+    lw $t3, fat
+
+    # Escreve um inteiro
+    move $a0, $t3
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t4, -4($fp)
+    move $a0, $t4
+    jal fibonacci
+    move $t3, $v0
+    sw $t3, fib
+    lw $t4, fat
+
+    # Escreve um inteiro
+    move $a0, $t4
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t5, -4($fp)
+    move $a0, $t5
+    jal fibonacci
+    move $t4, $v0
+    sw $t4, fib
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+    move $a0, $t6
+    jal fibonacci
+    move $t5, $v0
+    sw $t5, fib
+    lw $t7, -4($fp)
+    move $a0, $t7
+    jal fibonacci
+    move $t6, $v0
+    sw $t6, fib
+    li $v0, 4
+    syscall
+    lw $t6, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t6
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t6, fib
+
+    # Escreve um inteiro
+    move $a0, $t6
     li $v0, 1
     syscall
 
@@ -5644,14 +7441,22 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    add $t0, $t0, $t1
-    sw $t0, somaFunc
-    lw $t0, somaFunc
+    lw $t6, fat
+    lw $t7, fib
+    add $t6, $t6, $t7
+    sw $t6, somaFunc
+    lw $t7, -4($fp)
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t7
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t7, fib
+
+    # Escreve um inteiro
+    move $a0, $t7
     li $v0, 1
     syscall
 
@@ -5661,19 +7466,43 @@ _L_endwhile_7:
     syscall
     li $v0, 4
     syscall
-    lw $t0, fat
-    lw $t1, fib
-    sub $t0, $t0, $t1
+    lw $t7, fat
+    lw $t8, fib
+    add $t7, $t7, $t8
+    sw $t7, somaFunc
+    li $v0, 4
+    syscall
+    lw $t8, fib
 
     # Escreve um inteiro
-    move $a0, $t0
+    move $a0, $t8
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
+    li $v0, 4
+    syscall
+    lw $t8, fat
+    lw $t9, fib
+    add $t8, $t8, $t9
+    sw $t8, somaFunc
+    lw $t9, fib
+
+    # Escreve um inteiro
+    move $a0, $t9
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t9, fat
 
 
 ############################################################
@@ -5739,6 +7568,12 @@ duplicado:
     move $a0, $t0
     li $v0, 1
     syscall
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
     li $t0, 0
     move $v0, $t0
     lw $ra, 20($sp)
@@ -5893,6 +7728,22 @@ main:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_1
 _L_else_0:
     lw $t0, -4($fp)
@@ -5908,6 +7759,22 @@ _L_else_0:
     # Escreve um caractere
     move $a0, $t0
     li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha
@@ -5935,6 +7802,22 @@ _L_else_2:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
     j _L_endif_5
 _L_else_4:
     li $t0, 65
@@ -5952,9 +7835,475 @@ _L_else_4:
     la $a0, _nl
     li $v0, 4
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
 _L_endif_5:
 _L_endif_3:
 _L_endif_1:
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_6
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_7
+_L_else_6:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_8
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_9
+_L_else_8:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_10
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_11
+_L_else_10:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_11:
+_L_endif_9:
+_L_endif_7:
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_12
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_13
+_L_else_12:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_14
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_15
+_L_else_14:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_16
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_17
+_L_else_16:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_17:
+_L_endif_15:
+_L_endif_13:
+    lw $t0, -4($fp)
+    li $t1, 6
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_18
+    li $t0, 68
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_19
+_L_else_18:
+    lw $t0, -4($fp)
+    li $t1, 7
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_20
+    li $t0, 67
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_21
+_L_else_20:
+    lw $t0, -4($fp)
+    li $t1, 9
+    slt $t0, $t0, $t1
+    beq $t0, $zero, _L_else_22
+    li $t0, 66
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    j _L_endif_23
+_L_else_22:
+    li $t0, 65
+    sw $t0, -4($fp)
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um caractere
+    move $a0, $t0
+    li $v0, 11
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+_L_endif_23:
+_L_endif_21:
+_L_endif_19:
 
     # Limpeza do Stack Frame
     addu $sp, $sp, 0
@@ -6096,6 +8445,21 @@ _L_startwhile_2:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
+
+    # Leitura de Inteiro
+    li $v0, 5
+    syscall
+    sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     li $v0, 4
@@ -6116,6 +8480,87 @@ _L_endwhile_3:
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t1, -4($fp)
+    move $a0, $t1
+    jal fatorial
+    move $t0, $v0
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
     syscall
 
     # Imprime uma nova linha
