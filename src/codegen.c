@@ -425,53 +425,89 @@ static int count_local_vars(SymbolStack* symbol_stack) {
     return count;
 }
 
+static int count_vars_in_decls(ASTNode* decls) {
+    int count = 0;
+    while (decls != NULL) {
+        if (decls->type == NODE_VAR_DECL) {
+            count++;
+        }
+        decls = decls->next;
+    }
+    return count;
+}
+
 void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* output_filename) {
     out = fopen(output_filename, "w");
-    if (out == NULL) { /* ... erro ... */ return; }
+    if (out == NULL) return;
 
-	collect_strings(ast_root);
+    collect_strings(ast_root);
 
-    // Seção .data
+    // --- SEÇÃO DE DADOS (.data) ---
     fprintf(out, ".data\n");
     fprintf(out, "_nl: .asciiz \"\\n\"\n");
-
-    // --- NOVO: GERA .DATA PARA VARIÁVEIS GLOBAIS ---
+    
+    // Variáveis Globais
     ASTNode* current = ast_root;
     while (current != NULL) {
         if (current->type == NODE_VAR_DECL) {
-             // Gera:  fat: .word 0
              fprintf(out, "%s: .word 0\n", current->attr.var_decl.name);
         }
-        // Se entrou numa função ou no main, para de procurar globais
         if (current->type == NODE_FUNC_DEF || current->type == NODE_BLOCK) break;
         current = current->next;
     }
 
-	// Itera sobre a lista de strings e as declara no .data
+    // Strings
     StringLabel* s_curr = string_list_head;
     while (s_curr != NULL) {
         fprintf(out, "_str%d: .asciiz %s\n", s_curr->id, s_curr->content);
         s_curr = s_curr->next;
     }
 
-    // Seção .text
+    // --- SEÇÃO DE CÓDIGO (.text) ---
     fprintf(out, "\n.text\n");
     fprintf(out, ".globl main\n\n");
-    fprintf(out, "main:\n");
+    
+    // --- GERAÇÃO DE CÓDIGO ITERATIVA ---
+    // Percorre a AST nível superior (Globais -> Funções -> Main)
+    ASTNode* node = ast_root;
+    while (node != NULL) {
+        // Truque: Salva o próximo e isola o nó atual
+        // Isso impede que generate_node_code processe a lista inteira recursivamente
+        ASTNode* next_node = node->next;
+        node->next = NULL;
 
-    int num_vars = count_local_vars(symbol_stack);
-    int stack_size = num_vars * 4;
+        if (node->type == NODE_BLOCK) {
+            // --- BLOCO PRINCIPAL (MAIN) ---
+            fprintf(out, "main:\n");
+            
+            // Calcula variáveis locais do main para o Stack Frame
+            int vars_main = count_vars_in_decls(node->attr.block.decls);
+            int stack_size = vars_main * 4; // Ajuste se precisar de mais espaço (ex: +32 para args)
 
-    fprintf(out, "\n    # Setup do Stack Frame para main\n");
-    fprintf(out, "    subu $sp, $sp, %d\n", stack_size);
-    fprintf(out, "    move $fp, $sp\n\n");
+            // Prólogo do Main
+            fprintf(out, "\n    # Setup do Stack Frame para main\n");
+            fprintf(out, "    subu $sp, $sp, %d\n", stack_size);
+            fprintf(out, "    move $fp, $sp\n\n");
 
-    generate_node_code(ast_root);
+            // Corpo do Main
+            generate_node_code(node);
 
-    fprintf(out, "\n    # Limpeza do Stack Frame\n");
-    fprintf(out, "    addu $sp, $sp, %d\n", stack_size);
-    fprintf(out, "    li $v0, 10\n");
-    fprintf(out, "    syscall\n");
+            // Epílogo do Main (Encerra o programa)
+            fprintf(out, "\n    # Encerramento do programa\n");
+            fprintf(out, "    li $v0, 10\n");
+            fprintf(out, "    syscall\n");
+
+        } else {
+            // --- FUNÇÕES E VARIÁVEIS GLOBAIS ---
+            // Funções já geram seus próprios labels e returns no generate_node_code
+            // Variáveis globais (VAR_DECL) não geram código em .text, então é seguro chamar
+            generate_node_code(node);
+        }
+
+        // Restaura a lista e avança
+        node->next = next_node;
+        node = next_node;
+    }
 
     fclose(out);
     printf("Código MIPS gerado com sucesso em %s\n", output_filename);
