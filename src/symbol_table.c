@@ -104,6 +104,7 @@ SymbolEntry* symbol_table_insert_variable(SymbolStack* stack, const char* name, 
     entry->entry_type = ENTRY_VAR;
     entry->data_type = type;
     entry->num_params = 0;
+    entry->param_types = NULL;
     entry->position = position;
     entry->is_global = (stack->top == 0) ? 1 : 0;
     entry->next = stack->tables[stack->top]->entries;
@@ -123,6 +124,17 @@ SymbolEntry* symbol_table_insert_parameter(SymbolStack* stack, const char* name,
     if (entry == NULL) {
         fprintf(stderr, "ERRO: Falha na alocação de memória para entrada de parâmetro\n");
         return NULL;
+    }
+
+    if (func != NULL) {
+        // Realoca o array para caber mais um tipo (usa func->num_params como tamanho atual)
+        // Nota: O parser já incrementou num_params antes de chamar essa função
+        func->param_types = (DataType*) realloc(func->param_types, func->num_params * sizeof(DataType));
+        
+        // Salva o tipo na última posição (índice - 1)
+        if (func->param_types != NULL) {
+            func->param_types[func->num_params - 1] = type;
+        }
     }
 
     strncpy(entry->name, name, MAX_NAME - 1);

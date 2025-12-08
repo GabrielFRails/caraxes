@@ -22,6 +22,7 @@ typedef struct SymbolEntry {
     char name[MAX_NAME];        // Nome do identificador (lexema)
     EntryType entry_type;       // Tipo: variável, função ou parâmetro
     DataType data_type;         // Tipo de dado (int, char)
+    DataType* param_types;      // isso é pra tentar pegar erro de passar parametro de tipo diferente em funções
     int position;               // Posição na lista de declaração (vars ou params)
     int num_params;             // Só para funções: número de parâmetros
     int is_global;              // apenas para controle melhor futuro

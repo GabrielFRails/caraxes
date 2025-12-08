@@ -123,6 +123,7 @@ void check_node(ASTNode* node, SymbolStack* stack) {
         case NODE_FUNCCALL: {
             ASTNode* func_id_node = node->attr.func_call.id;
             check_node(func_id_node, stack);
+            // Verifica os argumentos primeiro para resolver seus tipos
             check_node(node->attr.func_call.args, stack);
 
             SymbolEntry* func_entry = func_id_node->attr.id.entry;
@@ -131,20 +132,33 @@ void check_node(ASTNode* node, SymbolStack* stack) {
                 break;
             }
 
-            //printf("DEBUG: Verificando o ID '%s'. Tipo de entrada encontrado: %s\n", 
-            //       func_entry->name,
-            //       func_entry->entry_type == ENTRY_VAR ? "Variavel" :
-            //       func_entry->entry_type == ENTRY_FUNC ? "Funcao" : "Parametro");
             if (func_entry->entry_type != ENTRY_FUNC) {
-                fprintf(stderr, "ERRO SEMÂNTICO: '%s' não é uma função e não pode ser chamada (linha %d).\n", 
-                        func_entry->name, node->line);
+                fprintf(stderr, "ERRO SEMÂNTICO: '%s' não é uma função (linha %d).\n", func_entry->name, node->line);
                 node->type_info = TYPE_UNKNOWN;
                 break;
             }
 
+            // Verifica contagem e TIPOS dos argumentos
             int arg_count = 0;
             ASTNode* current_arg = node->attr.func_call.args;
+            
             while (current_arg != NULL) {
+                // Se ainda houver parâmetros correspondentes na definição...
+                if (arg_count < func_entry->num_params) {
+                    DataType expected_type = func_entry->param_types[arg_count];
+                    DataType received_type = current_arg->type_info;
+
+                    // Valida compatibilidade (se os tipos forem conhecidos)
+                    if (expected_type != TYPE_UNKNOWN && received_type != TYPE_UNKNOWN && expected_type != received_type) {
+                        fprintf(stderr, "ERRO SEMÂNTICO: Tipo incompatível no argumento %d da chamada de '%s' (linha %d). Esperado: %s, Recebido: %s.\n",
+                                arg_count + 1,
+                                func_entry->name,
+                                node->line,
+                                expected_type == TYPE_INT ? "int" : "car",
+                                received_type == TYPE_INT ? "int" : "car");
+                    }
+                }
+                
                 arg_count++;
                 current_arg = current_arg->next;
             }
@@ -154,7 +168,6 @@ void check_node(ASTNode* node, SymbolStack* stack) {
                         func_entry->name, func_entry->num_params, arg_count, node->line);
             }
 
-            // TODO (advanced): fazer verificação de todos os argumentos para ver se o tipo bate
             node->type_info = func_entry->data_type;
             break;
         }
