@@ -217,7 +217,8 @@ static int generate_node_code(ASTNode* node) {
 			
             if (expr->type == NODE_STRINGCONST) {
                 fprintf(out, "\n    # Escreve uma string\n");
-                fprintf(out, "    la $a0, _str%d\n", expr->attr.string.label_id);
+                // CORREÇÃO AQUI: 'la' é obrigatório
+                fprintf(out, "    la $a0, _str%d\n", expr->attr.string.label_id); 
                 fprintf(out, "    li $v0, 4\n");
                 fprintf(out, "    syscall\n");
             } else if (expr->type_info == TYPE_INT) {
@@ -237,6 +238,8 @@ static int generate_node_code(ASTNode* node) {
         }
 
         case NODE_STRINGCONST: {
+            // CORREÇÃO: Carregar o endereço da string em $a0
+            fprintf(out, "    la $a0, _str%d\n", node->attr.string.label_id);
             fprintf(out, "    li $v0, 4\n");
             fprintf(out, "    syscall\n");
             break;
@@ -447,7 +450,7 @@ void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* out
 	// Itera sobre a lista de strings e as declara no .data
     StringLabel* s_curr = string_list_head;
     while (s_curr != NULL) {
-        fprintf(out, "_str%d: .asciiz \"%s\"\n", s_curr->id, s_curr->content);
+        fprintf(out, "_str%d: .asciiz %s\n", s_curr->id, s_curr->content);
         s_curr = s_curr->next;
     }
 
