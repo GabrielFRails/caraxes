@@ -109,25 +109,34 @@ static int generate_node_code(ASTNode* node) {
             SymbolEntry* entry = id_node->attr.id.entry;
             
             if (entry == NULL) {
-                fprintf(stderr, "ERRO Codegen: Tentar ler para variável não declarada/encontrada.\n");
+                fprintf(stderr, "ERRO Codegen: Tentar ler para variável não declarada.\n");
                 break;
             }
 
             if (entry->data_type == TYPE_INT) {
                 fprintf(out, "\n    # Leitura de Inteiro\n");
-                fprintf(out, "    li $v0, 5\n");       // Syscall read_int
+                fprintf(out, "    li $v0, 5\n");
                 fprintf(out, "    syscall\n");
-                // Salva o lido na variável
-                int offset = entry->position * 4; 
-                // ATENÇÃO: Se for var global ou local o cálculo de offset pode mudar
-                // Assumindo local ($fp) por enquanto como no seu padrão:
-                fprintf(out, "    sw $v0, %d($fp)\n", offset);
+                
+                if (entry->is_global) {
+                    fprintf(out, "    sw $v0, %s\n", entry->name);
+                } else {
+                    // CORREÇÃO: Cálculo de offset consistente (pos+1)*4 e Negativo
+                    int offset = (entry->position + 1) * 4;
+                    fprintf(out, "    sw $v0, -%d($fp)\n", offset);
+                }
             } else {
                 fprintf(out, "\n    # Leitura de Char\n");
-                fprintf(out, "    li $v0, 12\n");      // Syscall read_char
+                fprintf(out, "    li $v0, 12\n");
                 fprintf(out, "    syscall\n");
-                int offset = entry->position * 4;
-                fprintf(out, "    sw $v0, %d($fp)\n", offset);
+                
+                if (entry->is_global) {
+                    fprintf(out, "    sw $v0, %s\n", entry->name);
+                } else {
+                    // CORREÇÃO: Mesma coisa para Char
+                    int offset = (entry->position + 1) * 4;
+                    fprintf(out, "    sw $v0, -%d($fp)\n", offset);
+                }
             }
             break;
         }
@@ -449,10 +458,10 @@ void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* out
     // Variáveis Globais
     ASTNode* current = ast_root;
     while (current != NULL) {
+        // Se for declaração de variável no nível global, gera .data
         if (current->type == NODE_VAR_DECL) {
              fprintf(out, "%s: .word 0\n", current->attr.var_decl.name);
         }
-        if (current->type == NODE_FUNC_DEF || current->type == NODE_BLOCK) break;
         current = current->next;
     }
 
@@ -465,7 +474,10 @@ void generate_code(ASTNode* ast_root, SymbolStack* symbol_stack, const char* out
 
     // --- SEÇÃO DE CÓDIGO (.text) ---
     fprintf(out, "\n.text\n");
-    fprintf(out, ".globl main\n\n");
+    fprintf(out, ".globl main\n");
+    
+    // CORREÇÃO: Pula explicitamente para o main, ignorando funções que vierem antes
+    fprintf(out, "    j main\n\n");
     
     // --- GERAÇÃO DE CÓDIGO ITERATIVA ---
     // Percorre a AST nível superior (Globais -> Funções -> Main)
