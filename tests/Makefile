@@ -63,35 +63,6 @@ run:
 	@echo "O relatório de compilação está em: tests/$(OUTPUT_LOG)"
 	@echo "Os arquivos assembly válidos (Corretos) estão em: tests/$(ASM_DIR)/"
 
-# Novo Target: Executa os arquivos .asm gerados usando o SPIM
-exec:
-	@echo "=== Executando arquivos Assembly no SPIM ==="
-	@mkdir -p $(EXEC_DIR)
-	@rm -f $(FULL_EXEC_LOG)
-	@echo "RELATÓRIO CONCATENADO DE EXECUÇÕES NO SPIM" > $(FULL_EXEC_LOG)
-	@echo "Data: $$(date)" >> $(FULL_EXEC_LOG)
-	@echo "============================================================" >> $(FULL_EXEC_LOG)
-	@echo "" >> $(FULL_EXEC_LOG)
-	@if [ -n "$$(ls -A $(ASM_DIR)/*.asm 2>/dev/null)" ]; then \
-		for asm in $(ASM_DIR)/*.asm; do \
-			NAME=$$(basename "$$asm" .asm); \
-			echo "Executando: $$NAME.asm"; \
-			spim -file "$$asm" > $(EXEC_DIR)/$$NAME.txt 2>&1; \
-			echo "############################################################" >> $(FULL_EXEC_LOG); \
-			echo "EXECUÇÃO: $$NAME.asm" >> $(FULL_EXEC_LOG); \
-			echo "############################################################" >> $(FULL_EXEC_LOG); \
-			echo "" >> $(FULL_EXEC_LOG); \
-			cat $(EXEC_DIR)/$$NAME.txt >> $(FULL_EXEC_LOG); \
-			echo "" >> $(FULL_EXEC_LOG); \
-			echo "" >> $(FULL_EXEC_LOG); \
-		done; \
-		echo "=== Execução Finalizada ==="; \
-		echo "Os outputs individuais estão em: tests/$(EXEC_DIR)/"; \
-		echo "O relatório concatenado está em: tests/$(FULL_EXEC_LOG)"; \
-	else \
-		echo "[AVISO] Nenhum arquivo .asm encontrado em $(ASM_DIR). Rode 'make run' primeiro."; \
-	fi
-
 # Limpa tudo
 clean:
 	rm -f $(OUTPUT_LOG) $(ASM_TEMP) $(FULL_EXEC_LOG)
