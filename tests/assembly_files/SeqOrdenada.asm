@@ -8,12 +8,7 @@ _str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 checaOrd:
@@ -30,7 +25,7 @@ checaOrd:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     la $a0, _str0
     li $v0, 4
     syscall
@@ -52,7 +47,7 @@ _L_startwhile_0:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     lw $t1, -4($fp)
     slt $t0, $t0, $t1
@@ -120,7 +115,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t4, -4($fp)
     lw $t5, -4($fp)
     slt $t4, $t4, $t5
@@ -185,7 +180,7 @@ _L_startwhile_12:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t8, -4($fp)
     lw $t9, -4($fp)
     slt $t8, $t8, $t9

@@ -1,5 +1,8 @@
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -9,12 +12,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -108,6 +106,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -129,7 +133,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -139,12 +143,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)

@@ -1,8 +1,0 @@
-Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-50 50 50
-88 50 50
-8850 50
-88 50
-8850
-88
-8888

@@ -1,2 +1,0 @@
-Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-Digite um valor inteiro para a nota de um aluno

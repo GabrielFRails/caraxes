@@ -1,5 +1,5 @@
 RELATÓRIO DE COMPILAÇÃO - LINGUAGEM GOIANINHA
-Data de execução: Seg  8 Dez 2025 11:09:25 -03
+Data de execução: Seg  8 Dez 2025 17:31:06 -03
 ============================================================
 
 ############################################################
@@ -7,6 +7,7 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 25. A função espera 'int', mas retornou 'car'.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -24,12 +25,7 @@ _str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 checaOrd:
@@ -46,7 +42,7 @@ checaOrd:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     la $a0, _str0
     li $v0, 4
     syscall
@@ -68,7 +64,7 @@ _L_startwhile_0:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     lw $t1, -4($fp)
     slt $t0, $t0, $t1
@@ -136,7 +132,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t4, -4($fp)
     lw $t5, -4($fp)
     slt $t4, $t4, $t5
@@ -201,7 +197,7 @@ _L_startwhile_12:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t8, -4($fp)
     lw $t9, -4($fp)
     slt $t8, $t8, $t9
@@ -232,6 +228,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -241,12 +240,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -342,6 +336,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -363,7 +363,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -373,12 +373,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -640,11 +640,12 @@ _str0: .asciiz " "
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     li $t0, 50
@@ -845,8 +846,7 @@ main:
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -865,6 +865,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -874,12 +877,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -973,6 +971,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -994,7 +998,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -1004,12 +1008,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -1263,12 +1267,7 @@ x: .word 0
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 duplicado:
@@ -1299,6 +1298,12 @@ duplicado:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 2
     sw $t0, -4($fp)
     lw $t1, -4($fp)
@@ -1306,8 +1311,7 @@ duplicado:
     jal duplicado
     move $t0, $v0
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -1405,11 +1409,12 @@ _str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     la $a0, _str0
@@ -1424,7 +1429,7 @@ main:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -1583,7 +1588,7 @@ _L_endif_1:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -1737,7 +1742,7 @@ _L_endif_7:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -2037,8 +2042,7 @@ _L_endif_23:
 _L_endif_21:
 _L_endif_19:
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -2114,12 +2118,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -2158,6 +2157,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     sw $t0, -4($fp)
 _L_startwhile_2:
@@ -2177,7 +2182,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -2187,12 +2192,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -2307,8 +2312,7 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -2318,6 +2322,7 @@ ARQUIVO FONTE: ./semantico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 25. A função espera 'int', mas retornou 'car'.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -2335,12 +2340,7 @@ _str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 checaOrd:
@@ -2357,7 +2357,7 @@ checaOrd:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     la $a0, _str0
     li $v0, 4
     syscall
@@ -2379,7 +2379,7 @@ _L_startwhile_0:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     lw $t1, -4($fp)
     slt $t0, $t0, $t1
@@ -2447,7 +2447,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t4, -4($fp)
     lw $t5, -4($fp)
     slt $t4, $t4, $t5
@@ -2512,7 +2512,7 @@ _L_startwhile_12:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t8, -4($fp)
     lw $t9, -4($fp)
     slt $t8, $t8, $t9
@@ -2543,6 +2543,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -2552,12 +2555,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -2653,6 +2651,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -2674,7 +2678,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -2684,12 +2688,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -2951,11 +2955,12 @@ _str0: .asciiz " "
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     li $t0, 50
@@ -3156,8 +3161,7 @@ main:
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -3176,6 +3180,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -3185,12 +3192,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -3284,6 +3286,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -3305,7 +3313,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -3315,12 +3323,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -3574,12 +3582,7 @@ x: .word 0
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 duplicado:
@@ -3610,6 +3613,12 @@ duplicado:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 2
     sw $t0, -4($fp)
     lw $t1, -4($fp)
@@ -3617,8 +3626,7 @@ duplicado:
     jal duplicado
     move $t0, $v0
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -3716,11 +3724,12 @@ _str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     la $a0, _str0
@@ -3735,7 +3744,7 @@ main:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -3894,7 +3903,7 @@ _L_endif_1:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -4048,7 +4057,7 @@ _L_endif_7:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -4348,8 +4357,7 @@ _L_endif_23:
 _L_endif_21:
 _L_endif_19:
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -4425,12 +4433,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -4469,6 +4472,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     sw $t0, -4($fp)
 _L_startwhile_2:
@@ -4488,7 +4497,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -4498,12 +4507,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -4618,8 +4627,7 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -4629,16 +4637,14 @@ ARQUIVO FONTE: ./semantico/Errados/fatorialErroLin5TipoRetornado.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 5. A função espera 'car', mas retornou 'int'.
 ERRO SEMÂNTICO: Operação aritmética na linha 7 exige operandos do tipo int.
-ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 7. A função espera 'car', mas retornou 'int'.
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
 --- FIM DA ANÁLISE SEMÂNTICA ---
 Código MIPS gerado com sucesso em output.asm
 --- INÍCIO DA ÁRVORE SINTÁTICA ABSTRATA ---
-FUNC_DEF (Nome: fatorial, Tipo Retorno: car, Linha: 8)
+FUNC_DEF (Nome: fatorial, Tipo Retorno: int, Linha: 8)
   PARAMS:
     VAR_DECL (Nome: n, Tipo: int, Linha: 2)
   CORPO:
@@ -4700,12 +4706,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -4744,6 +4745,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -4765,7 +4772,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -4775,12 +4782,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -4895,8 +4902,7 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -4916,6 +4922,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -4925,12 +4934,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -5024,6 +5028,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -5045,7 +5055,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -5055,12 +5065,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -5346,12 +5356,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -5390,6 +5395,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -5411,7 +5422,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -5421,12 +5432,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -5541,8 +5552,7 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -5562,6 +5572,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -5571,12 +5584,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -5670,6 +5678,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -5691,7 +5705,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -5701,12 +5715,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -5966,12 +5980,7 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 soma:
@@ -5993,6 +6002,12 @@ soma:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 122
     sw $t0, -4($fp)
     li $t1, 5
@@ -6019,8 +6034,7 @@ soma:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -6041,6 +6055,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -6050,12 +6067,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -6151,6 +6163,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -6172,7 +6190,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -6182,12 +6200,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -6446,12 +6464,7 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 soma:
@@ -6473,6 +6486,12 @@ soma:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 4
     sw $t0, -4($fp)
     lw $t1, -4($fp)
@@ -6497,8 +6516,7 @@ soma:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -6508,6 +6526,7 @@ ARQUIVO FONTE: ./sintatico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 25. A função espera 'int', mas retornou 'car'.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -6525,12 +6544,7 @@ _str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 checaOrd:
@@ -6547,7 +6561,7 @@ checaOrd:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     la $a0, _str0
     li $v0, 4
     syscall
@@ -6569,7 +6583,7 @@ _L_startwhile_0:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     lw $t1, -4($fp)
     slt $t0, $t0, $t1
@@ -6637,7 +6651,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t4, -4($fp)
     lw $t5, -4($fp)
     slt $t4, $t4, $t5
@@ -6702,7 +6716,7 @@ _L_startwhile_12:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t8, -4($fp)
     lw $t9, -4($fp)
     slt $t8, $t8, $t9
@@ -6733,6 +6747,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -6742,12 +6759,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -6843,6 +6855,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -6864,7 +6882,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -6874,12 +6892,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -7141,11 +7159,12 @@ _str0: .asciiz " "
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     li $t0, 50
@@ -7346,8 +7365,7 @@ main:
     li $v0, 1
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -7366,6 +7384,9 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
+somaFunc: .word 0
+fat: .word 0
+fib: .word 0
 _str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
 _str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
 _str3: .asciiz "Fibonacci de "
@@ -7375,12 +7396,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -7474,6 +7490,12 @@ _L_endif_3:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     li $t1, 0
     sub $t0, $t0, $t1
@@ -7495,7 +7517,7 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -7505,12 +7527,12 @@ _L_startwhile_6:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_6
 _L_endwhile_7:
     lw $t1, -4($fp)
@@ -7764,12 +7786,7 @@ x: .word 0
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 duplicado:
@@ -7800,6 +7817,12 @@ duplicado:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 2
     sw $t0, -4($fp)
     lw $t1, -4($fp)
@@ -7807,8 +7830,7 @@ duplicado:
     jal duplicado
     move $t0, $v0
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -7906,11 +7928,12 @@ _str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     la $a0, _str0
@@ -7925,7 +7948,7 @@ main:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -8084,7 +8107,7 @@ _L_endif_1:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -8238,7 +8261,7 @@ _L_endif_7:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -8538,8 +8561,7 @@ _L_endif_23:
 _L_endif_21:
 _L_endif_19:
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -8615,12 +8637,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -8659,6 +8676,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     sw $t0, -4($fp)
 _L_startwhile_2:
@@ -8678,7 +8701,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -8688,12 +8711,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -8808,8 +8831,7 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
 
@@ -8835,18 +8857,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 16
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 16
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -8869,18 +8881,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 16
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 16
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -8904,18 +8906,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -8938,18 +8930,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 12
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 12
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -8973,18 +8955,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 16
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 16
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -9008,18 +8980,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -9042,18 +9004,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -9076,18 +9028,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 16
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 16
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -9110,18 +9052,8 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
 
 
 ############################################################
@@ -9145,17 +9077,7 @@ _nl: .asciiz "\n"
 
 .text
 .globl main
+    j main
 
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
-
-
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
-    li $v0, 10
-    syscall
 
 

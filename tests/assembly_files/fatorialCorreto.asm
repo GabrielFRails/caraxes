@@ -6,12 +6,7 @@ _str0: .asciiz "digite um numero"
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 fatorial:
@@ -50,6 +45,12 @@ _L_endif_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 1
     sw $t0, -4($fp)
 _L_startwhile_2:
@@ -69,7 +70,7 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Imprime uma nova linha
     la $a0, _nl
@@ -79,12 +80,12 @@ _L_startwhile_2:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
 
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     j _L_startwhile_2
 _L_endwhile_3:
     la $a0, _str1
@@ -199,7 +200,6 @@ _L_endwhile_3:
     li $v0, 4
     syscall
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall

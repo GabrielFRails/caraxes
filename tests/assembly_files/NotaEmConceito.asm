@@ -5,11 +5,12 @@ _str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
+    j main
 
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 0
+    subu $sp, $sp, 128
     move $fp, $sp
 
     la $a0, _str0
@@ -24,7 +25,7 @@ main:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -183,7 +184,7 @@ _L_endif_1:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -337,7 +338,7 @@ _L_endif_7:
     # Leitura de Inteiro
     li $v0, 5
     syscall
-    sw $v0, 0($fp)
+    sw $v0, -4($fp)
     lw $t0, -4($fp)
     li $t1, 6
     slt $t0, $t0, $t1
@@ -637,7 +638,6 @@ _L_endif_23:
 _L_endif_21:
 _L_endif_19:
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall

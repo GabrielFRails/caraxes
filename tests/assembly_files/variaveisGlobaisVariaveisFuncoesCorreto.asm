@@ -4,12 +4,7 @@ x: .word 0
 
 .text
 .globl main
-
-main:
-
-    # Setup do Stack Frame para main
-    subu $sp, $sp, 0
-    move $fp, $sp
+    j main
 
 
 duplicado:
@@ -40,6 +35,12 @@ duplicado:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+main:
+
+    # Setup do Stack Frame para main
+    subu $sp, $sp, 128
+    move $fp, $sp
+
     li $t0, 2
     sw $t0, -4($fp)
     lw $t1, -4($fp)
@@ -47,7 +48,6 @@ duplicado:
     jal duplicado
     move $t0, $v0
 
-    # Limpeza do Stack Frame
-    addu $sp, $sp, 0
+    # Encerramento do programa
     li $v0, 10
     syscall
