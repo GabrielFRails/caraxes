@@ -1,11 +1,11 @@
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -117,6 +117,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -156,6 +157,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -164,6 +166,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -188,6 +191,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -206,6 +210,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -255,6 +260,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -263,6 +269,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -276,6 +283,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -288,6 +296,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -301,12 +310,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -320,6 +331,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -337,6 +349,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat

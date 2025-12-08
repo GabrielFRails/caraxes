@@ -1,8 +1,8 @@
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -57,6 +57,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -86,6 +87,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -94,6 +96,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -110,6 +113,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -118,6 +122,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -140,6 +145,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -156,6 +162,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)

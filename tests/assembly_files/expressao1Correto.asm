@@ -1,6 +1,6 @@
 .data
 _nl: .asciiz "\n"
-_str0: .asciiz "" ""
+x: .word 0
 
 .text
 .globl main
@@ -8,202 +8,46 @@ _str0: .asciiz "" ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 4
+    subu $sp, $sp, 0
     move $fp, $sp
 
-    li $t0, 50
+
+duplicado:
+    subu $sp, $sp, 32
+    sw $ra, 20($sp)
+    sw $fp, 16($sp)
+    addu $fp, $sp, 32
+    sw $a0, -4($fp)
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 0
+    move $v0, $t0
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    lw $ra, 20($sp)
+    lw $fp, 16($sp)
+    addu $sp, $sp, 32
+    jr $ra
+    li $t0, 2
     sw $t0, -4($fp)
-    sw $t0, -4($fp)
-    sw $t0, -4($fp)
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
     lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
+    move $a0, $t1
+    jal duplicado
+    move $t0, $v0
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 4
+    addu $sp, $sp, 0
     li $v0, 10
     syscall

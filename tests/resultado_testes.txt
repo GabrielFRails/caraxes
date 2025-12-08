@@ -1,5 +1,5 @@
 RELATÓRIO DE COMPILAÇÃO - LINGUAGEM GOIANINHA
-Data de execução: Dom  7 Dez 2025 20:11:01 -03
+Data de execução: Seg  8 Dez 2025 11:09:25 -03
 ============================================================
 
 ############################################################
@@ -7,7 +7,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável quant redeclarada na linha 31
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -17,11 +16,11 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str4: .asciiz ""DESORDENADA""
-_str3: .asciiz ""ORDENADA""
-_str2: .asciiz ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar.""
-_str1: .asciiz "" numeros inteiros separados entre si por um espaco""
-_str0: .asciiz ""digite uma sequencia de ""
+_str4: .asciiz "DESORDENADA"
+_str3: .asciiz "ORDENADA"
+_str2: .asciiz "digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."
+_str1: .asciiz " numeros inteiros separados entre si por um espaco"
+_str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
@@ -29,7 +28,7 @@ _str0: .asciiz ""digite uma sequencia de ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 12
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -48,6 +47,7 @@ checaOrd:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -56,6 +56,7 @@ checaOrd:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_0:
@@ -114,6 +115,7 @@ _L_endwhile_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t4, -4($fp)
@@ -122,6 +124,7 @@ _L_endwhile_1:
     move $a0, $t4
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_6:
@@ -186,6 +189,7 @@ _L_endwhile_7:
     move $a0, $t8
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_12:
@@ -219,8 +223,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável somaFunc redeclarada na linha 27
-ERRO: Variável n redeclarada na linha 29
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -230,12 +232,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -349,6 +351,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -388,6 +391,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -396,6 +400,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -420,6 +425,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -438,6 +444,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -487,6 +494,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -495,6 +503,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -508,6 +517,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -520,6 +530,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -533,12 +544,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -552,6 +565,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -569,6 +583,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -621,7 +636,7 @@ BLOCK (Linha: 8)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str0: .asciiz "" ""
+_str0: .asciiz " "
 
 .text
 .globl main
@@ -629,7 +644,7 @@ _str0: .asciiz "" ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 4
+    subu $sp, $sp, 0
     move $fp, $sp
 
     li $t0, 50
@@ -642,6 +657,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -650,40 +666,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -710,12 +693,16 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
     lw $t0, -4($fp)
 
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -742,6 +729,40 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -825,7 +846,7 @@ main:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 4
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -835,7 +856,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 30
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -845,12 +865,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -962,6 +982,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -1001,6 +1022,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -1009,6 +1031,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -1033,6 +1056,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -1051,6 +1075,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -1100,6 +1125,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -1108,6 +1134,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -1121,6 +1148,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -1133,6 +1161,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -1146,12 +1175,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -1165,6 +1196,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -1182,6 +1214,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -1193,7 +1226,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/variaveisGlobaisVariaveisFuncoesCorreto.
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO: Variável x redeclarada na linha 8
-ERRO: Variável x redeclarada na linha 10
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -1285,10 +1317,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/NotaEmConceito.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável conceito redeclarada na linha 11
-ERRO: Variável conceito redeclarada na linha 20
-ERRO: Variável conceito redeclarada na linha 29
-ERRO: Variável conceito redeclarada na linha 36
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -1372,8 +1400,8 @@ BLOCK (Linha: 44)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str1: .asciiz ""Conceito: ""
-_str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
+_str1: .asciiz "Conceito: "
+_str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
@@ -1381,9 +1409,10 @@ _str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -1402,6 +1431,7 @@ main:
     beq $t0, $zero, _L_else_0
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1439,6 +1469,7 @@ _L_else_0:
     beq $t0, $zero, _L_else_2
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1476,6 +1507,7 @@ _L_else_2:
     beq $t0, $zero, _L_else_4
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1509,6 +1541,7 @@ _L_else_2:
 _L_else_4:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1557,6 +1590,7 @@ _L_endif_1:
     beq $t0, $zero, _L_else_6
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1594,6 +1628,7 @@ _L_else_6:
     beq $t0, $zero, _L_else_8
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1631,6 +1666,7 @@ _L_else_8:
     beq $t0, $zero, _L_else_10
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1664,6 +1700,7 @@ _L_else_8:
 _L_else_10:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1707,6 +1744,7 @@ _L_endif_7:
     beq $t0, $zero, _L_else_12
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1744,6 +1782,7 @@ _L_else_12:
     beq $t0, $zero, _L_else_14
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1781,6 +1820,7 @@ _L_else_14:
     beq $t0, $zero, _L_else_16
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1814,6 +1854,7 @@ _L_else_14:
 _L_else_16:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1852,6 +1893,7 @@ _L_endif_13:
     beq $t0, $zero, _L_else_18
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1889,6 +1931,7 @@ _L_else_18:
     beq $t0, $zero, _L_else_20
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1926,6 +1969,7 @@ _L_else_20:
     beq $t0, $zero, _L_else_22
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1959,6 +2003,7 @@ _L_else_20:
 _L_else_22:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -1993,7 +2038,7 @@ _L_endif_21:
 _L_endif_19:
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -2003,7 +2048,6 @@ ARQUIVO FONTE: ./geracaoCodigo/Corretos/fatorialCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -2064,9 +2108,9 @@ BLOCK (Linha: 23)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -2121,6 +2165,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -2150,6 +2195,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -2158,6 +2204,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -2174,6 +2221,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -2182,6 +2230,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -2204,6 +2253,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -2220,6 +2270,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -2267,7 +2318,6 @@ ARQUIVO FONTE: ./semantico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável quant redeclarada na linha 31
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -2277,11 +2327,11 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str4: .asciiz ""DESORDENADA""
-_str3: .asciiz ""ORDENADA""
-_str2: .asciiz ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar.""
-_str1: .asciiz "" numeros inteiros separados entre si por um espaco""
-_str0: .asciiz ""digite uma sequencia de ""
+_str4: .asciiz "DESORDENADA"
+_str3: .asciiz "ORDENADA"
+_str2: .asciiz "digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."
+_str1: .asciiz " numeros inteiros separados entre si por um espaco"
+_str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
@@ -2289,7 +2339,7 @@ _str0: .asciiz ""digite uma sequencia de ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 12
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -2308,6 +2358,7 @@ checaOrd:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -2316,6 +2367,7 @@ checaOrd:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_0:
@@ -2374,6 +2426,7 @@ _L_endwhile_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t4, -4($fp)
@@ -2382,6 +2435,7 @@ _L_endwhile_1:
     move $a0, $t4
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_6:
@@ -2446,6 +2500,7 @@ _L_endwhile_7:
     move $a0, $t8
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_12:
@@ -2479,8 +2534,6 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável somaFunc redeclarada na linha 27
-ERRO: Variável n redeclarada na linha 29
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -2490,12 +2543,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -2609,6 +2662,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -2648,6 +2702,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -2656,6 +2711,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -2680,6 +2736,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -2698,6 +2755,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -2747,6 +2805,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -2755,6 +2814,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -2768,6 +2828,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -2780,6 +2841,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -2793,12 +2855,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -2812,6 +2876,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -2829,6 +2894,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -2881,7 +2947,7 @@ BLOCK (Linha: 8)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str0: .asciiz "" ""
+_str0: .asciiz " "
 
 .text
 .globl main
@@ -2889,7 +2955,7 @@ _str0: .asciiz "" ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 4
+    subu $sp, $sp, 0
     move $fp, $sp
 
     li $t0, 50
@@ -2902,6 +2968,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -2910,40 +2977,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -2970,12 +3004,16 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
     lw $t0, -4($fp)
 
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3002,6 +3040,40 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3085,7 +3157,7 @@ main:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 4
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -3095,7 +3167,6 @@ ARQUIVO FONTE: ./semantico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 30
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -3105,12 +3176,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -3222,6 +3293,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -3261,6 +3333,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -3269,6 +3342,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -3293,6 +3367,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -3311,6 +3386,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -3360,6 +3436,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -3368,6 +3445,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -3381,6 +3459,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -3393,6 +3472,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -3406,12 +3486,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -3425,6 +3507,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -3442,6 +3525,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -3453,7 +3537,6 @@ ARQUIVO FONTE: ./semantico/Corretos/variaveisGlobaisVariaveisFuncoesCorreto.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO: Variável x redeclarada na linha 8
-ERRO: Variável x redeclarada na linha 10
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -3545,10 +3628,6 @@ ARQUIVO FONTE: ./semantico/Corretos/NotaEmConceito.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável conceito redeclarada na linha 11
-ERRO: Variável conceito redeclarada na linha 20
-ERRO: Variável conceito redeclarada na linha 29
-ERRO: Variável conceito redeclarada na linha 36
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -3632,8 +3711,8 @@ BLOCK (Linha: 44)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str1: .asciiz ""Conceito: ""
-_str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
+_str1: .asciiz "Conceito: "
+_str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
@@ -3641,9 +3720,10 @@ _str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -3662,6 +3742,7 @@ main:
     beq $t0, $zero, _L_else_0
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3699,6 +3780,7 @@ _L_else_0:
     beq $t0, $zero, _L_else_2
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3736,6 +3818,7 @@ _L_else_2:
     beq $t0, $zero, _L_else_4
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3769,6 +3852,7 @@ _L_else_2:
 _L_else_4:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3817,6 +3901,7 @@ _L_endif_1:
     beq $t0, $zero, _L_else_6
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3854,6 +3939,7 @@ _L_else_6:
     beq $t0, $zero, _L_else_8
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3891,6 +3977,7 @@ _L_else_8:
     beq $t0, $zero, _L_else_10
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3924,6 +4011,7 @@ _L_else_8:
 _L_else_10:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -3967,6 +4055,7 @@ _L_endif_7:
     beq $t0, $zero, _L_else_12
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4004,6 +4093,7 @@ _L_else_12:
     beq $t0, $zero, _L_else_14
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4041,6 +4131,7 @@ _L_else_14:
     beq $t0, $zero, _L_else_16
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4074,6 +4165,7 @@ _L_else_14:
 _L_else_16:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4112,6 +4204,7 @@ _L_endif_13:
     beq $t0, $zero, _L_else_18
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4149,6 +4242,7 @@ _L_else_18:
     beq $t0, $zero, _L_else_20
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4186,6 +4280,7 @@ _L_else_20:
     beq $t0, $zero, _L_else_22
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4219,6 +4314,7 @@ _L_else_20:
 _L_else_22:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4253,7 +4349,7 @@ _L_endif_21:
 _L_endif_19:
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -4263,7 +4359,6 @@ ARQUIVO FONTE: ./semantico/Corretos/fatorialCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -4324,9 +4419,9 @@ BLOCK (Linha: 23)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -4381,6 +4476,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -4410,6 +4506,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4418,6 +4515,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4434,6 +4532,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4442,6 +4541,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4464,6 +4564,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4480,6 +4581,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4527,8 +4629,9 @@ ARQUIVO FONTE: ./semantico/Errados/fatorialErroLin5TipoRetornado.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 5. A função espera 'car', mas retornou 'int'.
 ERRO SEMÂNTICO: Operação aritmética na linha 7 exige operandos do tipo int.
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 7. A função espera 'car', mas retornou 'int'.
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -4591,9 +4694,9 @@ BLOCK (Linha: 23)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -4650,6 +4753,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -4679,6 +4783,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4687,6 +4792,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4703,6 +4809,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -4711,6 +4818,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4733,6 +4841,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4749,6 +4858,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4796,7 +4906,6 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroCarEIntNaEprLin8.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 30
 ERRO SEMÂNTICO: Operação aritmética na linha 9 exige operandos do tipo int.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
@@ -4807,12 +4916,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -4924,6 +5033,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -4963,6 +5073,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -4971,6 +5082,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -4995,6 +5107,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -5013,6 +5126,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -5062,6 +5176,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -5070,6 +5185,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -5083,6 +5199,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -5095,6 +5212,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -5108,12 +5226,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -5127,6 +5247,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -5144,6 +5265,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -5154,8 +5276,6 @@ ARQUIVO FONTE: ./semantico/Errados/fatorialErroLin3NomeDeclaradoNoMesmoEscopo.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 4
-ERRO: Variável n redeclarada na linha 13
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -5220,9 +5340,9 @@ BLOCK (Linha: 24)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -5279,6 +5399,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -5308,6 +5429,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -5316,6 +5438,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -5332,6 +5455,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -5340,6 +5464,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -5362,6 +5487,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -5378,6 +5504,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -5425,7 +5552,6 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatErroTIposDiferentesExpEnquntoLin30.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 29
 ERRO SEMÂNTICO: Operação relacional na linha 30 exige operandos do mesmo tipo.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
@@ -5436,12 +5562,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -5553,6 +5679,7 @@ _L_startwhile_6:
     li $t1, 48
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -5592,6 +5719,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -5600,6 +5728,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -5624,6 +5753,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -5642,6 +5772,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -5691,6 +5822,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -5699,6 +5831,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -5712,6 +5845,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -5724,6 +5858,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -5737,12 +5872,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -5756,6 +5893,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -5773,6 +5911,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -5783,6 +5922,7 @@ ARQUIVO FONTE: ./semantico/Errados/FuncSomaErroParamDeChamaaDifDoParamFormalLin1
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
+ERRO SEMÂNTICO: Tipo incompatível no argumento 2 da chamada de 'soma' (linha 10). Esperado: int, Recebido: car.
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -5830,7 +5970,7 @@ _nl: .asciiz "\n"
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -5880,7 +6020,7 @@ soma:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -5890,10 +6030,8 @@ ARQUIVO FONTE: ./semantico/Errados/FibEfatVersao2ErroAtribuicaoVarDeTipoDiferent
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável somaFunc redeclarada na linha 27
-ERRO: Variável n redeclarada na linha 29
 ERRO SEMÂNTICO: Tipos incompatíveis na atribuição da linha 22. Não é possível atribuir um valor do tipo 'int' a uma variável do tipo 'char'.
-ERRO SEMÂNTICO: Tipos incompatíveis na atribuição da linha 48. Não é possível atribuir um valor do tipo 'int' a uma variável do tipo 'char'.
+ERRO SEMÂNTICO: Tipo de retorno incompatível na linha 23. A função espera 'int', mas retornou 'car'.
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -5903,12 +6041,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -6022,6 +6160,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -6061,6 +6200,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -6069,6 +6209,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -6093,6 +6234,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -6111,6 +6253,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -6160,6 +6303,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -6168,6 +6312,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -6181,6 +6326,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -6193,6 +6339,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -6206,12 +6353,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -6225,6 +6374,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -6242,6 +6392,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -6299,7 +6450,7 @@ _nl: .asciiz "\n"
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -6347,7 +6498,7 @@ soma:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -6357,7 +6508,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/SeqOrdenada.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável quant redeclarada na linha 31
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -6367,11 +6517,11 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str4: .asciiz ""DESORDENADA""
-_str3: .asciiz ""ORDENADA""
-_str2: .asciiz ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar.""
-_str1: .asciiz "" numeros inteiros separados entre si por um espaco""
-_str0: .asciiz ""digite uma sequencia de ""
+_str4: .asciiz "DESORDENADA"
+_str3: .asciiz "ORDENADA"
+_str2: .asciiz "digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."
+_str1: .asciiz " numeros inteiros separados entre si por um espaco"
+_str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
@@ -6379,7 +6529,7 @@ _str0: .asciiz ""digite uma sequencia de ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 12
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -6398,6 +6548,7 @@ checaOrd:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -6406,6 +6557,7 @@ checaOrd:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_0:
@@ -6464,6 +6616,7 @@ _L_endwhile_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t4, -4($fp)
@@ -6472,6 +6625,7 @@ _L_endwhile_1:
     move $a0, $t4
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_6:
@@ -6536,6 +6690,7 @@ _L_endwhile_7:
     move $a0, $t8
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_12:
@@ -6569,8 +6724,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorretoVersao2.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável somaFunc redeclarada na linha 27
-ERRO: Variável n redeclarada na linha 29
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -6580,12 +6733,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -6699,6 +6852,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -6738,6 +6892,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -6746,6 +6901,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -6770,6 +6926,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -6788,6 +6945,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -6837,6 +6995,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -6845,6 +7004,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -6858,6 +7018,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -6870,6 +7031,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -6883,12 +7045,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -6902,6 +7066,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -6919,6 +7084,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -6971,7 +7137,7 @@ BLOCK (Linha: 8)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str0: .asciiz "" ""
+_str0: .asciiz " "
 
 .text
 .globl main
@@ -6979,7 +7145,7 @@ _str0: .asciiz "" ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 4
+    subu $sp, $sp, 0
     move $fp, $sp
 
     li $t0, 50
@@ -6992,6 +7158,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7000,40 +7167,7 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-
-    # Imprime uma nova linha
-    la $a0, _nl
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-    li $t1, 2
-    mul $t0, $t0, $t1
-    lw $t1, -4($fp)
-    li $t2, 4
-    div $t1, $t2
-    mflo $t1
-    sub $t0, $t0, $t1
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
-    li $v0, 4
-    syscall
-    lw $t0, -4($fp)
-
-    # Escreve um inteiro
-    move $a0, $t0
-    li $v0, 1
-    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7060,12 +7194,16 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
     lw $t0, -4($fp)
 
     # Escreve um inteiro
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7092,6 +7230,40 @@ main:
     move $a0, $t0
     li $v0, 1
     syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+
+    # Imprime uma nova linha
+    la $a0, _nl
+    li $v0, 4
+    syscall
+    lw $t0, -4($fp)
+    li $t1, 2
+    mul $t0, $t0, $t1
+    lw $t1, -4($fp)
+    li $t2, 4
+    div $t1, $t2
+    mflo $t1
+    sub $t0, $t0, $t1
+
+    # Escreve um inteiro
+    move $a0, $t0
+    li $v0, 1
+    syscall
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7175,7 +7347,7 @@ main:
     syscall
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 4
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -7185,7 +7357,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/FibEfatCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 30
 WARN: Nenhum registrador temporário livre! Contornando com workaround
 Análise léxico-sintática concluída com sucesso.
 
@@ -7195,12 +7366,12 @@ Análise léxico-sintática concluída com sucesso.
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str5: .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-_str4: .asciiz ""A soma do valor do fatorial com o valor de fibonacci e: ""
-_str3: .asciiz ""Fibonacci de ""
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str5: .asciiz "A subtracao do valor do fatorial pelo valor de finbonacci e: "
+_str4: .asciiz "A soma do valor do fatorial com o valor de fibonacci e: "
+_str3: .asciiz "Fibonacci de "
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -7312,6 +7483,7 @@ _L_startwhile_6:
     li $t1, 0
     slt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_7
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -7351,6 +7523,7 @@ _L_endwhile_7:
     jal fatorial
     move $t1, $v0
     sw $t1, fat
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -7359,6 +7532,7 @@ _L_endwhile_7:
     move $a0, $t1
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, fat
@@ -7383,6 +7557,7 @@ _L_endwhile_7:
     move $a0, $t2
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t2, fat
@@ -7401,6 +7576,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t2, $v0
     sw $t2, fib
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t3, fat
@@ -7450,6 +7626,7 @@ _L_endwhile_7:
     jal fibonacci
     move $t6, $v0
     sw $t6, fib
+    la $a0, _str3
     li $v0, 4
     syscall
     lw $t6, -4($fp)
@@ -7458,6 +7635,7 @@ _L_endwhile_7:
     move $a0, $t6
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t6, fib
@@ -7471,6 +7649,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t6, fat
@@ -7483,6 +7662,7 @@ _L_endwhile_7:
     move $a0, $t7
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t7, fib
@@ -7496,12 +7676,14 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t7, fat
     lw $t8, fib
     add $t7, $t7, $t8
     sw $t7, somaFunc
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t8, fib
@@ -7515,6 +7697,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t8, fat
@@ -7532,6 +7715,7 @@ _L_endwhile_7:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str4
     li $v0, 4
     syscall
     lw $t9, fat
@@ -7543,7 +7727,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/variaveisGlobaisVariaveisFuncoesCorreto.g
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
 ERRO: Variável x redeclarada na linha 8
-ERRO: Variável x redeclarada na linha 10
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -7635,10 +7818,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/NotaEmConceito.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável conceito redeclarada na linha 11
-ERRO: Variável conceito redeclarada na linha 20
-ERRO: Variável conceito redeclarada na linha 29
-ERRO: Variável conceito redeclarada na linha 36
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -7722,8 +7901,8 @@ BLOCK (Linha: 44)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str1: .asciiz ""Conceito: ""
-_str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
+_str1: .asciiz "Conceito: "
+_str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
@@ -7731,9 +7910,10 @@ _str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -7752,6 +7932,7 @@ main:
     beq $t0, $zero, _L_else_0
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7789,6 +7970,7 @@ _L_else_0:
     beq $t0, $zero, _L_else_2
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7826,6 +8008,7 @@ _L_else_2:
     beq $t0, $zero, _L_else_4
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7859,6 +8042,7 @@ _L_else_2:
 _L_else_4:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7907,6 +8091,7 @@ _L_endif_1:
     beq $t0, $zero, _L_else_6
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7944,6 +8129,7 @@ _L_else_6:
     beq $t0, $zero, _L_else_8
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -7981,6 +8167,7 @@ _L_else_8:
     beq $t0, $zero, _L_else_10
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8014,6 +8201,7 @@ _L_else_8:
 _L_else_10:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8057,6 +8245,7 @@ _L_endif_7:
     beq $t0, $zero, _L_else_12
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8094,6 +8283,7 @@ _L_else_12:
     beq $t0, $zero, _L_else_14
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8131,6 +8321,7 @@ _L_else_14:
     beq $t0, $zero, _L_else_16
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8164,6 +8355,7 @@ _L_else_14:
 _L_else_16:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8202,6 +8394,7 @@ _L_endif_13:
     beq $t0, $zero, _L_else_18
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8239,6 +8432,7 @@ _L_else_18:
     beq $t0, $zero, _L_else_20
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8276,6 +8470,7 @@ _L_else_20:
     beq $t0, $zero, _L_else_22
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8309,6 +8504,7 @@ _L_else_20:
 _L_else_22:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8343,7 +8539,7 @@ _L_endif_21:
 _L_endif_19:
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 
@@ -8353,7 +8549,6 @@ ARQUIVO FONTE: ./sintatico/Corretos/fatorialCorreto.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
 Análise léxico-sintática concluída com sucesso.
 
 --- INICIANDO ANÁLISE SEMÂNTICA ---
@@ -8414,9 +8609,9 @@ BLOCK (Linha: 23)
 --- CÓDIGO ASSEMBLY MIPS GERADO ---
 .data
 _nl: .asciiz "\n"
-_str2: .asciiz "" e: ""
-_str1: .asciiz ""O fatorial de ""
-_str0: .asciiz ""digite um numero""
+_str2: .asciiz " e: "
+_str1: .asciiz "O fatorial de "
+_str0: .asciiz "digite um numero"
 
 .text
 .globl main
@@ -8471,6 +8666,7 @@ _L_startwhile_2:
     li $t1, 0
     sgt $t0, $t0, $t1
     beq $t0, $zero, _L_endwhile_3
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -8500,6 +8696,7 @@ _L_startwhile_2:
     sw $v0, 0($fp)
     j _L_startwhile_2
 _L_endwhile_3:
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8508,6 +8705,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -8524,6 +8722,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -8532,6 +8731,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -8554,6 +8754,7 @@ _L_endwhile_3:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -8570,6 +8771,7 @@ _L_endwhile_3:
     la $a0, _nl
     li $v0, 4
     syscall
+    la $a0, _str2
     li $v0, 4
     syscall
     lw $t1, -4($fp)
@@ -8686,7 +8888,6 @@ ARQUIVO FONTE: ./sintatico/Errados/fatorialErroLin15String2linhas.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
 ERRO: CARACTERE INVÁLIDO 14
 ERRO SINTÁTICO: syntax error na linha 14
 Falha na análise lexico-sintática, relatório a seguir:
@@ -8722,7 +8923,6 @@ ARQUIVO FONTE: ./sintatico/Errados/FibEfatErroBlocoEnquantoNaoTerminaLin30.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 26
 ERRO SINTÁTICO: syntax error na linha 51
 Falha na análise lexico-sintática, relatório a seguir:
 
@@ -8827,7 +9027,6 @@ ARQUIVO FONTE: ./sintatico/Errados/fatorialErroEntquantoSemExecuteLinha13.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável n redeclarada na linha 12
 ERRO SINTÁTICO: syntax error na linha 13
 Falha na análise lexico-sintática, relatório a seguir:
 
@@ -8896,7 +9095,6 @@ ARQUIVO FONTE: ./sintatico/Errados/NotaEmConceitoErroSenaoSemSeLin25.g
 ############################################################
 
 --- SAÍDA DO COMPILADOR (AST & LOGS) ---
-ERRO: Variável conceito redeclarada na linha 11
 ERRO SINTÁTICO: syntax error na linha 25
 Falha na análise lexico-sintática, relatório a seguir:
 
@@ -8916,12 +9114,12 @@ _nl: .asciiz "\n"
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall
 

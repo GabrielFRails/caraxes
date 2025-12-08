@@ -1,7 +1,7 @@
 .data
 _nl: .asciiz "\n"
-_str1: .asciiz ""Conceito: ""
-_str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
+_str1: .asciiz "Conceito: "
+_str0: .asciiz "Digite um valor inteiro para a nota de um aluno"
 
 .text
 .globl main
@@ -9,9 +9,10 @@ _str0: .asciiz ""Digite um valor inteiro para a nota de um aluno""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 8
+    subu $sp, $sp, 0
     move $fp, $sp
 
+    la $a0, _str0
     li $v0, 4
     syscall
 
@@ -30,6 +31,7 @@ main:
     beq $t0, $zero, _L_else_0
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -67,6 +69,7 @@ _L_else_0:
     beq $t0, $zero, _L_else_2
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -104,6 +107,7 @@ _L_else_2:
     beq $t0, $zero, _L_else_4
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -137,6 +141,7 @@ _L_else_2:
 _L_else_4:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -185,6 +190,7 @@ _L_endif_1:
     beq $t0, $zero, _L_else_6
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -222,6 +228,7 @@ _L_else_6:
     beq $t0, $zero, _L_else_8
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -259,6 +266,7 @@ _L_else_8:
     beq $t0, $zero, _L_else_10
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -292,6 +300,7 @@ _L_else_8:
 _L_else_10:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -335,6 +344,7 @@ _L_endif_7:
     beq $t0, $zero, _L_else_12
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -372,6 +382,7 @@ _L_else_12:
     beq $t0, $zero, _L_else_14
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -409,6 +420,7 @@ _L_else_14:
     beq $t0, $zero, _L_else_16
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -442,6 +454,7 @@ _L_else_14:
 _L_else_16:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -480,6 +493,7 @@ _L_endif_13:
     beq $t0, $zero, _L_else_18
     li $t0, 68
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -517,6 +531,7 @@ _L_else_18:
     beq $t0, $zero, _L_else_20
     li $t0, 67
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -554,6 +569,7 @@ _L_else_20:
     beq $t0, $zero, _L_else_22
     li $t0, 66
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -587,6 +603,7 @@ _L_else_20:
 _L_else_22:
     li $t0, 65
     sw $t0, -4($fp)
+    la $a0, _str1
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -621,6 +638,6 @@ _L_endif_21:
 _L_endif_19:
 
     # Limpeza do Stack Frame
-    addu $sp, $sp, 8
+    addu $sp, $sp, 0
     li $v0, 10
     syscall

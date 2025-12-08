@@ -1,5 +1,5 @@
 RELATÓRIO CONCATENADO DE EXECUÇÕES NO SPIM
-Data: Dom  7 Dez 2025 20:11:05 -03
+Data: Seg  8 Dez 2025 11:09:29 -03
 ============================================================
 
 ############################################################
@@ -7,22 +7,19 @@ EXECUÇÃO: expressao1Correto.asm
 ############################################################
 
 Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-50Memory address out of bounds
-
+50 50 50
+88 50 50
+8850 50
+88 50
+8850
+88
+8888
 
 ############################################################
 EXECUÇÃO: fatorialCorreto.asm
 ############################################################
 
 Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-spim: (parser) syntax error on line 3 of file assembly_files/fatorialCorreto.asm
-	  .asciiz "" e: ""
-	             ^
-The following symbols are undefined:
-main
-
-Instruction references undefined symbol at 0x00400014
-  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
 
 
 ############################################################
@@ -30,14 +27,11 @@ EXECUÇÃO: FibEfatCorreto.asm
 ############################################################
 
 Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-spim: (parser) syntax error on line 3 of file assembly_files/FibEfatCorreto.asm
-	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-	            ^
 The following symbols are undefined:
-main
+fat
+somaFunc
+fib
 
-Instruction references undefined symbol at 0x00400014
-  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
 
 
 ############################################################
@@ -45,50 +39,10 @@ EXECUÇÃO: FibEfatCorretoVersao2.asm
 ############################################################
 
 Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-spim: (parser) syntax error on line 3 of file assembly_files/FibEfatCorretoVersao2.asm
-	  .asciiz ""A subtracao do valor do fatorial pelo valor de finbonacci e: ""
-	            ^
 The following symbols are undefined:
-main
-
-Instruction references undefined symbol at 0x00400014
-  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
-
-
-############################################################
-EXECUÇÃO: NotaEmConceito.asm
-############################################################
-
-Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-spim: (parser) syntax error on line 3 of file assembly_files/NotaEmConceito.asm
-	  .asciiz ""Conceito: ""
-	            ^
-The following symbols are undefined:
-main
-
-Instruction references undefined symbol at 0x00400014
-  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
+fat
+somaFunc
+fib
 
 
-############################################################
-EXECUÇÃO: SeqOrdenada.asm
-############################################################
-
-Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-spim: (parser) syntax error on line 3 of file assembly_files/SeqOrdenada.asm
-	  .asciiz ""DESORDENADA""
-	            ^
-The following symbols are undefined:
-main
-
-Instruction references undefined symbol at 0x00400014
-  [0x00400014]	0x0c000000  jal 0x00000000 [main]           ; 188: jal main
-
-
-############################################################
-EXECUÇÃO: variaveisGlobaisVariaveisFuncoesCorreto.asm
-############################################################
-
-Loaded: /opt/homebrew/Cellar/spim/9.1.24/share/exceptions.s
-1
 

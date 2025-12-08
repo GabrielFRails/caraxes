@@ -1,10 +1,10 @@
 .data
 _nl: .asciiz "\n"
-_str4: .asciiz ""DESORDENADA""
-_str3: .asciiz ""ORDENADA""
-_str2: .asciiz ""digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar.""
-_str1: .asciiz "" numeros inteiros separados entre si por um espaco""
-_str0: .asciiz ""digite uma sequencia de ""
+_str4: .asciiz "DESORDENADA"
+_str3: .asciiz "ORDENADA"
+_str2: .asciiz "digite o tamanho de uma sequencia de numeros inteiros - digite 0 para terminar."
+_str1: .asciiz " numeros inteiros separados entre si por um espaco"
+_str0: .asciiz "digite uma sequencia de "
 
 .text
 .globl main
@@ -12,7 +12,7 @@ _str0: .asciiz ""digite uma sequencia de ""
 main:
 
     # Setup do Stack Frame para main
-    subu $sp, $sp, 12
+    subu $sp, $sp, 0
     move $fp, $sp
 
 
@@ -31,6 +31,7 @@ checaOrd:
     li $v0, 5
     syscall
     sw $v0, 0($fp)
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t0, -4($fp)
@@ -39,6 +40,7 @@ checaOrd:
     move $a0, $t0
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_0:
@@ -97,6 +99,7 @@ _L_endwhile_1:
     lw $fp, 16($sp)
     addu $sp, $sp, 32
     jr $ra
+    la $a0, _str0
     li $v0, 4
     syscall
     lw $t4, -4($fp)
@@ -105,6 +108,7 @@ _L_endwhile_1:
     move $a0, $t4
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_6:
@@ -169,6 +173,7 @@ _L_endwhile_7:
     move $a0, $t8
     li $v0, 1
     syscall
+    la $a0, _str1
     li $v0, 4
     syscall
 _L_startwhile_12:
